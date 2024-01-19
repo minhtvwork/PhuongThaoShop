@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Document",
+    "\\src",
+    "\\src\\aspnet-core",
+    "\\src\\aspnet-core\\PTS.Domain"
   ],
-  "SelectedNode": "\\T:\\MyProject\\PTS",
+  "SelectedNode": "\\src\\aspnet-core\\PTS.sln",
   "PreviewInSolutionExplorer": false
 }
