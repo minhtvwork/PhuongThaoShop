@@ -7,7 +7,7 @@ namespace PTS.Domain.Entities
     public class GiamGiaEntity
     {
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         [Required]
         [MaxLength(50)]
         public string? Ma { get; set; }
@@ -16,7 +16,7 @@ namespace PTS.Domain.Entities
         public DateTime NgayBatDau { get; set; }
         public DateTime NgayKetThuc { get; set; }
         public decimal MucGiamGiaPhanTram { get; set; }
-        public double MucGiamGiaTienMat { get; set; }
+        public decimal MucGiamGiaTienMat { get; set; }
         public string? LoaiGiamGia { get; set; }
         public int TrangThai { get; set; }
         public virtual ICollection<SanPhamGiamGiaEntity>? SanPhamGiamGias { get; set; }

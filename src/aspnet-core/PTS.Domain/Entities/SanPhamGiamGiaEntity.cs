@@ -7,11 +7,11 @@ namespace PTS.Domain.Entities
     public class SanPhamGiamGiaEntity : BaseEntity
     {
         [Key]
-        public double DonGia { get; set; }
-        public double SoTienConLai { get; set; }
+        public decimal DonGia { get; set; }
+        public decimal SoTienConLai { get; set; }
         public int TrangThai { get; set; }
-        public Guid ProductDetailId { get; set; }
-        public Guid GiamGiaId { get; set; }
+        public int ProductDetailId { get; set; }
+        public int GiamGiaId { get; set; }
         public virtual GiamGiaEntity? GiamGia { get; set; }
         public virtual ProductDetailEntity? ProductDetail { get; set; }
     }
