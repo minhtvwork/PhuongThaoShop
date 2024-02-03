@@ -4,7 +4,7 @@ namespace PTS.Host.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : PTSBaseController
     {
         private static readonly string[] Summaries = new[]
         {

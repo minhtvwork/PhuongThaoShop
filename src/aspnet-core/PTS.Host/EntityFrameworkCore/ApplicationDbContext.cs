@@ -4,7 +4,6 @@ using System.Data;
 using System.Drawing;
 using System.Linq.Dynamic.Core.Tokenizer;
 using System.Runtime.Intrinsics.Arm;
-using Volo.Abp.EntityFrameworkCore;
 using static Volo.Abp.Http.MimeTypes;
 
 namespace PTS.EntityFrameworkCore
