@@ -2,6 +2,7 @@
 using PTS.EntityFrameworkCore.Repository.IRepository;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
+using System.Net.NetworkInformation;
 
 namespace PTS.EntityFrameworkCore.Repository
 {
@@ -82,7 +83,7 @@ namespace PTS.EntityFrameworkCore.Repository
         private int GetCountProductDetail(string codeProductDetail)
         {
             int getCount = _context.ProductDetailEntity.Where(x => x.Status > 0 && x.Code == codeProductDetail)
-           .Join(_context.SerialEntity, a => a.Id, b => b.ProductDetailId, (a, b) => new ProductDetailEntity
+           .Join(_context.SerialEntity, a => a.Id, b => b.ProductDetailEntityId, (a, b) => new ProductDetailEntity
            {
                Id = a.Id
            })
@@ -340,9 +341,44 @@ namespace PTS.EntityFrameworkCore.Repository
                 return false;
             }
         }
-        public async Task<ProductDetailEntity> GetById(int id)
+        public async Task<ProductDetailDto> GetById(int id)
         {
-            return await _context.ProductDetailEntity.FindAsync(id);
+            var query = await _context.ProductDetailEntity
+              .AsNoTracking()
+            .Include(a => a.ImageEntities)
+            .Where(x=>x.Id == id)
+            .Select(a => new ProductDetailDto
+            {
+                Id = a.Id,
+                  Code = a.Code,
+                  OldPrice = a.OldPrice,
+                  Price = a.Price,
+                  Status = a.Status,
+                  Upgrade = a.Upgrade,
+                  Description = a.Description,
+                  AvailableQuantity = 1,
+                  ThongSoRam = a.RamEntity.ThongSo,
+                  MaRam = a.RamEntity.Ma,
+                  TenCpu = a.CpuEntity.Ten,
+                  MaCpu = a.CpuEntity.Ma,
+                  ThongSoHardDrive = a.HardDriveEntity.ThongSo,
+                  MaHardDrive = a.HardDriveEntity.Ma,
+                  NameColor = a.ColorEntity.Name,
+                  MaColor = a.ColorEntity.Ma,
+                  MaCardVGA = a.CardVGAEntity.Ma,
+                  TenCardVGA = a.CardVGAEntity.Ten,
+                  ThongSoCardVGA = a.CardVGAEntity.ThongSo,
+                  MaManHinh = a.ScreenEntity.Ma,
+                  KichCoManHinh = a.ScreenEntity.KichCo,
+                  TanSoManHinh = a.ScreenEntity.TanSo,
+                  ChatLieuManHinh = a.ScreenEntity.ChatLieu,
+                  NameProduct = a.ProductEntity.Name,
+                  NameProductType = a.ProductEntity.ProductTypeEntity.Name,
+                  NameManufacturer = a.ProductEntity.ManufacturerEntity.Name,
+                  LinkImage = (a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1") != null) ? a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1").LinkImage : null,
+                  OtherImages = (a.ImageEntities.Where(image => image.Ma != "Anh1").Select(image => image.LinkImage).ToList()),
+              }).FirstOrDefaultAsync();
+            return query;
         }
     }
 }

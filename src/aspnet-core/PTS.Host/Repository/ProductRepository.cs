@@ -79,8 +79,8 @@ namespace PTS.EntityFrameworkCore.Repository
             {
                 x.Name = obj.Name;
                 //x.Status = obj.Status;
-                x.ManufacturerId = obj.ManufacturerId;
-                x.ProductTypeId = obj.ProductTypeId;
+                x.ManufacturerEntityId = obj.ManufacturerEntityId;
+                x.ProductTypeEntityId = obj.ProductTypeEntityId;
                 dbContext.ProductEntity.Update(x);
                 await dbContext.SaveChangesAsync();
                 return true;
@@ -101,9 +101,9 @@ namespace PTS.EntityFrameworkCore.Repository
                     Id = a.Id,
                     Name = a.Name,
                     ProductTypeName = a.ProductTypeEntity.Name,
-                    ProductTypeId = a.ProductTypeId,
+                    ProductTypeId = a.ProductTypeEntityId,
                     ManuName = a.ManufacturerEntity.Name,
-                    ManufacturerId = a.ManufacturerId,
+                    ManufacturerId = a.ManufacturerEntityId,
 
                 });
 

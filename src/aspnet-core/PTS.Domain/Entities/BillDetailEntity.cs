@@ -10,7 +10,7 @@ namespace PTS.Domain.Entities
         public string? CodeProductDetail { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
-        public int BillId { get; set; }
+        public int BillEntityId { get; set; }
         public virtual BillEntity? BillEntity { get; set; }
         public ICollection<SerialEntity>? SerialEntities { get; set; }
     }

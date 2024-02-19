@@ -27,7 +27,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<ApplicationDbContext, ApplicationDbContext>();
 
 builder.Services.AddTransient<IRamRepository, RamRepository>();
-
+builder.Services.AddTransient<IProductDetailRepository, ProductDetailRepository>();
 builder.Services.AddTransient<IAllRepository<CpuEntity>, AllRepository<CpuEntity>>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -68,5 +68,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseCors(t => t.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 app.Run();

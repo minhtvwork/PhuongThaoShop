@@ -7,7 +7,7 @@ namespace PTS.Domain.Entities
     public class CartDetailEntity : BaseEntity
     {
         public int CartId { get; set; }
-        public int ProductDetailId { get; set; }
+        public int ProductDetailEntityId { get; set; }
         public int Quantity { get; set; }
         public virtual CartEntity? CartEntity { get; set; }
         public virtual ProductDetailEntity? ProductDetailEntity { get; set; }

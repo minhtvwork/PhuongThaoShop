@@ -8,8 +8,8 @@ namespace PTS.Domain.Entities
     {
         [Required]
         public string? SerialNumber { get; set; }
-        public int? ProductDetailId {  get; set; }
-        public int? BillDetailId { get; set; }
+        public int? ProductDetailEntityId {  get; set; }
+        public int? BillDetailEntityId { get; set; }
         public virtual ProductDetailEntity? ProductDetailEntities { get; set; }
         public virtual BillDetailEntity? BillDetailEntities { get; set; }
     }

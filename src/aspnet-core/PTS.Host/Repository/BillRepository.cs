@@ -54,7 +54,7 @@ namespace PTS.EntityFrameworkCore.Repository
         {
             var query = from bill in _context.BillEntity
                         where bill.InvoiceCode == invoiceCode
-                        join v in _context.VoucherEntity on bill.VoucherId equals v.Id into voucherGroup
+                        join v in _context.VoucherEntity on bill.VoucherEntityId equals v.Id into voucherGroup
                         from voucher in voucherGroup.DefaultIfEmpty()
                         select new BillDto
                         {
@@ -66,7 +66,7 @@ namespace PTS.EntityFrameworkCore.Repository
                             CreateDate = bill.CreationTime,
                             GiamGia = voucher != null ? voucher.GiaTri : 0,
                             CodeVoucher = voucher != null ? voucher.MaVoucher : null,
-                            UserId = bill.UserId
+                            UserId = bill.UserEntityId
                         };
 
             return await query.AsNoTracking().FirstOrDefaultAsync();
@@ -80,7 +80,7 @@ namespace PTS.EntityFrameworkCore.Repository
             {
                 var billDetails = await (
                     from x in _context.BillEntity.AsNoTracking().Where(a => a.InvoiceCode == invoiceCode)
-                    join y in _context.BillDetailEntity.AsNoTracking() on x.Id equals y.BillId
+                    join y in _context.BillDetailEntity.AsNoTracking() on x.Id equals y.BillEntityId
                     //join z in _context.Serials.AsNoTracking() on y.Id equals z.BillDetailId
                     //join o in _context.ProductDetailEntity.AsNoTracking().Where(a => a.Status > 0) on z.ProductDetailId equals o.Id
                     select new BillDetailDto

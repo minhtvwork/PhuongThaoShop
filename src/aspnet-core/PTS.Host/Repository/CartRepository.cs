@@ -85,16 +85,16 @@ namespace PTS.EntityFrameworkCore.Repository
                            // Join các bảng lại để lấy dữ liệu
                            from x in await _context.CartEntity.ToListAsync()
                            join y in await _context.CartDetailEntity.ToListAsync() on x.IdUser equals y.CartId
-                           join a in await _context.ProductDetailEntity.ToListAsync() on y.ProductDetailId equals a.Id
-                           join b in await _context.RamEntity.ToListAsync() on a.RamId equals b.Id
-                           join c in await _context.CpuEntity.ToListAsync() on a.CpuId equals c.Id
-                           join d in await _context.HardDriveEntity.ToListAsync() on a.HardDriveId equals d.Id
-                           join e in await _context.ColorEntity.ToListAsync() on a.ColorId equals e.Id
-                           join f in await _context.CardVGAEntity.ToListAsync() on a.CardVGAId equals f.Id
-                           join g in await _context.ScreenEntity.ToListAsync() on a.ScreenId equals g.Id
-                           // join h in await _context.ImageEntity.ToListAsync() on a.Id equals h.ProductDetailId
-                           join i in await _context.ProductEntity.ToListAsync() on a.ProductId equals i.Id
-                           join k in await _context.ManufacturerEntity.ToListAsync() on i.ManufacturerId equals k.Id
+                           join a in await _context.ProductDetailEntity.ToListAsync() on y.ProductDetailEntityId equals a.Id
+                           join b in await _context.RamEntity.ToListAsync() on a.RamEntityId equals b.Id
+                           join c in await _context.CpuEntity.ToListAsync() on a.CpuEntityId equals c.Id
+                           join d in await _context.HardDriveEntity.ToListAsync() on a.HardDriveEntityId equals d.Id
+                           join e in await _context.ColorEntity.ToListAsync() on a.ColorEntityId equals e.Id
+                           join f in await _context.CardVGAEntity.ToListAsync() on a.CardVGAEntityId equals f.Id
+                           join g in await _context.ScreenEntity.ToListAsync() on a.ScreenEntityId equals g.Id
+                           // join h in await _context.ImageEntity.ToListAsync() on a.Id equals h.ProductDetailEntityId
+                           join i in await _context.ProductEntity.ToListAsync() on a.ProductEntityId equals i.Id
+                           join k in await _context.ManufacturerEntity.ToListAsync() on i.ManufacturerEntityId equals k.Id
                            select new CartItemDto// Dùng kiểu đối tượng ẩn danh (anonymous type)
                            {
                                Id = y.Id,

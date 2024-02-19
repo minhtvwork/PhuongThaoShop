@@ -14,13 +14,13 @@ namespace PTS.Domain.Entities
         public Decimal OldPrice { get; set; }
         public string? Upgrade { get; set; }
         public string? Description { get; set; }
-        public int ProductId { get; set; }
-        public int? ColorId { get; set; }
-        public int? RamId { get; set; }
-        public int? CpuId { get; set; }
-        public int? HardDriveId { get; set; }
-        public int? ScreenId { get; set; }
-        public int? CardVGAId { get; set; }
+        public int ProductEntityId { get; set; }
+        public int? ColorEntityId { get; set; }
+        public int? RamEntityId { get; set; }
+        public int? CpuEntityId { get; set; }
+        public int? HardDriveEntityId { get; set; }
+        public int? ScreenEntityId { get; set; }
+        public int? CardVGAEntityId { get; set; }
         public virtual ColorEntity? ColorEntity { get; set; }
         public virtual RamEntity? RamEntity { get; set; }
         public virtual CpuEntity? CpuEntity { get; set; }

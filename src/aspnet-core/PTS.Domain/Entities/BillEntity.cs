@@ -19,8 +19,8 @@ namespace PTS.Domain.Entities
         public int Payment { get; set; }
         public bool IsPayment { get; set; }
         public decimal? Discount { get; set; }
-        public int? VoucherId { get; set; }
-        public int? UserId { get; set; }
+        public int? VoucherEntityId { get; set; }
+        public int? UserEntityId { get; set; }
         public virtual VoucherEntity? VoucherEntitity { get; set; }
         public virtual UserEntity? UserEntity { get; set; }
         public virtual ICollection<BillDetailEntity>? BillDetailEntities { get; set; }

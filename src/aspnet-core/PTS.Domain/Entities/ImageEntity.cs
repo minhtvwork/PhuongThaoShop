@@ -9,7 +9,7 @@ namespace PTS.Domain.Entities
         public string? Ma { get; set; }
         [MaxLength(150)]
         public string? LinkImage { get; set; }
-        public int? ProductDetailId { get; set; }
+        public int? ProductDetailEntityId { get; set; }
         public virtual ProductDetailEntity? ProductDetailEntity { get; set; }
     }
 }

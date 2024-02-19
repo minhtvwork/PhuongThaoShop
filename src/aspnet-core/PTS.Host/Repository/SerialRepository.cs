@@ -115,8 +115,8 @@ namespace PTS.EntityFrameworkCore.Repository
             {
                 Serial.SerialNumber = obj.SerialNumber;
                 //Serial.Status = 1;
-                Serial.BillDetailId = obj.BillDetailId;
-                Serial.ProductDetailId = obj.ProductDetailId;
+                Serial.BillDetailEntityId = obj.BillDetailEntityId;
+                Serial.ProductDetailEntityId = obj.ProductDetailEntityId;
                 _context.SerialEntity.Update(Serial);
                 await _context.SaveChangesAsync();
                 return new ResponseDto

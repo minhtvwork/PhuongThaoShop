@@ -12,6 +12,6 @@ namespace PTS.EntityFrameworkCore.Repository.IRepository
         Task<IEnumerable<ProductDetailDto>> PGetProductDetail(int? getNumber, string? codeProductDetail, int? status, string? search, decimal? from, decimal? to, string? sortBy, int? page,
             string? productType, string? namufacturer, string? ram, string? CPU, string? cardVGA);
         Task<bool> UpdateSoLuong(int id, int soLuong);
-        Task<ProductDetailEntity> GetById(int Id);
+        Task<ProductDetailDto> GetById(int id);
     }
 }
