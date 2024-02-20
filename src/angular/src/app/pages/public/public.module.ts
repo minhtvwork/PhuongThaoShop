@@ -13,6 +13,7 @@ import { CartComponent } from './cart/cart.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { DetailComponent } from './detail/detail.component';
+import { CarouseleComponent } from './carousel';
 
 
 
@@ -27,7 +28,8 @@ import { DetailComponent } from './detail/detail.component';
     CartComponent,
     AboutComponent,
     ContactComponent,
-    DetailComponent
+    DetailComponent,
+    CarouseleComponent
   ],
   imports: [
     CommonModule,

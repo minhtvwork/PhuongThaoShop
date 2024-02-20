@@ -1,1 +1,9 @@
 <p>detail works!</p>
+<div *ngIf="productId">
+    <p>Description: {{ productId }}</p>
+    {{ product.code }}
+    <!-- Thêm các thông tin khác của sản phẩm cần hiển thị -->
+  </div>
+  <div *ngIf="!productId">
+    <p>Loading...</p>
+  </div>
