@@ -5,7 +5,7 @@ export interface LoginRequestDto{
 export interface ProductDetailDto {
     id: string;
     code?: string;
-    importPrice: number;
+    oldPrice: number;
     price: number;
     availableQuantity: number;
     status: number;

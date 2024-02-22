@@ -1,12 +1,16 @@
-<carousel-fade>
+<!-- <carousel-fade>
 
-</carousel-fade>
-<div *ngFor="let p of products">
-<nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate">
-    <nz-card-meta nzTitle="{{p.nameProduct}}" [routerLink]="['/product', p.id]" nzDescription="www.instagram.com"></nz-card-meta>
+</carousel-fade> -->
+<div nz-row [nzGutter]="16">
+<div nz-col nzSpan="24" nzSm="12" nzMd="8" nzLg="6" *ngFor="let p of products">
+  <nz-card nzHoverable style="width:100%" [nzCover]="coverTemplate">
+    <nz-card-meta nzTitle="{{p.nameProduct +' '+ p.code}}" [routerLink]="['/product', p.id]" nzDescription="">
+
+    </nz-card-meta>
+    <h2><span class="price-p">{{p.price}} </span>- <span class="old-price-p"> {{p.oldPrice}}</span></h2>
   </nz-card>
   <ng-template #coverTemplate>
     <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
   </ng-template>
-  <p>{{p.code}}</p>
+</div>
 </div>
