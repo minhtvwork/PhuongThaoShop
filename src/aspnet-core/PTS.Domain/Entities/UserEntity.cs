@@ -14,8 +14,7 @@ namespace PTS.Domain.Entities
         public string? Address { get; set; }
         public string? Email { get; set; }
         public virtual CartEntity? Cart { get; set; }
-        public int? IdRoleEntity { get; set; }
-        [ForeignKey("IdRole")]
+        public int? RoleEntityId{ get; set; }
         public virtual RoleEntity? RoleEntities { get; set; }
     }
 }

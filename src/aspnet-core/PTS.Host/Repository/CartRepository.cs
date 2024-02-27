@@ -15,7 +15,7 @@ namespace PTS.EntityFrameworkCore.Repository
         }
         public async Task<bool> Create(CartEntity obj)
         {
-            var checkId = await _context.CartEntity.AnyAsync(x => x.IdUser == obj.IdUser);
+            var checkId = await _context.CartEntity.AnyAsync(x => x.UserEntityId == obj.UserEntityId);
             if (obj == null || checkId == true)
             {
                 return false;
@@ -60,7 +60,7 @@ namespace PTS.EntityFrameworkCore.Repository
             try
             {
 
-                var cart = await _context.CartEntity.FirstOrDefaultAsync(x => x.IdUser == id);
+                var cart = await _context.CartEntity.FirstOrDefaultAsync(x => x.UserEntityId == id);
                 return cart;
             }
             catch (Exception)
@@ -84,44 +84,44 @@ namespace PTS.EntityFrameworkCore.Repository
                 cartItem = (
                            // Join các bảng lại để lấy dữ liệu
                            from x in await _context.CartEntity.ToListAsync()
-                           join y in await _context.CartDetailEntity.ToListAsync() on x.IdUser equals y.CartId
+                           join y in await _context.CartDetailEntity.ToListAsync() on x.UserEntityId equals y.CartEntityId
                            join a in await _context.ProductDetailEntity.ToListAsync() on y.ProductDetailEntityId equals a.Id
-                           join b in await _context.RamEntity.ToListAsync() on a.RamEntityId equals b.Id
-                           join c in await _context.CpuEntity.ToListAsync() on a.CpuEntityId equals c.Id
-                           join d in await _context.HardDriveEntity.ToListAsync() on a.HardDriveEntityId equals d.Id
-                           join e in await _context.ColorEntity.ToListAsync() on a.ColorEntityId equals e.Id
-                           join f in await _context.CardVGAEntity.ToListAsync() on a.CardVGAEntityId equals f.Id
-                           join g in await _context.ScreenEntity.ToListAsync() on a.ScreenEntityId equals g.Id
-                           // join h in await _context.ImageEntity.ToListAsync() on a.Id equals h.ProductDetailEntityId
-                           join i in await _context.ProductEntity.ToListAsync() on a.ProductEntityId equals i.Id
-                           join k in await _context.ManufacturerEntity.ToListAsync() on i.ManufacturerEntityId equals k.Id
+                           //join b in await _context.RamEntity.ToListAsync() on a.RamEntityId equals b.Id
+                           //join c in await _context.CpuEntity.ToListAsync() on a.CpuEntityId equals c.Id
+                           //join d in await _context.HardDriveEntity.ToListAsync() on a.HardDriveEntityId equals d.Id
+                           //join e in await _context.ColorEntity.ToListAsync() on a.ColorEntityId equals e.Id
+                           //join f in await _context.CardVGAEntity.ToListAsync() on a.CardVGAEntityId equals f.Id
+                           //join g in await _context.ScreenEntity.ToListAsync() on a.ScreenEntityId equals g.Id
+                           //// join h in await _context.ImageEntity.ToListAsync() on a.Id equals h.ProductDetailEntityId
+                           //join i in await _context.ProductEntity.ToListAsync() on a.ProductEntityId equals i.Id
+                           //join k in await _context.ManufacturerEntity.ToListAsync() on i.ManufacturerEntityId equals k.Id
                            select new CartItemDto// Dùng kiểu đối tượng ẩn danh (anonymous type)
                            {
                                Id = y.Id,
-                               UserId = x.IdUser,
+                               UserId = x.UserEntityId,
                                Quantity = y.Quantity,
                                Status = y.Status,
                                IdProductDetails = a.Id,
                                MaProductDetail = a.Code,
                                Price = a.Price,
                                Description = a.Description,
-                               ThongSoRam = b.ThongSo,
-                               MaRam = b.Ma,
-                               TenCpu = c.Ten,
-                               MaCpu = c.Ma,
-                               ThongSoHardDrive = d.ThongSo,
-                               MaHardDrive = d.Ma,
-                               NameColor = e.Name,
-                               MaColor = e.Ma,
-                               MaCardVGA = f.Ma,
-                               TenCardVGA = f.Ten,
-                               ThongSoCardVGA = f.ThongSo,
-                               MaManHinh = g.Ma,
-                               KichCoManHinh = g.KichCo,
-                               TanSoManHinh = g.TanSo,
-                               ChatLieuManHinh = g.ChatLieu,
-                               NameProduct = i.Name,
-                               NameManufacturer = k.Name
+                               //ThongSoRam = b.ThongSo,
+                               //MaRam = b.Ma,
+                               //TenCpu = c.Ten,
+                               //MaCpu = c.Ma,
+                               //ThongSoHardDrive = d.ThongSo,
+                               //MaHardDrive = d.Ma,
+                               //NameColor = e.Name,
+                               //MaColor = e.Ma,
+                               //MaCardVGA = f.Ma,
+                               //TenCardVGA = f.Ten,
+                               //ThongSoCardVGA = f.ThongSo,
+                               //MaManHinh = g.Ma,
+                               //KichCoManHinh = g.KichCo,
+                               //TanSoManHinh = g.TanSo,
+                               //ChatLieuManHinh = g.ChatLieu,
+                               //NameProduct = i.Name,
+                               //NameManufacturer = k.Name
                                //  LinkImage = h.LinkImage
                            }
                     ).ToList();
@@ -189,7 +189,7 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<bool> Update(CartEntity obj)
         {
-            var cart = await _context.CartEntity.FindAsync(obj.IdUser);
+            var cart = await _context.CartEntity.FindAsync(obj.UserEntityId);
             if (cart == null)
             {
                 return false;
