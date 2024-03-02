@@ -1,9 +1,17 @@
-<p>detail works!</p>
-<div *ngIf="productId">
-    <p>Description: {{ productId }}</p>
-    {{ product.code }}
-    <!-- Thêm các thông tin khác của sản phẩm cần hiển thị -->
+
+<div *ngIf="product">
+    <!-- <p>Description: {{ productId }}</p>
+    {{ product.code }}  -->
+     <h1>[New 100%]</h1>
+  <hr>
+
+  <nz-image-group>
+    <img nz-image width="200px" nzSrc="https://img.alicdn.com/tfs/TB1g.mWZAL0gK0jSZFtXXXQCXXa-200-200.svg" alt="" />
+    <img nz-image width="200px" nzSrc="https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg" alt="" />
+  </nz-image-group>
+  <button nz-button nzType="primary">Mua Ngay</button>
   </div>
-  <div *ngIf="!productId">
+  <div *ngIf="!product">
     <p>Loading...</p>
-  </div>
+  </div> 
+

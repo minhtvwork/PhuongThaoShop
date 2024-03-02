@@ -9,48 +9,22 @@ import { Observable } from 'rxjs';
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit {
-  product!:ProductDetailDto; // Sử dụng $ để biến này là một Observable
-  // products: ProductDetailDto[] = [];
-  // constructor(private publicService: PublicService) { }
+  product!: ProductDetailDto;
+  productId!: string;
 
-  // ngOnInit(): void {
-  //   this.loadProducts();
-  // }
-
-  // loadProducts(): void {
-  //   this.publicService.getProducts().subscribe(
-  //     (data: ProductDetailDto[]) => {
-  //       this.products = data;
-
-  //       console.log(this.products)
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching products:', error);
-  //     }
-  //   );
-  // }
-  productId!: string; // Định nghĩa biến để lưu productId
-
-  constructor(private route: ActivatedRoute,private publicService: PublicService) { }
+  constructor(private route: ActivatedRoute, private publicService: PublicService) { }
 
   ngOnInit(): void {
-     this.productId = this.route.snapshot.params['id']; // Lấy productId từ route
+    this.productId = this.route.snapshot.params['id']; // Lấy từ route
     if (this.productId) {
       this.publicService.getProductById(this.productId).subscribe(
         (data: ProductDetailDto) => {
           this.product = data;
-         //this.products = data;
-  console.log(data)
-         // console.log(this.products)
         },
         (error) => {
           console.error('Error fetching products:', error);
         }
       );
-      //this.product = this.publicService.getProductById(this.productId);
-      var x=this.publicService.getProductById(this.productId);
-      console.log(x);
-      //console.log(this.product)
     }
   }
 }

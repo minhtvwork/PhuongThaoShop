@@ -1,6 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { PublicService } from '../../../services/public.service';
 import { ProductDetailDto } from '../../../../app/models/model';
+import { VndFormatPipe } from '../../../pipes/vnd-format.pipe'
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -9,7 +10,7 @@ import { ProductDetailDto } from '../../../../app/models/model';
 export class HomeComponent {
   products: ProductDetailDto[] = [];
 
-  constructor(private publicService: PublicService) { }
+  constructor(private publicService: PublicService,  private vndFormatPipe: VndFormatPipe) { }
 
   ngOnInit(): void {
     this.loadProducts();

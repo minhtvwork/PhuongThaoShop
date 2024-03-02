@@ -7,12 +7,13 @@ using PTS.EntityFrameworkCore.Repository;
 using PTS.Host;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
-using PTS.EntityFrameworkCore;
 using PTS.Host.Repository;
 using PTS.Domain.Entities;
 using PTS.Host.Repository.IRepository;
 using PTS.Host.Service.IService;
 using PTS.Host.Service;
+using PTS.Host.AppCore.Request.Voucher;
+using PTS.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,10 +26,15 @@ IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
+#region Đăng ký MediatR
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(PagingListVoucherHandler).Assembly));
+#endregion
+
 //#region Đăng ký DI
 builder.Services.AddScoped<ApplicationDbContext, ApplicationDbContext>();
 
 builder.Services.AddTransient<IRamRepository, RamRepository>();
+builder.Services.AddTransient<IVoucherRepository, VoucherRepository>();
 builder.Services.AddTransient<IProductDetailRepository, ProductDetailRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ICartRepository, CartRepository>();

@@ -15,7 +15,7 @@ namespace PTS.Host.Controllers
         private readonly IMapper _mapper;
         public CpuController(IAllRepository<CpuEntity> repository, IMapper mapper)
         {
-            _repository =repository;
+            _repository = repository;
             _mapper = mapper;
         }
 

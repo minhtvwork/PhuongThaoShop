@@ -1,0 +1,94 @@
+﻿
+//using PTS.EntityFrameworkCore.Repository;
+//using PTS.EntityFrameworkCore.Repository.IRepository;
+//using PTS.Host.Service.IService;
+//using PTS.Domain.Dto;
+//using PTS.Domain.Entities;
+//using PTS.Data;
+
+//namespace PTS.Host.Service
+//{
+//    public class GiamGiaHangLoatServices : IGiamGiaHangLoatServices
+//    {
+//        private readonly ApplicationDbContext _context;
+//        private readonly ISanPhamGiamGiaRepository _sanPhamGiamGiaRepository;
+//        private readonly IProductDetailRepository _productDetailRepository;
+//        private readonly IGiamGiaRepository _giamGiaRepository;
+//        private readonly ResponseDto _reponseDto;
+//        public GiamGiaHangLoatServices()
+//        {
+
+//        }
+//        public GiamGiaHangLoatServices(
+//            ApplicationDbContext context,
+//            SanPhamGiamGiaRepository sanPhamGiamGiaRepository,
+//            ProductDetailRepository productDetailRepository,
+//            GiamGiaRepository giamGiaRepository)
+//        {
+//            _context = context;
+//            _sanPhamGiamGiaRepository = sanPhamGiamGiaRepository;
+//            _productDetailRepository = productDetailRepository;
+//            _giamGiaRepository = giamGiaRepository;
+//            _reponseDto = new ResponseDto();
+//        }
+
+//        public async Task<ResponseDto> ApplyDiscountByPromotionType(string promotionType, double discountAmount)
+//        {
+//            try
+//            {
+//                // Lấy thông tin giảm giá từ repository theo loại khuyến mãi
+//                var giamGia = await _giamGiaRepository.GetGiamGiaByPromotionType(promotionType);
+
+//                if (giamGia == null)
+//                {
+//                    _reponseDto.IsSuccess = false;
+//                    _reponseDto.Code = 404; // Not Found
+//                    _reponseDto.Message = "Không tìm thấy thông tin giảm giá cho loại khuyến mãi này.";
+//                    return _reponseDto;
+//                }
+
+//                // Lấy danh sách sản phẩm cần áp dụng giảm giá từ repository
+//                var productDetails = new List<ProductDetailEntity>();
+
+//                if (productDetails == null || !productDetails.Any())
+//                {
+//                    _reponseDto.IsSuccess = false;
+//                    _reponseDto.Code = 404; // Not Found
+//                    _reponseDto.Message = "Không tìm thấy sản phẩm nào để áp dụng giảm giá cho loại khuyến mãi này.";
+//                    return _reponseDto;
+//                }
+
+//                DateTime currentDate = DateTime.Now;
+
+//                foreach (var productDetail in productDetails)
+//                {
+//                    // Kiểm tra xem giảm giá còn hiệu lực
+//                    if (currentDate >= giamGia.NgayBatDau && currentDate <= giamGia.NgayKetThuc)
+//                    {
+//                        // Áp dụng giảm giá cho sản phẩm
+//                        double newPrice = productDetail.Price - discountAmount;
+//                        if (newPrice < 0)
+//                        {
+//                            newPrice = 0;
+//                        }
+
+//                        productDetail.Price = 1;
+
+//                        // Lưu thay đổi vào repository
+//                        await _productDetailRepository.Update(productDetail);
+//                    }
+//                }
+
+//                _reponseDto.Message = "Áp dụng giảm giá thành công cho các sản phẩm theo loại khuyến mãi.";
+//                return _reponseDto;
+//            }
+//            catch (Exception ex)
+//            {
+//                _reponseDto.IsSuccess = false;
+//                _reponseDto.Code = 500; // Internal Server Error
+//                _reponseDto.Message = "Đã xảy ra lỗi trong quá trình xử lý: " + ex.Message;
+//                return _reponseDto;
+//            }
+//        }
+//    }
+//}

@@ -6,7 +6,7 @@ import { ResponseDto, ProductDetailDto} from '../../app/models/model';
   providedIn: 'root'
 })
 export class PublicService {
-  private apiUrl = 'https://localhost:44370/api/';
+  private apiUrl = 'http://localhost:5073/api/';
 
   constructor(private http: HttpClient) { }
 

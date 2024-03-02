@@ -16,11 +16,12 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { AdminModule } from './pages/admin/admin.module';
 import { PublicModule } from './pages/public/public.module';
 
+
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

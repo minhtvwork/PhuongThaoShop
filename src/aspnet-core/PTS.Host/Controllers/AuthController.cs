@@ -1,93 +1,96 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using PTS.Domain.Entities;
+using PTS.Host.Service.IService;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
 namespace PTS.Host.Controllers
 {
-   // [Route("api/[controller]")]
-    //[ApiController]
-    //public class AuthController : ControllerBase
-    //{
-    //    public static User user = new User();
-    //    private readonly IConfiguration _configuration;
-    //    private readonly IUserService _userService;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
+    {
+        public static UserEntity user = new UserEntity();
+        private readonly IConfiguration _configuration;
+     //   private readonly IUserService _userService;
 
-    //    public AuthController(IConfiguration configuration, IUserService userService)
-    //    {
-    //        _configuration = configuration;
-    //        _userService = userService;
-    //    }
+        public AuthController(IConfiguration configuration /*IUserService userService*/)
+        {
+            _configuration = configuration;
+           // _userService = userService;
+        }
 
-    //    [HttpGet, Authorize]
-    //    public ActionResult<string> GetMyName()
-    //    {
-    //        return Ok(_userService.GetMyName());
+        //[HttpGet, Authorize]
+        //public ActionResult<string> GetMyName()
+        //{
+        //    return Ok(_userService.GetMyName());
 
-    //        //var userName = User?.Identity?.Name;
-    //        //var roleClaims = User?.FindAll(ClaimTypes.Role);
-    //        //var roles = roleClaims?.Select(c => c.Value).ToList();
-    //        //var roles2 = User?.Claims
-    //        //    .Where(c => c.Type == ClaimTypes.Role)
-    //        //    .Select(c => c.Value)
-    //        //    .ToList();
-    //        //return Ok(new { userName, roles, roles2 });
-    //    }
+        //    //var userName = User?.Identity?.Name;
+        //    //var roleClaims = User?.FindAll(ClaimTypes.Role);
+        //    //var roles = roleClaims?.Select(c => c.Value).ToList();
+        //    //var roles2 = User?.Claims
+        //    //    .Where(c => c.Type == ClaimTypes.Role)
+        //    //    .Select(c => c.Value)
+        //    //    .ToList();
+        //    //return Ok(new { userName, roles, roles2 });
+        //}
 
-    //    [HttpPost("register")]
-    //    public ActionResult<User> Register(UserDto request)
-    //    {
-    //        string passwordHash
-    //            = BCrypt.Net.BCrypt.HashPassword(request.Password);
+        [HttpPost("register")]
+        public ActionResult<UserEntity> Register(string username, string password)
+        {
+            string passwordHash
+                = BCrypt.Net.BCrypt.HashPassword(password);
 
-    //        user.Username = request.Username;
-    //        user.PasswordHash = passwordHash;
+            user.Username = username;
+            user.PasswordHash = passwordHash;
 
-    //        return Ok(user);
-    //    }
+            return Ok(user);
+        }
 
-    //    [HttpPost("login")]
-    //    public ActionResult<User> Login(UserDto request)
-    //    {
-    //        if (user.Username != request.Username)
-    //        {
-    //            return BadRequest("User not found.");
-    //        }
+        [HttpPost("login")]
+        public ActionResult<UserEntity> Login(string username, string password)
+        {
+            if (user.Username != username)
+            {
+                return BadRequest("User not found.");
+            }
 
-    //        if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-    //        {
-    //            return BadRequest("Wrong password.");
-    //        }
+            if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            {
+                return BadRequest("Wrong password.");
+            }
 
-    //        string token = CreateToken(user);
+            string token = CreateToken(user);
 
-    //        return Ok(token);
-    //    }
+            return Ok(token);
+        }
 
-    //    private string CreateToken(User user)
-    //    {
-    //        List<Claim> claims = new List<Claim> {
-    //            new Claim(ClaimTypes.Name, "My"),
-    //            new Claim(ClaimTypes.Role, "Admin"),
-    //            new Claim(ClaimTypes.Role, "User"),
-    //        };
+        private string CreateToken(UserEntity user)
+        {
+            List<Claim> claims = new List<Claim> {
+                new Claim(ClaimTypes.Name, "My"),
+                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(ClaimTypes.Role, "User"),
+            };
 
-    //        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication"));
 
-    //        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
-    //        var token = new JwtSecurityToken(
-    //                claims: claims,
-    //                expires: DateTime.Now.AddDays(1),
-    //                signingCredentials: creds
-    //            );
+            var token = new JwtSecurityToken(
+                    claims: claims,
+                    expires: DateTime.Now.AddDays(1),
+                    signingCredentials: creds
+                );
 
-    //        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-    //        return jwt;
-    //    }
-    //}
+            return jwt;
+        }
+    }
 }

@@ -14,7 +14,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import {  NzTableModule } from 'ng-zorro-antd/table';
 import { NzInputModule } from 'ng-zorro-antd/input';
-
+import { NzImageModule } from 'ng-zorro-antd/image';
 registerLocaleData(en);
 @NgModule({
 exports:[
@@ -28,7 +28,8 @@ exports:[
     NzCardModule,
     NzCarouselModule,
     NzTableModule,
-    NzInputModule
+    NzInputModule,
+    NzImageModule
 ],
  providers: [
     { provide: NZ_I18N, useValue: en_US }

@@ -1,16 +1,43 @@
-<!-- <carousel-fade>
+<div class="row">
+  <div class="carousel col-sm-12 col-md-6">
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="2000">
+          <img src="https://laptopaz.vn/media/banner/11_Aug29a74558ff9902e013ca718f69d10683.jpg" class="d-block w-100"
+            alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="2000">
+          <img src="https://laptopaz.vn/media/banner/11_Aug29a74558ff9902e013ca718f69d10683.jpg" class="d-block w-100"
+            alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="2000">
+          <img src="https://laptopaz.vn/media/banner/11_Aug29a74558ff9902e013ca718f69d10683.jpg" class="d-block w-100"
+            alt="...">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
 
-</carousel-fade> -->
-<div nz-row [nzGutter]="16">
-<div nz-col nzSpan="24" nzSm="12" nzMd="8" nzLg="6" *ngFor="let p of products">
-  <nz-card nzHoverable style="width:100%" [nzCover]="coverTemplate">
-    <nz-card-meta nzTitle="{{p.nameProduct +' '+ p.code}}" [routerLink]="['/product', p.id]" nzDescription="">
-
-    </nz-card-meta>
-    <h2><span class="price-p">{{p.price}} </span>- <span class="old-price-p"> {{p.oldPrice}}</span></h2>
-  </nz-card>
-  <ng-template #coverTemplate>
-    <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
-  </ng-template>
-</div>
+<div class="container">
+  <div nz-row [nzGutter]="16">
+    <div nz-col nzSpan="24" nzSm="12" nzMd="8" nzLg="6" *ngFor="let p of products">
+      <nz-card nzHoverable style="width:100%" [nzCover]="coverTemplate">
+        <a [routerLink]="['/product', p.id]">{{p.nameProduct }} {{p.code }}</a>
+        <h3><span class="price-p">{{p.price | vndFormat }} </span> <span class="old-price-p"> {{p.oldPrice}}</span></h3>
+      </nz-card>
+      <ng-template #coverTemplate>
+        <img alt="example" src="https://laptopaz.vn/media/product/3126_" />
+      </ng-template>
+    </div>
+  </div>
 </div>

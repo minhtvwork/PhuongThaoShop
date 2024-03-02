@@ -14,7 +14,7 @@ import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { DetailComponent } from './detail/detail.component';
 import { CarouseleComponent } from './carousel';
-
+import { VndFormatPipe } from '../../pipes/vnd-format.pipe'
 
 
 @NgModule({
@@ -29,7 +29,11 @@ import { CarouseleComponent } from './carousel';
     AboutComponent,
     ContactComponent,
     DetailComponent,
-    CarouseleComponent
+    CarouseleComponent,
+    VndFormatPipe 
+  ],
+  providers: [
+    VndFormatPipe 
   ],
   imports: [
     CommonModule,
