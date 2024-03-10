@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SlidebarComponent } from './slidebar/slidebar.component';
-import { AntDesignModule } from 'src/app/ant-design.module';
+import { AntDesignModule } from 'src/app/shared/ant-design.module';
 import { RouterModule } from '@angular/router';
 import { AdminRoutingModule } from './admin-routing.module';
 import { VoucherComponent } from './voucher/voucher.component';

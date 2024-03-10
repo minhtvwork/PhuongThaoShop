@@ -1,17 +1,44 @@
+<div class="container">
+  <nz-breadcrumb>
+    <nz-breadcrumb-item [routerLink]="'/'">Trang Chủ</nz-breadcrumb-item>
+    <nz-breadcrumb-item>LapTop Mới</nz-breadcrumb-item>
+  </nz-breadcrumb>
+  <div *ngIf="product">
 
-<div *ngIf="product">
-    <!-- <p>Description: {{ productId }}</p>
-    {{ product.code }}  -->
-     <h1>[New 100%]</h1>
-  <hr>
+    <h1>[New 100%] {{ product.nameProduct }} {{ product.code }} ( {{ product.tenCpu }}, {{ product.thongSoRam }},
+      {{ product.thongSoHardDrive }}, {{ product.tenCardVGA }} {{ product.thongSoCardVGA }} {{ product.kichCoManHinh }}
+      {{ product.tanSoManHinh }} {{ product.chatLieuManHinh }} )</h1>
+    <hr>
+    <div class="row">
+      <div class="col-md-4 col-sm-4">
+        <nz-image-group>
+          <img nz-image width="200px" nzSrc="https://laptopaz.vn/media/product/3013_slim_5_2023.jpg" alt="" />
+        </nz-image-group>
+      </div>
+      <div class="col-md-4 col-sm-4">
+        <h2>
+          Deal:{{ product.price }}  {{ product.oldPrice }}
+        </h2>
+        <p> Bảo hành: 12 tháng LaptopAZ</p>
+        <p> Tình trạng: Còn hàng</p>
+        <button nz-button nzType="primary" (click)="addToCart('kieumy', product.id)">Mua Ngay</button>
+      </div>
+      <div class="col-md-4 col-sm-4">
+        <ul class="list-unstyled">
+          <li> <i class="fa-solid fa-star" style="color: #e2ff05;"></i>Chất lượng sản phẩm là hàng đầu</li>
+          <li> <i class="fa-solid fa-star" style="color: #e2ff05;"></i>Dùng test máy 15 ngày đầu lỗi 1 đổi 1</li>
+          <li> <i class="fa-solid fa-star" style="color: #e2ff05;"></i>Hỗ trợ và hậu mãi sau bán hàng tốt nhất
+          </li>
+          <li> <i class="fa-solid fa-star" style="color: #e2ff05;"></i>Phương thức thanh toán linh hoạt</li>
+          <li> <i class="fa-solid fa-star" style="color: #e2ff05;"></i>Giao hàng miễn phí toàn quốc</li>
+        </ul>
+      </div>
+    </div>
 
-  <nz-image-group>
-    <img nz-image width="200px" nzSrc="https://img.alicdn.com/tfs/TB1g.mWZAL0gK0jSZFtXXXQCXXa-200-200.svg" alt="" />
-    <img nz-image width="200px" nzSrc="https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg" alt="" />
-  </nz-image-group>
-  <button nz-button nzType="primary">Mua Ngay</button>
+   
   </div>
+
   <div *ngIf="!product">
     <p>Loading...</p>
-  </div> 
-
+  </div>
+</div>

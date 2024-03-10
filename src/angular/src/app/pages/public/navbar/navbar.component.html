@@ -1,20 +1,68 @@
-<nz-layout style="background: #fff; padding: 0;">
-    <div class="logo"></div>
-    <ul nz-menu nzMode="horizontal" [nzTheme]="'light'">
-      <li nz-menu-item ><a [routerLink]="'/'" >Home</a></li>
-      <li nz-menu-item ><a href="#">Trang chủ</a></li>
-      <li nz-menu-item ><a [routerLink]="'/'" >Laptop Mới</a></li>
-      <li nz-menu-item ><a [routerLink]="'/'" >Tin Tức, Khuyến Mại</a></li>
-      <li nz-menu-item ><a [routerLink]="'/'" >Tra Cứu Đơn Hàng</a></li>
-      <li nz-menu-item ><a href="#">Giỏ Hàng</a></li>
-        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-          <input type="text" nz-input placeholder="Nhập tên sản phẩm để tìm kiếm" />
-        </nz-input-group>
-        <ng-template #suffixIconButton>
-          <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
-        </ng-template>
-     
-      <!-- <li nz-menu-item ><a href="#">Home</a></li>
-      <li nz-menu-item ><a href="#">Home</a></li> -->
-    </ul>
- </nz-layout>
+<nz-layout >
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid bg-white">
+
+      <img class="navbar-brand" src="https://laptopaz.vn/media/banner/logo_laptopaz%20(2).jpg" style="max-width: 5%;">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul nz-menu nzMode="horizontal" [nzTheme]="'light'">
+          <li nz-menu-item><a [routerLink]="'/'">Home</a></li>
+          <li nz-menu-item><a href="#">Trang chủ</a></li>
+          <li nz-menu-item><a [routerLink]="'/'">Laptop Mới</a></li>
+          <li nz-menu-item><a [routerLink]="'/'">Tin Tức, Khuyến Mại</a></li>
+          <li nz-menu-item><a [routerLink]="'/'">Tra Cứu Đơn Hàng</a></li>
+          <li nz-menu-item><a [routerLink]="'/cart'">Giỏ Hàng</a></li>
+          <li nz-menu-item><a (click)="showModal()">Đăng Nhập</a></li>
+        </ul>
+        <form class="d-flex">
+          <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" nz-input placeholder="Nhập tên sản phẩm để tìm kiếm" />
+          </nz-input-group>
+          <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
+          </ng-template>
+        </form>
+      </div>
+    </div>
+  </nav>
+</nz-layout>
+
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Đăng Nhập" (nzOnCancel)="handleCancel()"  [nzFooter]="[]"
+  [nzOkLoading]="isOkLoading">
+  <nz-layout class="login-layout" *nzModalContent>
+    <!-- <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()"> -->
+    <form nz-form  [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your username!">
+          <nz-input-group nzPrefixIcon="user">
+            <input type="text" nz-input formControlName="userName" placeholder="Username" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your Password!">
+          <nz-input-group nzPrefixIcon="lock">
+            <input type="password" nz-input formControlName="password" placeholder="Password" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <div nz-row class="login-form-margin">
+        <div nz-col [nzSpan]="12">
+          <label nz-checkbox formControlName="remember">
+            <span>Remember me</span>
+          </label>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <a class="login-form-forgot">Forgot password</a>
+        </div>
+      </div>
+      <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
+      Or
+      <a>register now!</a>
+    </form>
+  </nz-layout>
+</nz-modal>
