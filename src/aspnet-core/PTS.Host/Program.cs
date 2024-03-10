@@ -14,6 +14,7 @@ using PTS.Host.Service.IService;
 using PTS.Host.Service;
 using PTS.Host.AppCore.Request.Voucher;
 using PTS.Data;
+using PTS.Host.AppCore.Request;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 #region Đăng ký MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(PagingListVoucherHandler).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetCartByUserHandler).Assembly));
 #endregion
 
 //#region Đăng ký DI

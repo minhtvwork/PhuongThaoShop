@@ -73,7 +73,6 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<IEnumerable<CartItemDto>> GetCartItem(string username)
         {
-            // Truyền vào tên tào khoản của người dùng
             try
             {
                 var user = await _context.UserEntity.FirstOrDefaultAsync(x => x.Username == username);// lấy danh sách người dùng trong database
@@ -81,46 +80,55 @@ namespace PTS.EntityFrameworkCore.Repository
                 // Nếu tìm trực tiếp sẽ không phân biệt được chữ hoa, chữ thường
                 // Lấy ra ìd người dùng//x => x.UserName == username
                 // Dùng CartItemDto để hiển thị kết quả
-                List<CartItemDto> cartItem = new List<CartItemDto>();// Khởi tao 1 list
+                List<CartItemDto> cartItem = new List<CartItemDto>();
                 cartItem = (
-                           // Join các bảng lại để lấy dữ liệu
                            from x in await _context.CartEntity.Where(x=>x.UserEntityId== user.Id).ToListAsync()
                            join y in await _context.CartDetailEntity.ToListAsync() on x.UserEntityId equals y.CartEntityId
-                           join a in await _context.ProductDetailEntity.AsNoTracking()
-   // .Include(a => a.ImageEntities)
-    .ToListAsync() on y.ProductDetailEntityId equals a.Id
-
+                           join productDetail in await _context.ProductDetailEntity.ToListAsync() on y.ProductDetailEntityId equals productDetail.Id
+                           join product in await _context.ProductEntity.AsNoTracking().ToListAsync() on productDetail.ProductEntityId equals product.Id
+                           join productType in await _context.ProductTypeEntity.AsNoTracking().ToListAsync() on product.ProductTypeEntityId equals productType.Id
+                           join manufacturer in await _context.ManufacturerEntity.AsNoTracking().ToListAsync() on product.ManufacturerEntityId equals manufacturer.Id
+                           join ram in await _context.RamEntity.Where(x => x.Id != null).ToListAsync() on productDetail.RamEntityId equals ram.Id into ramGroup
+                           from ram in ramGroup.DefaultIfEmpty()
+                           join cpu in await _context.CpuEntity.Where(x => x.Id != null).ToListAsync() on productDetail.CpuEntityId equals cpu.Id into cpuGroup
+                           from cpu in cpuGroup.DefaultIfEmpty()
+                           join color in await _context.ColorEntity.Where(x => x.Id != null).ToListAsync() on productDetail.ColorEntityId equals color.Id into colorGroup
+                           from color in colorGroup.DefaultIfEmpty()
+                           join hardDrive in await _context.HardDriveEntity.Where(x => x.Id != null).ToListAsync() on productDetail.HardDriveEntityId equals hardDrive.Id into hardDriveGroup
+                           from hardDrive in hardDriveGroup.DefaultIfEmpty()
+                           join cardVGA in await _context.CardVGAEntity.Where(x => x.Id != null).ToListAsync() on productDetail.CardVGAEntityId equals cardVGA.Id into cardVGAGroup
+                           from cardVGA in cardVGAGroup.DefaultIfEmpty()
+                           join screen in await _context.ScreenEntity.Where(x => x.Id != null).ToListAsync() on productDetail.ScreenEntityId equals screen.Id into screenGroup
+                           from screen in screenGroup.DefaultIfEmpty()
                            select new CartItemDto// Dùng kiểu đối tượng ẩn danh (anonymous type)
                            {
                                Id = y.Id,
                                UserId = x.UserEntityId,
                                Quantity = y.Quantity,
                                Status = y.Status,
-                               IdProductDetails = a.Id,
-                               MaProductDetail = a.Code,
-                               Price = a.Price,
-                               Description = a.Description,
-
-                            //  ThongSoRam = a.RamEntity.ThongSo,
-                             //  MaRam = a.RamEntity.Ma,
-                             //  TenCpu = a.CpuEntity.Ten,
-                             //  MaCpu = a.CpuEntity.Ma,
-                             //  ThongSoHardDrive = a.HardDriveEntity.ThongSo,
-                             //  MaHardDrive = a.HardDriveEntity.Ma,
-                             //  NameColor = a.ColorEntity.Name,
-                             //  MaColor = a.ColorEntity.Ma,
-                             //  MaCardVGA = a.CardVGAEntity.Ma,
-                             //  TenCardVGA = a.CardVGAEntity.Ten,
-                             //  ThongSoCardVGA = a.CardVGAEntity.ThongSo,
-                             //  MaManHinh = a.ScreenEntity.Ma,
-                             //  KichCoManHinh = a.ScreenEntity.KichCo,
-                             //  TanSoManHinh = a.ScreenEntity.TanSo,
-                             //  ChatLieuManHinh = a.ScreenEntity.ChatLieu,
-                          //  NameProduct = a.ProductEntity.Name,
-                             ////  NameProductType = a.ProductEntity.ProductTypeEntity.Name,
-                             //  NameManufacturer = a.ProductEntity.ManufacturerEntity.Name,
-                             //  LinkImage = (a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1") != null) ? a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1").LinkImage : null,
-                              // OtherImages = (a.ImageEntities.Where(image => image.Ma != "Anh1").Select(image => image.LinkImage).ToList()),
+                               IdProductDetails = productDetail.Id,
+                               MaProductDetail = productDetail.Code,
+                               Price = productDetail.Price,
+                               Description = productDetail.Description,
+                               ThongSoRam = ram != null ? ram.ThongSo : string.Empty,
+                               MaRam = ram != null ? ram.Ma : string.Empty,
+                               TenCpu = cpu != null ? cpu.Ten : string.Empty,
+                               MaCpu = cpu != null ? cpu.Ma : string.Empty,
+                               ThongSoHardDrive = hardDrive != null ? hardDrive.ThongSo : string.Empty,
+                               MaHardDrive = hardDrive != null ? hardDrive.Ma : string.Empty,
+                               NameColor = color != null ? color.Name : string.Empty,
+                               MaColor = color != null ? color.Ma : string.Empty,
+                               MaCardVGA = cardVGA != null ? cardVGA.Ma : string.Empty,
+                               TenCardVGA = cardVGA != null ? cardVGA.Ten : string.Empty,
+                               ThongSoCardVGA = cardVGA != null ? cardVGA.ThongSo : string.Empty,
+                               MaManHinh = screen != null ? screen.Ma : string.Empty,
+                               KichCoManHinh = screen != null ? screen.KichCo : string.Empty,
+                               TanSoManHinh = screen != null ? screen.TanSo : string.Empty,
+                               ChatLieuManHinh = screen != null ? screen.ChatLieu : string.Empty,
+                               NameProduct = product.Name,
+                               NameManufacturer = manufacturer.Name
+                               //  LinkImage = (a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1") != null) ? a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1").LinkImage : null,
+                               // OtherImages = (a.ImageEntities.Where(image => image.Ma != "Anh1").Select(image => image.LinkImage).ToList()),
                            }
                     ).ToList();
                 return cartItem;
@@ -133,58 +141,6 @@ namespace PTS.EntityFrameworkCore.Repository
             }
 
         }
-        //public async Task<IEnumerable<CartItemDto>> GetAllCarts()
-        //{
-
-        //    // Dùng CartItemDto để hiển thị kết quả
-        //    List<CartItemDto> cartItem = new List<CartItemDto>();// Khởi tao 1 list
-        //    cartItem = (
-        //               // Join các bảng lại để lấy dữ liệu
-        //               from x in await _context.CartEntity.ToListAsync()
-        //               join y in await _context.CartDetailEntity.ToListAsync() on x.UserId equals y.CartId
-        //               join a in await _context.ProductDetailEntity.ToListAsync() on y.ProductDetailId equals a.Id
-        //               join b in await _context.RamEntity.ToListAsync() on a.RamId equals b.Id
-        //               join c in await _context.CpuEntity.ToListAsync() on a.CpuId equals c.Id
-        //               join d in await _context.HardDriveEntity.ToListAsync() on a.HardDriveId equals d.Id
-        //               join e in await _context.ColorEntity.ToListAsync() on a.ColorId equals e.Id
-        //               join f in await _context.CardVGAEntity.ToListAsync() on a.CardVGAId equals f.Id
-        //               join g in await _context.ScreenEntity.ToListAsync() on a.ScreenId equals g.Id
-        //               // join h in await _context.ImageEntity.ToListAsync() on a.Id equals h.ProductDetailId
-        //               join i in await _context.ProductEntity.ToListAsync() on a.ProductId equals i.Id
-        //               join k in await _context.ManufacturerEntity.ToListAsync() on i.ManufacturerId equals k.Id
-        //               select new CartItemDto// Dùng kiểu đối tượng ẩn danh (anonymous type)
-        //               {
-        //                   Id = y.Id,
-        //                   UserId = x.UserId,
-        //                   Quantity = y.Quantity,
-        //                   IdProductDetails = a.Id,
-        //                   MaProductDetail = a.Ma,
-        //                   Price = a.Price,
-        //                   Description = a.Description,
-        //                   ThongSoRam = b.ThongSo,
-        //                   MaRam = b.Ma,
-        //                   TenCpu = c.Ten,
-        //                   MaCpu = c.Ma,
-        //                   ThongSoHardDrive = d.ThongSo,
-        //                   MaHardDrive = d.Ma,
-        //                   NameColor = e.Name,
-        //                   MaColor = e.Ma,
-        //                   MaCardVGA = f.Ma,
-        //                   TenCardVGA = f.Ten,
-        //                   ThongSoCardVGA = f.ThongSo,
-        //                   MaManHinh = g.Ma,
-        //                   KichCoManHinh = g.KichCo,
-        //                   TanSoManHinh = g.TanSo,
-        //                   ChatLieuManHinh = g.ChatLieu,
-        //                   NameProduct = i.Name,
-        //                   NameManufacturer = k.Name
-        //                   //  LinkImage = h.LinkImage
-        //               }
-        //        ).ToList();
-        //    return cartItem;
-
-        //}
-
         public async Task<bool> Update(CartEntity obj)
         {
             var cart = await _context.CartEntity.FindAsync(obj.UserEntityId);

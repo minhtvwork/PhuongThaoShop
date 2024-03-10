@@ -9,7 +9,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VoucherController : ControllerBase
+    public class VoucherController : PTSBaseController
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;

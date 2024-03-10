@@ -10,13 +10,6 @@
         public int? Status { get; set; }
         public string? Upgrade { get; set; }
         public string? Description { get; set; }
-        public int IdProduct { get; set; }
-        public int IdColor { get; set; }
-        public int IdRam { get; set; }
-        public int IdCpu { get; set; }
-        public int IdHardDrive { get; set; }
-        public int IdScreen { get; set; }
-        public int IdCardVGA { get; set; }
         public string? MaRam { get; set; }
         public string? ThongSoRam { get; set; }
         public string? ThongSoHardDrive { get; set; }

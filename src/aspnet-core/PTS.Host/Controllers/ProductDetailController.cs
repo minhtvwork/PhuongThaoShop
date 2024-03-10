@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Host.AppCore.Request.Voucher;
 namespace Shop_API.Controllers
 {
     [Route("api/[controller]")]
@@ -12,11 +15,15 @@ namespace Shop_API.Controllers
         private readonly IProductDetailRepository _repository;
         private readonly ResponseDto _reponse;
         private readonly IConfiguration _config;
-        public ProductDetailController(IProductDetailRepository repository, IConfiguration config)
+        private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
+        public ProductDetailController(IProductDetailRepository repository, IConfiguration config, IMediator mediator, IMapper mapper)
         {
             _repository = repository;
             _reponse = new ResponseDto();
             _config = config;
+            _mediator = mediator;
+            _mapper = mapper;
         }
         [HttpGet("GetAllPDD")]
 
@@ -43,18 +50,13 @@ namespace Shop_API.Controllers
             return Ok(_reponse);
         }
         [HttpPost("Create")]
-        public async Task<IActionResult> CreateProductDetail(ProductDetailEntity obj)
+        public async Task<IActionResult> CreateProductDetail(CreateProductDetailDto objDto)
         {
-           
-            if (await _repository.Create(obj))
-            {
-                _reponse.Result = obj;
-                return Ok(_reponse);
-            }
-            _reponse.Result = null;
-            _reponse.IsSuccess = false;
-            _reponse.Message = "Thất bại";
-            return BadRequest(_reponse);
+
+            var obj = _mapper.Map<ProductDetailEntity>(objDto);
+            CreateOrUpdateProductDetailQuery query = new CreateOrUpdateProductDetailQuery();
+            query.ProductDetailEntity = obj;
+            return Ok(await _mediator.Send(query));
         }
 
       

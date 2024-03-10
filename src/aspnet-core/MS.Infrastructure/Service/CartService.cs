@@ -28,32 +28,31 @@ namespace PTS.Host.Service
             _userRepository = userRepository;
             _reponse = new ResponseDto();
         }
-        public async Task<ResponseDto> AddCart(string username, string codeProductDetail)
+        public async Task<ServiceResponse> AddCart(string username, int idProductDetail)
         {
             try
             {
-                var productDetailToCart = _productDetailRepository.PGetProductDetail(1, codeProductDetail, null, null, null, null, null, 1,null,null,null,null,null).Result.FirstOrDefault();
+                var productDetailToCart = _productDetailRepository.GetById(idProductDetail).Result;
                 var userToCart = await _userRepository.GetAllUsers();
                 var user = userToCart.FirstOrDefault(x => x.Username == username);
 
                 if (user == null)
                 {
-                    return ErrorResponse("Không tìm thấy tài khoản", 404);
+                   return new ServiceResponse(false, "Không tìm thấy tài khoản");
                 }
 
                 if (productDetailToCart == null)
                 {
-                    return ErrorResponse("Không tìm thấy sản phẩm", 404);
+                    return new ServiceResponse(false, "Sản phẩm không tồn tại");
                 }
 
                 getUserId = user.Id;
-
                 var userCart = await _cartRepository.GetCartById(getUserId);
                 var soLuongProductDetail = 1; // productDetailToCart.AvailableQuantity;
 
                 if (soLuongProductDetail <= 0)
                 {
-                    return ErrorResponse("Số lượng sản phẩm không đủ", 404);
+                    return new ServiceResponse(false, "Số lượng sản phẩm không đủ");
                 }
 
                 if (userCart != null)
@@ -67,10 +66,10 @@ namespace PTS.Host.Service
 
                         if (await _cartDetailRepository.Update(cartDetail))
                         {
-                            return SuccessResponse(cartDetail, 200);
+                            return new ServiceResponse(true, "Cập nhật thành công");
                         }
 
-                        return ErrorResponse("Không thể cập nhật số lượng sản phẩm trong giỏ hàng", 404);
+                        return new ServiceResponse(false, "Cập nhật thất bại");
                     }
                     else
                     {
@@ -85,10 +84,10 @@ namespace PTS.Host.Service
 
                         if (await _cartDetailRepository.Create(newCartDetail))
                         {
-                            return SuccessResponse(newCartDetail, 201, "Thêm sản phẩm vào giỏ hàng thành công");
+                            return new ServiceResponse(true, "Thêm sản phẩm vào giỏ hàng thành công");
                         }
 
-                        return ErrorResponse("Không thể thêm sản phẩm vào trong giỏ hàng", 404);
+                        return new ServiceResponse(false, "Không thể thêm sản phẩm vào trong giỏ hàng");
                     }
                 }
                 else
@@ -112,16 +111,16 @@ namespace PTS.Host.Service
 
                         if (await _cartDetailRepository.Create(newCartDetail))
                         {
-                            return SuccessResponse(newCartDetail, 201, "Thêm sản phẩm vào giỏ hàng thành công");
+                            return new ServiceResponse(true, "Thêm sản phẩm vào giỏ hàng thành công");
                         }
                     }
 
-                    return ErrorResponse("Không thể thêm sản phẩm vào trong giỏ hàng", 404);
+                    return new ServiceResponse(false, "Thêm sản phẩm vào giỏ hàng thất bại");
                 }
             }
             catch (Exception e)
             {
-                return ErrorResponse(e.Message, 404);
+            return new ServiceResponse(false, $"{e.Message}");
             }
         }
 
@@ -242,7 +241,7 @@ namespace PTS.Host.Service
             }
 
         }
-        public async Task<ResponseDto> PShowCart(string username)
+        public async Task<ResponseDto> GetCartByUser(string username)
         {
             var cartItem = await _cartRepository.GetCartItem(username);
             if (cartItem == null)
@@ -256,6 +255,7 @@ namespace PTS.Host.Service
             else
             {
                 _reponse.Result = cartItem;
+                _reponse.Count = cartItem.Count();
                 _reponse.Code = 200;
                 return _reponse;
             }
