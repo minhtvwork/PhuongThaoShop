@@ -1,4 +1,5 @@
-﻿using PTS.Domain.Entities;
+﻿using Abp.AutoMapper;
+using PTS.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace PTS.Domain.Dto
 {
+  //  [AutoMap(typeof(VoucherEntity))]
     public class VoucherDto : BaseEntity
     {
         [MaxLength(50)]

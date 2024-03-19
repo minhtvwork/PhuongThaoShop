@@ -101,7 +101,7 @@ namespace PTS.Host.Controllers
         }
 
         [HttpDelete("id")]
-        public async Task<IActionResult> DeleteProductType(Guid id)
+        public async Task<IActionResult> DeleteProductType(int id)
         {
 
             string apiKey = _config.GetSection("ApiKey").Value;

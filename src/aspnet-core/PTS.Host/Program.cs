@@ -12,7 +12,6 @@ using PTS.Domain.Entities;
 using PTS.Host.Repository.IRepository;
 using PTS.Host.Service.IService;
 using PTS.Host.Service;
-using PTS.Host.AppCore.Request.Voucher;
 using PTS.Data;
 using PTS.Host.AppCore.Request;
 
@@ -28,14 +27,15 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 #region Đăng ký MediatR
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(PagingListVoucherHandler).Assembly));
+//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(PagingListVoucherRequestHandler).Assembly));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetCartByUserHandler).Assembly));
 #endregion
 
 //#region Đăng ký DI
 builder.Services.AddScoped<ApplicationDbContext, ApplicationDbContext>();
 
-builder.Services.AddTransient<IRamRepository, RamRepository>();
+//builder.Services.AddTransient<IRamRepository, RamRepository>();
+//builder.Services.AddTransient<IRepository<VoucherEntity>, IRepository<VoucherEntity>>();
 builder.Services.AddTransient<IVoucherRepository, VoucherRepository>();
 builder.Services.AddTransient<IProductDetailRepository, ProductDetailRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();

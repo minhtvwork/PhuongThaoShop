@@ -60,7 +60,7 @@ namespace PTS.EntityFrameworkCore.Repository
             return await _context.CartDetailEntity.FindAsync(id);
         }
 
-        public async Task<bool> Update(CartDetailEntity obj)
+        public async Task<bool> UpdateQuantity(CartDetailEntity obj)
         {
             var cartDT = await _context.CartDetailEntity.FindAsync(obj.Id);
             if (cartDT == null)

@@ -17,11 +17,6 @@ namespace PTS.Host.Controllers
     [ApiController]
     public class CartController : PTSBaseController
     {
-        //private readonly ICartService _cartService;
-        //private readonly ICartDetailRepository _cartDetailRepository;
-        //private readonly ICartRepository _cartRepository;
-        //private readonly IUserRepository _userRepository;
-        //private readonly ResponseDto _reponse;
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
@@ -51,83 +46,10 @@ namespace PTS.Host.Controllers
         {
             return await _mediator.Send(query);
         }
-
-        //public CartController(ICartService cartService, ICartDetailRepository cartDetailRepository, ICartRepository cartRepository, IUserRepository userRepository)
-        //{
-        //    _cartService = cartService;
-        //    _cartDetailRepository = cartDetailRepository;
-        //    _cartRepository = cartRepository;
-        //    _userRepository = userRepository;
-        //    _reponse = new ResponseDto();
-        //}
-        //[AllowAnonymous]// For admin
-        //[HttpGet("GetListCarts")]
-        //public async Task<IActionResult> GetListCarts()
-        //{
-        //    var reponse = await _cartService.GetListCarts();
-        //    if (reponse.IsSuccess)
-        //    {
-        //        return Ok(reponse);
-        //    }
-        //    else
-        //    {
-        //        return BadRequest(reponse);
-        //    }
-        //}
-        //[AllowAnonymous]// For admin
-        //[HttpGet("GetCartById")]
-        //public async Task<IActionResult> GetCartById(int id)
-        //{
-        //    var username = User.Identity.Name;
-        //    var reponse = await _cartService.GetCartById(id);
-        //    if (reponse.IsSuccess)
-        //    {
-        //        return Ok(reponse);
-        //    }
-        //    else
-        //    {
-        //        return BadRequest(reponse);
-        //    }
-
-        //}
-        //[AllowAnonymous]// For client
-        //[HttpPut("CongQuantity")]
-        //public async Task<IActionResult> CongQuantityCartDetail(int idCartDetail)
-        //{
-        //    var reponse = await _cartService.CongQuantityCartDetail(idCartDetail);
-        //    if (reponse.IsSuccess)
-        //    {
-        //        return Ok(reponse);
-        //    }
-        //    else
-        //    {
-        //        return BadRequest(reponse);
-        //    }
-        //}
-        //[AllowAnonymous]
-        //[HttpPut("TruQuantityCartDetail")]
-        //public async Task<IActionResult> TruQuantityCartDetail(int idCartDetail)
-        //{
-        //    var reponse = await _cartService.TruQuantityCartDetail(idCartDetail);
-        //    if (reponse.IsSuccess)
-        //    {
-        //        return Ok(reponse);
-        //    }
-        //    else
-        //    {
-        //        return BadRequest(reponse);
-        //    }
-        //}
-        //[AllowAnonymous]
-        //[HttpDelete("Delete")]
-        //public async Task<IActionResult> Delete(string username)
-        //{
-        //    var userId = _userRepository.GetAllUsers().Result.FirstOrDefault(x => x.Username == username).Id;
-
-        //    if (await _cartRepository.Delete(userId))
-        //        return Ok();
-        //    return BadRequest();
-
-        //}
+        [HttpPost("UpdateQuantity")]
+        public async Task<ServiceResponse> UpdateQuantity(UpdateQuantityCartItemQuery query)
+        {
+            return await _mediator.Send(query);
+        }
     }
 }

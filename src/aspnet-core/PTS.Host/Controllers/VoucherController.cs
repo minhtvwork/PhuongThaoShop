@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MS.Infrastructure.AppCore.Request.Voucher;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Host.AppCore.Request.Voucher;
+using PTS.Host.Request.Voucher;
 
 namespace PTS.Host.Controllers
 {
@@ -20,26 +22,34 @@ namespace PTS.Host.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpPost("GetPaged")]
+        public async Task<IActionResult> GetPaged(VoucherPagingListRequest request)
         {
-            // Gửi một yêu cầu (query) đến handler tương ứng để lấy dữ liệu
-            var vouchers = await _mediator.Send(new PagingListVoucherQuery());
-
-            // Trả về dữ liệu
+            var vouchers = await _mediator.Send(request);
             return Ok(vouchers);
         }
-        [HttpPost]
-        public async Task<IActionResult> Create(VoucherDto objDto)
+        [HttpPost("GetVoucherById")]
+        public async Task<IActionResult> GetVoucherById(int id)
+        {
+          //  GetVoucherByIdRequest request = new GetVoucherByIdRequest();
+          //  var vouchers = await _mediator.Send(request);
+            return Ok();
+        }
+        [HttpPost("CreateOrUpdateVoucher")]
+        public async Task<IActionResult> CreateOrUpdateVoucher(VoucherDto objDto)
         {
              var obj = _mapper.Map<VoucherEntity>(objDto);
             CreateOrUpdateVoucherQuery query = new CreateOrUpdateVoucherQuery();
             query.VoucherEntity = obj;
-            // Gửi một yêu cầu (query) đến handler tương ứng để lấy dữ liệu
             var vouchers = await _mediator.Send(query);
-
-            // Trả về dữ liệu
             return Ok(vouchers);
+        }
+        [HttpPost("DeleteVoucher")]
+        public async Task<IActionResult> DeleteVoucher(int id)
+        {
+            DeleteVoucherQuery query = new DeleteVoucherQuery();
+            query.Id = id;
+            return Ok(await _mediator.Send(query));
         }
     }
 }

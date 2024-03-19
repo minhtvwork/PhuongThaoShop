@@ -83,7 +83,7 @@ namespace PTS.Host.Controllers
             return BadRequest("Sửa thất bại");
         }
         [HttpDelete("id")]
-        public async Task<IActionResult> DeleteColor(Guid id)
+        public async Task<IActionResult> DeleteColor(int id)
         {
 
             string apiKey = _config.GetSection("ApiKey").Value;

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.BlobStoring.Database.Domain" Version="8.0.0" />
+    <PackageReference Include="Abp.AutoMapper" Version="9.1.2" />
   </ItemGroup>
 
 </Project>

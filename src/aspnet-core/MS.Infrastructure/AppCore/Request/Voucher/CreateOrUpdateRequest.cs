@@ -20,11 +20,11 @@ namespace PTS.Host.AppCore.Request.Voucher
         {
             if (request.VoucherEntity.Id > 0)
             {
-                //if (await _repository.Update(request.VoucherEntity))
-                //{
-                //    return new ServiceResponse(true, "Cập nhật thành công");
-                  
-                //} 
+                if (await _repository.Update(request.VoucherEntity))
+                {
+                    return new ServiceResponse(true, "Cập nhật thành công");
+
+                }
                 return new ServiceResponse(false, "Cập nhật hất bại");
             }
             else

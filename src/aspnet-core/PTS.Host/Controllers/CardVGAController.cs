@@ -82,7 +82,7 @@ namespace PTS.Host.Controllers
             return BadRequest("Sửa thất bại");
         }
         [HttpDelete("DeleteCardVGA")]
-        public async Task<IActionResult> DeleteCardVGA(Guid id)
+        public async Task<IActionResult> DeleteCardVGA(int id)
         {
 
             string apiKey = _config.GetSection("ApiKey").Value;
@@ -104,7 +104,7 @@ namespace PTS.Host.Controllers
         }
         [AllowAnonymous]
         [HttpGet("GetCardVGAFSP")]
-        public IActionResult GetCardVGAFSP(string? search, double? from, double? to, string? sortBy, int page)
+        public IActionResult GetCardVGAFSP(string? search, decimal? from, decimal? to, string? sortBy, int page)
         {
             string apiKey = _config.GetSection("ApiKey").Value;
             if (apiKey == null)

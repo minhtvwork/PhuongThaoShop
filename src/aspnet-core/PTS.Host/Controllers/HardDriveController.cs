@@ -85,7 +85,7 @@ namespace Shop_API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteHardDrive(Guid id)
+        public async Task<IActionResult> DeleteHardDrive(int id)
         {
 
             string apiKey = _config.GetSection("ApiKey").Value;
@@ -107,7 +107,7 @@ namespace Shop_API.Controllers
         }
 
         [HttpGet("GetHardDriveFSP")]
-        public async Task<IActionResult> GetHardDriveFSP(string? search, double? from, double? to, string? sortBy, int page)
+        public async Task<IActionResult> GetHardDriveFSP(string? search, decimal? from, decimal? to, string? sortBy, int page)
         {
             string apiKey = _config.GetSection("ApiKey").Value;
             if (apiKey == null)
@@ -126,7 +126,7 @@ namespace Shop_API.Controllers
         }
 
         [HttpGet("GetHardById")]
-        public async Task<IActionResult> GetHardById(Guid guid)
+        public async Task<IActionResult> GetHardById(int id)
         {
 
             //    string apiKey = _config.GetSection("ApiKey").Value;
@@ -140,7 +140,7 @@ namespace Shop_API.Controllers
             //    {
             //        return Unauthorized();
             //    }
-            _reponse.Result = await _repository.GetById(guid);
+            _reponse.Result = await _repository.GetById(id);
             return Ok(_reponse);
         }
 

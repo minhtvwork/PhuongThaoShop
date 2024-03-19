@@ -64,7 +64,7 @@ namespace PTS.Host.Service
                     {
                         cartDetail.Quantity += 1;
 
-                        if (await _cartDetailRepository.Update(cartDetail))
+                        if (await _cartDetailRepository.UpdateQuantity(cartDetail))
                         {
                             return new ServiceResponse(true, "Cập nhật thành công");
                         }
@@ -145,64 +145,6 @@ namespace PTS.Host.Service
                 Message = message
             };
         }
-        public async Task<ResponseDto> CongOrTruQuantityCartDetail(int idCartDetail, int changeAmount)
-        {
-            try
-            {
-                var cartDetailX = await _cartDetailRepository.GetById(idCartDetail);
-
-                if (cartDetailX == null)
-                {
-                    return ErrorResponse("Không tìm thấy giỏ hàng chi tiết", 404);
-                }
-
-                var checkProductDetailInCart = cartDetailX.Quantity;
-                CartDetailEntity cartDetail = new CartDetailEntity
-                {
-                    Id = idCartDetail,
-                    Quantity = checkProductDetailInCart + changeAmount
-                };
-
-                if (cartDetail.Quantity < 0)
-                {
-                    return await HandleNegativeQuantity(cartDetail);
-                }
-
-                if (await _cartDetailRepository.Update(cartDetail))
-                {
-                    return SuccessResponse(cartDetail, 200, $"{(changeAmount > 0 ? "Tăng" : "Giảm")} số lượng sản phẩm thành công");
-                }
-                else
-                {
-                    return ErrorResponse("Thất bại", 404);
-                }
-            }
-            catch (Exception e)
-            {
-                return ErrorResponse(e.Message, 404);
-            }
-        }
-
-        private async Task<ResponseDto> HandleNegativeQuantity(CartDetailEntity cartDetail)
-        {
-            if (await _cartDetailRepository.Delete(cartDetail.Id))
-            {
-                return SuccessResponse(null, 204, "Bạn vừa xóa sản phẩm khỏi giỏ hàng");
-            }
-
-            return ErrorResponse("Thất bại, có lỗi gì đó", 404);
-        }
-
-        public async Task<ResponseDto> CongQuantityCartDetail(int idCartDetail)
-        {
-            return await CongOrTruQuantityCartDetail(idCartDetail, 1);
-        }
-
-        public async Task<ResponseDto> TruQuantityCartDetail(int idCartDetail)
-        {
-            return await CongOrTruQuantityCartDetail(idCartDetail, -1);
-        }
-
         public async Task<ResponseDto> GetListCarts()
         {
             var cartItem = await _cartRepository.GetAll();
