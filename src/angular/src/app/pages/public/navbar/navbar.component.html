@@ -1,4 +1,4 @@
-<nz-layout >
+<nz-layout>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid bg-white">
 
@@ -11,7 +11,17 @@
         <ul nz-menu nzMode="horizontal" [nzTheme]="'light'">
           <li nz-menu-item><a [routerLink]="'/'">Home</a></li>
           <li nz-menu-item><a href="#">Trang chủ</a></li>
-          <li nz-menu-item><a [routerLink]="'/'">Laptop Mới</a></li>
+          <li nz-submenu nzTitle="Laptop Mới" nzIcon="setting">
+            <ul>
+              <li nz-menu-item>Laptop Dell Mới</li>
+              <li nz-menu-item>Laptop Lenovo Mới</li>
+              <li nz-menu-item>Laptop Dell Mới</li>
+              <li nz-menu-item>Laptop Lenovo Mới</li>
+              <li nz-menu-item>Laptop Dell Mới</li>
+              <li nz-menu-item>Laptop Lenovo Mới</li>
+            </ul>
+          </li>
+
           <li nz-menu-item><a [routerLink]="'/'">Tin Tức, Khuyến Mại</a></li>
           <li nz-menu-item><a [routerLink]="'/'">Tra Cứu Đơn Hàng</a></li>
           <li nz-menu-item><a [routerLink]="'/cart'">Giỏ Hàng</a></li>
@@ -31,11 +41,11 @@
 </nz-layout>
 
 
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Đăng Nhập" (nzOnCancel)="handleCancel()"  [nzFooter]="[]"
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Đăng Nhập" (nzOnCancel)="handleCancel()" [nzFooter]="[]"
   [nzOkLoading]="isOkLoading">
   <nz-layout class="login-layout" *nzModalContent>
     <!-- <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()"> -->
-    <form nz-form  [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()">
+    <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()">
       <nz-form-item>
         <nz-form-control nzErrorTip="Please input your username!">
           <nz-input-group nzPrefixIcon="user">

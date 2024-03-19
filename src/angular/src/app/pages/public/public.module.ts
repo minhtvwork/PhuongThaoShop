@@ -15,7 +15,7 @@ import { ContactComponent } from './contact/contact.component';
 import { DetailComponent } from './detail/detail.component';
 import { CarouseleComponent } from './carousel';
 import { VndFormatPipe } from '../../shared/pipes/vnd-format.pipe'
-import { ReactiveFormsModule } from '@angular/forms';
+import { BillComponent } from './bill/bill.component';
 
 
 @NgModule({
@@ -26,13 +26,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     MainComponent,
     NotfoundComponent,
     ProductComponent,
-    CartComponent,
     AboutComponent,
     ContactComponent,
     DetailComponent,
     CarouseleComponent,
-    CartComponent,
     VndFormatPipe,
+    BillComponent,
+    CartComponent
   ],
   providers: [
     VndFormatPipe 

@@ -39,11 +39,18 @@ export class PublicService {
       username: username,
       idProductDetail: productId
     };
-    return this.http.post<ServiceResponse>(`${this.apiUrl}Cart`, params);
+    return this.http.post<ServiceResponse>(`${this.apiUrl}Cart/AddToCart`, params);
   }
   deleteCartDetai(Id: number): Observable<ServiceResponse> {
     const params = {
     };
     return this.http.delete<ServiceResponse>(`${this.apiUrl}Cart/DeleteCartDetail?Id=${Id}`, params);
+  }
+  updateQuantityCartItem(quantity: number, idCartDetail: number): Observable<ServiceResponse> {
+    const params = {
+      quantity : quantity,
+      idCartDetail: idCartDetail,
+    };
+    return this.http.post<ServiceResponse>(`${this.apiUrl}Cart/UpdateQuantity`, params);
   }
 }

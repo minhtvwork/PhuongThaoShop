@@ -11,11 +11,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsProviderModule } from './shared/icons-provider.module';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { AdminModule } from './pages/admin/admin.module';
 import { PublicModule } from './pages/public/public.module';
-import { NzFormModule } from 'ng-zorro-antd/form';
 registerLocaleData(en);
 
 @NgModule({

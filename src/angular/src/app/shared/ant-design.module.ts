@@ -19,7 +19,12 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 registerLocaleData(en);
 @NgModule({
 exports:[
@@ -39,7 +44,11 @@ exports:[
     NzAlertModule,
     NzIconModule,
     NzPopconfirmModule,
-    ReactiveFormsModule
+    NzInputNumberModule,
+    NzSelectModule,
+    NzRadioModule,
+    ReactiveFormsModule,
+    FormsModule,
 ],
  providers: [
     { provide: NZ_I18N, useValue: en_US }

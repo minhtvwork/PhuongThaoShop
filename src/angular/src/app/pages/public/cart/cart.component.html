@@ -1,34 +1,91 @@
-<table class="table table-hover">
-<thead>
-  <tr>
-    <th>Số Thứ Tự</th>
-    <th>Tên Sản Phẩm</th>
-    <th>Giá</th>
-    <th>Số Lượng</th>
-    <th>Tổng</th>
-    <th>Xóa</th>
-  </tr>
-</thead>
-<tbody>
-  <tr *ngFor="let data of cartItems; let i = index">
-    <td>{{ i + 1 }}</td>
-    <td>{{ data.nameProduct }}</td>
-    <td>{{ data.price }}</td>
-    <td>{{ data.quantity }}</td>
-    <td>{{ data.price * data.quantity }}</td>
-    <td><a nz-icon nzType="delete" nzTheme="outline"  nz-popconfirm
-      nzPopconfirmTitle="Bạn có muốn xóa sản phẩm này không?"
-      nzPopconfirmPlacement="bottom"
-      (nzOnConfirm)="deleteCartDetail(data.id)"
-      (nzOnCancel)="cancel()" ></a></td>
-      <!-- (click)="deleteCartDetail(data.id)" -->
-  </tr>
-</tbody>
-<table>
-<div >
-  <td colspan="4" style="line-height:22px; color:#555">
-  <b>Tổng cộng : {{ calculateTotalPrice() }}<span class="total-cart-price"></span> đ</b><br>
-  <b style="color:red; font-size:16px;">Thanh toán : <span class="sub1 total-cart-payment" id="total_value" style="color: red; font-weight: bold;" data-gtm-vis-recent-on-screen10926496_41="278" data-gtm-vis-first-on-screen10926496_41="278" data-gtm-vis-total-visible-time10926496_41="100" data-gtm-vis-has-fired10926496_41="1">330.100.560.000</span> VND &nbsp; </b>
+<div class="container">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Số Thứ Tự</th>
+        <th>Tên Sản Phẩm</th>
+        <th>Giá</th>
+        <th>Số Lượng</th>
+        <th>Tổng</th>
+        <th>Xóa</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of cartItems; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ data.maProductDetail}} {{ data.nameProduct }}</td>
+        <td>{{ data.price | vndFormat }}</td>
+        <!-- <nz-input-number  [(ngModel)]="data.quantity" (nzChange)="changeQuantity()"></nz-input-number>
+        <td>{{ data.quantity }}</td> -->
+        <td><nz-input-number [nzMin]="1" [nzMax]="100" [nzStep]="1" [(ngModel)]="data.quantity"
+            (ngModelChange)="quantityChange(data.id, $event)"></nz-input-number></td>
+        <td>{{ data.price * data.quantity | vndFormat }}</td>
+        <td><a nz-icon nzType="delete" nzTheme="outline" nz-popconfirm
+            nzPopconfirmTitle="Bạn có muốn xóa sản phẩm này không?" nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="deleteCartDetail(data.id)" (nzOnCancel)="cancel()"></a></td>
+        <!-- (click)="deleteCartDetail(data.id)" -->
+      </tr>
+    </tbody>
+
+    <div>
+      <td colspan="4" style="line-height:22px; color:#555">
+        <b>Tổng cộng : {{ calculateTotalPrice() | vndFormat }}<span class="total-cart-price"></span></b><br>
+        <b style="color:red; font-size:16px;">Thanh toán : <span class="sub1 total-cart-payment" id="total_value"
+            style="color: red; font-weight: bold;" data-gtm-vis-recent-on-screen10926496_41="278"
+            data-gtm-vis-first-on-screen10926496_41="278" data-gtm-vis-total-visible-time10926496_41="100"
+            data-gtm-vis-has-fired10926496_41="1">330.100.560.000</span> VND &nbsp; </b>
+
+      </td>
+    </div>
+  </table>
+  <form nz-form [nzLayout]="'inline'" [formGroup]="createBillForm" (ngSubmit)="submitForm()">
+    <nz-row>
+      <nz-col [nzSpan]="18">
+        <nz-form-item nzGutter="6">
+          <nz-form-label nzFor="fullName" [nzSm]="4" nzRequired>Họ và tên</nz-form-label>
+          <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
+            <input nz-input formControlName="fullName" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nzGutter="6">
+          <nz-form-label nzFor="address" [nzSm]="4" nzRequired>Địa chỉ</nz-form-label>
+          <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
+            <input nz-input formControlName="address" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nzGutter="6">
+          <nz-form-label nzFor="phoneNumber" [nzSm]="4" nzRequired>Số điện thoại</nz-form-label>
+          <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
+            <input nz-input formControlName="soDienThoai" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nzGutter="6">
+          <nz-form-label nzFor="email" [nzSm]="4" nzRequired>Email</nz-form-label>
+          <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
+            <input nz-input formControlName="email" />
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col [nzSpan]="6">
+        <nz-form-item nzGutter="6">
+          <nz-form-label nzFor="email" [nzSm]="8">Mã giảm giá</nz-form-label>
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn mã giảm giá" [(ngModel)]="selectedValue">
+            <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+            <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
+            <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+          </nz-select>
+        </nz-form-item>
+        <nz-form-item nzGutter="6">
+          <nz-form-label nzFor="payment" [nzSm]="8">Phương thức thanh toán</nz-form-label>
+          <nz-radio-group formControlName="payment" nzName="radiogroup">
+            <label nz-radio nzValue="1">Thanh toán tại cửa hàng</label>
+            <label nz-radio nzValue="2">Thanh toán khi nhận hàng (COD)</label>
+            <label nz-radio nzValue="3">Thanh toán bằng chuyển khoản ngân hàng</label>
+            <label nz-radio nzValue="4">Thanh toán trả góp</label>
+          </nz-radio-group>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </form>
   
-  </td>
-  
+</div>
