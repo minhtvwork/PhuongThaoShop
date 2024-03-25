@@ -10,7 +10,7 @@ namespace PTS.EntityFrameworkCore.Repository.IRepository
         Task<bool> Update(VoucherEntity obj);
         Task<bool> Delete(int id);
         Task<bool> UpdateSL(string codeVoucher);
-        Task<List<VoucherEntity>> GetAllVouchers(CancellationToken cancellationToken);
+        Task<List<VoucherEntity>> GetAll();
         Task<VoucherEntity> GetByCode(string codeVoucher);
         Task<bool> Duyet(int Id);
         Task<bool> HuyDuyet(int Id);

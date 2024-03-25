@@ -1,4 +1,4 @@
-﻿using Abp.Application.Services.Dto;
+﻿ using Abp.Application.Services.Dto;
 using Abp.Collections.Extensions;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
@@ -29,8 +29,7 @@ namespace PTS.Host.Request.Voucher
         [Obsolete]
         public async Task<PagedResultDto<VoucherDto>> Handle(VoucherPagingListRequest input, CancellationToken cancellationToken)
         {
-            input.Format();
-            var vouchers = await _repos.GetAllVouchers(cancellationToken);
+            var vouchers = await _repos.GetAll();
             var query = vouchers.Select(voucher => new VoucherDto
             {
                 Id = voucher.Id,

@@ -35,7 +35,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\Assets\Images\" />
+    <Folder Include="wwwroot\sampleFiles\excel\" />
+    <Folder Include="wwwroot\sampleFiles\word\" />
   </ItemGroup>
 
 </Project>

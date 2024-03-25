@@ -52,7 +52,7 @@ namespace PTS.EntityFrameworkCore.Repository
             }
         }
 
-        public async Task<List<VoucherEntity>> GetAllVouchers(CancellationToken cancellationToken)
+        public async Task<List<VoucherEntity>> GetAll()
         {
             return await _context.VoucherEntity.Where(v => !v.IsDeleted).ToListAsync();
         }

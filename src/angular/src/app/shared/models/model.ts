@@ -3,6 +3,10 @@ export interface ServiceResponse {
   flag: boolean;
   message: string;
 }
+export interface PagedResultDto<T> {
+  totalCount: number;
+  items: T[];
+}
 export interface LoginRequestDto {
   username: string | undefined;
   password: string | undefined;
@@ -71,4 +75,16 @@ export interface CartItemDto {
   thongSoCardVGA?: string;
   linkImage?: string;
   status?: number;
+}
+export interface VoucherDto {
+  id: number;
+  creationTime: Date | null;
+  isDeleted: boolean;
+  status: number | null;
+  maVoucher: string | null;
+  tenVoucher: string | null;
+  starDay: Date | null;
+  endDay: Date | null;
+  giaTri: number;
+  soLuong: number;
 }

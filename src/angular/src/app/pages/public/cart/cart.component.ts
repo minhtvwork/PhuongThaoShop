@@ -14,14 +14,14 @@ export class CartComponent {
   radioValue = 'A';
   cartItems: CartItemDto[] = [];
   createBillForm: FormGroup;
-  constructor(private publicService: PublicService, private nzMessageService: NzMessageService, private fb: FormBuilder) { 
+  constructor(private publicService: PublicService, private nzMessageService: NzMessageService, private fb: FormBuilder) {
     this.createBillForm = this.fb.group({
-      fullName: [null, [Validators.required]],
-      address: [null, [Validators.required]],
-      phoneNumber: [null, [Validators.required]],
-      email: [null, [Validators.required]],
-      codeVoucher: ["A"],
-      payment: [1, [Validators.required]]
+      fullName: ['', [Validators.required]],
+      address: ['', [Validators.required]],
+      phoneNumber: ['', [Validators.required]],
+      email: ['', [Validators.required]],
+      codeVoucher: [null],
+      payment: [null, [Validators.required]]
     });
   }
   ngOnInit(): void {
@@ -32,7 +32,6 @@ export class CartComponent {
     this.publicService.getCartByUser().subscribe(
       (data: CartItemDto[]) => {
         this.cartItems = data;
-
         console.log(this.cartItems)
       },
       (error) => {
@@ -59,19 +58,19 @@ export class CartComponent {
       this.nzMessageService.info('Xóa thất bại');
     });
   }
-  quantityChange(idCartDetail:number,  event: number) {
-    this.publicService.updateQuantityCartItem(event,idCartDetail).subscribe(response => {
+  quantityChange(idCartDetail: number, event: number) {
+    this.publicService.updateQuantityCartItem(event, idCartDetail).subscribe(response => {
       this.loadCart();
       this.nzMessageService.success('Thay đổi số lượng thành công');
     }, error => {
-      this.nzMessageService.info('Thay đổi số lượn thất bại');
+      this.nzMessageService.info('Thay đổi số lượng thất bại');
     });
   }
- 
- 
-  submitForm(): void {
-    //console.log('submit', this.validateForm.value);
+  createBill(): void {
+    if (this.createBillForm.valid) {
+      console.log(this.createBillForm.value);
+    } else {
+      this.nzMessageService.error('Vui lòng điền đầy đủ thông tin!');
+    }
   }
-
-  
 }

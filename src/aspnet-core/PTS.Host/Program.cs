@@ -41,9 +41,12 @@ builder.Services.AddTransient<IProductDetailRepository, ProductDetailRepository>
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddTransient<ICartDetailRepository, CartDetailRepository>();
+builder.Services.AddTransient<IBillRepository, BillRepository>();
+builder.Services.AddTransient<IBillDetailRepository, BillDetailRepository>();
 builder.Services.AddTransient<IAllRepository<CpuEntity>, AllRepository<CpuEntity>>();
 //builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ICartService, CartService>();
+builder.Services.AddTransient<IBillService, BillService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

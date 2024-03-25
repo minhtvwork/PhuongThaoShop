@@ -24,7 +24,7 @@ namespace PTS.Host.Controllers
 
         [HttpPost("GetPaged")]
         public async Task<IActionResult> GetPaged(VoucherPagingListRequest request)
-        {
+         {
             var vouchers = await _mediator.Send(request);
             return Ok(vouchers);
         }

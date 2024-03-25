@@ -1,89 +1,105 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PTS.Data;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Host.AppCore.Request.Bill;
+using PTS.Host.Request.Voucher;
 using PTS.Host.Service.IService;
 
 namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class BillController : ControllerBase
     {
-        private readonly IBillService _billService;
-        private readonly IBillRepository _billRepository;
-        private readonly IConfiguration _config;
-        private readonly ApplicationDbContext _context;
-        public BillController(IConfiguration config,
-            IBillService billService, IBillRepository billRepository, ApplicationDbContext context)
-        {
-            _config = config;
-            _billService = billService;
-            _billRepository = billRepository;
-            _context = context;
-        }
-        [AllowAnonymous]
-        [HttpGet("PGetBillByInvoiceCode")]
-        public async Task<IActionResult> PGetBillByInvoiceCode(string invoiceCode)
-        {
+        //private readonly IBillService _billService;
+        //private readonly IBillRepository _billRepository;
+        //private readonly IConfiguration _config;
+        //private readonly ApplicationDbContext _context;
+        //public BillController(IConfiguration config,
+        //    IBillService billService, IBillRepository billRepository, ApplicationDbContext context)
+        //{
+        //    _config = config;
+        //    _billService = billService;
+        //    _billRepository = billRepository;
+        //    _context = context;
+        //}
+        private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
-            //string? apiKey = _config.GetSection("ApiKey").Value;
-            //if (apiKey == null)
-            //{
-            //    return Unauthorized();
-            //}
-
-            //var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            //if (keyDomain != apiKey.ToLower())
-            //{
-            //    return Unauthorized();
-            //}
-            var result = await _billService.PGetBillByInvoiceCode(invoiceCode);
-           // Log.Information("GetBill => {@_reponse}", result);
-            if (result.IsSuccess)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-            // }
-
-        }
-        [AllowAnonymous]
-        [HttpGet("GetListBill")]
-        public async Task<IActionResult> GetListBill(string? phoneNumber)
+        public BillController(IMediator mediator, IMapper mapper)
         {
-            return Ok(await _billService.GetAllBill(phoneNumber));
+            _mediator = mediator;
+            _mapper = mapper;
         }
-        [AllowAnonymous]
-        [HttpGet("GetBillDetailByInvoiceCode")]
-        public async Task<IActionResult> GetBillDetail(string invoiceCode)
-        {
-            return Ok(await _billService.GetBillDetailByInvoiceCode(invoiceCode));
-        }
-        [AllowAnonymous]
         [HttpPost("CreateBill")]
-        public async Task<IActionResult> CreateBill(RequestBillDto request)
+        public async Task<IActionResult> CreateBill(CreateOrUpdateBillQuery request)
         {
-            var reponse = await _billService.CreateBill(request);
-            if (reponse.IsSuccess)
-            {
-                return Ok(reponse.Message);
-            }
-            return BadRequest("");
+            return Ok(await _mediator.Send(request));
         }
-        [AllowAnonymous]
-        [HttpPut("UpdateBill")]
-        public async Task<IActionResult> UpdateBill(BillEntity bill)
-        {
-            if (await _billRepository.Update(bill))
-            {
-                return Ok($"Cập nhật hóa đơn {bill.InvoiceCode} thành công");
-            }
-            return BadRequest("Cập nhật thất bại");
-        }
+        //[AllowAnonymous]
+        //[HttpGet("PGetBillByInvoiceCode")]
+        //public async Task<IActionResult> PGetBillByInvoiceCode(string invoiceCode)
+        //{
+
+        //    //string? apiKey = _config.GetSection("ApiKey").Value;
+        //    //if (apiKey == null)
+        //    //{
+        //    //    return Unauthorized();
+        //    //}
+
+        //    //var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
+        //    //if (keyDomain != apiKey.ToLower())
+        //    //{
+        //    //    return Unauthorized();
+        //    //}
+        //    var result = await _billService.PGetBillByInvoiceCode(invoiceCode);
+        //   // Log.Information("GetBill => {@_reponse}", result);
+        //    if (result.IsSuccess)
+        //    {
+        //        return Ok(result);
+        //    }
+        //    return BadRequest(result);
+        //    // }
+
+        //}
+        //[AllowAnonymous]
+        //[HttpGet("GetListBill")]
+        //public async Task<IActionResult> GetListBill(string? phoneNumber)
+        //{
+        //    return Ok(await _billService.GetAllBill(phoneNumber));
+        //}
+        //[AllowAnonymous]
+        //[HttpGet("GetBillDetailByInvoiceCode")]
+        //public async Task<IActionResult> GetBillDetail(string invoiceCode)
+        //{
+        //    return Ok(await _billService.GetBillDetailByInvoiceCode(invoiceCode));
+        //}
+        //[AllowAnonymous]
+        //[HttpPost("CreateBill")]
+        //public async Task<IActionResult> CreateBill(RequestBillDto request)
+        //{
+        //    var reponse = await _billService.CreateBill(request);
+        //    if (reponse.IsSuccess)
+        //    {
+        //        return Ok(reponse.Message);
+        //    }
+        //    return BadRequest("");
+        //}
+        //[AllowAnonymous]
+        //[HttpPut("UpdateBill")]
+        //public async Task<IActionResult> UpdateBill(BillEntity bill)
+        //{
+        //    if (await _billRepository.Update(bill))
+        //    {
+        //        return Ok($"Cập nhật hóa đơn {bill.InvoiceCode} thành công");
+        //    }
+        //    return BadRequest("Cập nhật thất bại");
+        //}
         //[AllowAnonymous]
         //[HttpGet("GetRevenueStatistics")]
         //public IActionResult GetRevenueStatistics()

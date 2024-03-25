@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Factory\" />
-    <Folder Include="Helper\" />
+    <Compile Remove="Factory\**" />
+    <EmbeddedResource Remove="Factory\**" />
+    <None Remove="Factory\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Storage\" />
   </ItemGroup>
 

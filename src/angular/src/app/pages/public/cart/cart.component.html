@@ -38,13 +38,13 @@
       </td>
     </div>
   </table>
-  <form nz-form [nzLayout]="'inline'" [formGroup]="createBillForm" (ngSubmit)="submitForm()">
+  <form nz-form [nzLayout]="'inline'" [formGroup]="createBillForm">
     <nz-row>
-      <nz-col [nzSpan]="18">
+      <nz-col [nzSpan]="14">
         <nz-form-item nzGutter="6">
           <nz-form-label nzFor="fullName" [nzSm]="4" nzRequired>Họ và tên</nz-form-label>
           <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
-            <input nz-input formControlName="fullName" />
+            <input nz-input formControlName="fullName"  />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item nzGutter="6">
@@ -56,7 +56,7 @@
         <nz-form-item nzGutter="6">
           <nz-form-label nzFor="phoneNumber" [nzSm]="4" nzRequired>Số điện thoại</nz-form-label>
           <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
-            <input nz-input formControlName="soDienThoai" />
+            <input nz-input formControlName="phoneNumber" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item nzGutter="6">
@@ -66,7 +66,7 @@
           </nz-form-control>
         </nz-form-item>
       </nz-col>
-      <nz-col [nzSpan]="6">
+      <nz-col [nzSpan]="10">
         <nz-form-item nzGutter="6">
           <nz-form-label nzFor="email" [nzSm]="8">Mã giảm giá</nz-form-label>
           <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn mã giảm giá" [(ngModel)]="selectedValue">
@@ -84,6 +84,7 @@
             <label nz-radio nzValue="4">Thanh toán trả góp</label>
           </nz-radio-group>
         </nz-form-item>
+        <button nz-button nzType="primary"(click)="createBill()">Gửi đơn hàng</button>
       </nz-col>
     </nz-row>
   </form>

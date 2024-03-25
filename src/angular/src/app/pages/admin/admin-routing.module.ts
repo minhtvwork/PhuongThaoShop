@@ -12,9 +12,9 @@ const routes: Routes = [
   {
     path: '', component: DashboardComponent,
     children: [
-     { path: '', component: MainComponent},
+     { path: '', component: VoucherComponent},
      { path: '**', component: MainComponent},
-     { path: 'voucher', component: VoucherComponent},
+     { path: 'admin/voucher', component: VoucherComponent},
      { path: 'product', component: ProductComponent},
      { path: 'product-detail', component: ProductDetailComponent}
     ], 
