@@ -7,3 +7,9 @@
 /src/aspnet-core/PTS.EntityFrameworkCore/obj
 /src/aspnet-core/PTS.Domain/obj
 /.vs/PTS
+/src/aspnet-core/PTS.Base.Application
+/src/aspnet-core/PTS.Host/bin/Debug/net8.0
+/src/aspnet-core/PTS.Domain/bin/Debug/net8.0
+/src/aspnet-core/.vs/ProjectEvaluation
+/src/aspnet-core/MS.Infrastructure/bin/Debug/net8.0
+/src/aspnet-core/MS.Infrastructure/obj
