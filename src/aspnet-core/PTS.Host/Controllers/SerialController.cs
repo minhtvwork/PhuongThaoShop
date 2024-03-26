@@ -8,8 +8,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "ADMIN,User")]
-    public class SerialController : ControllerBase
+    public class SerialController : PTSBaseController
     {
         private readonly ISerialRepository _repository;
         private readonly IConfiguration _config;

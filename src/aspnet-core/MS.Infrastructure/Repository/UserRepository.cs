@@ -16,7 +16,7 @@ namespace PTS.EntityFrameworkCore.Repository
         }
         public async Task<bool> Create(UserEntity obj)
         {
-            var _user = await _context.UserEntity.AnyAsync(); //x => x.UserName == obj.UserName tìm đối tượng có cùng tên đăng nhập
+            var _user = await _context.UserEntity.AnyAsync(user =>user.Username == obj.Username); //x => x.UserName == obj.UserName tìm đối tượng có cùng tên đăng nhập
             if (obj == null || _user == true) // nếu đối tượng tồn tại hoặc giá trị truyền vào rỗng thì trả về false.
             {
                 return false;
@@ -59,8 +59,7 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<List<UserEntity>> GetAllUsers()
         {
-            var list = await _context.UserEntity.Where(x=>x.Status!=0).ToListAsync();
-            return list;
+             return await _context.UserEntity.Where(x=>!x.IsDeleted).ToListAsync();
         }
 
         public async Task<bool> Update(UserEntity obj)
@@ -89,15 +88,14 @@ namespace PTS.EntityFrameworkCore.Repository
             }
         }
 
-        public async Task<UserEntity> GetUserById(int? id)
+        public async Task<UserEntity> GetUserById(int id)
         {
             var result = await _context.UserEntity.FindAsync(id);
             return result;
         } 
-        public async Task<UserEntity> GetUserByUserName(string username)
+        public async Task<UserEntity> GetUserByUsername(string username)
         {
-            var user = await _context.UserEntity.FirstOrDefaultAsync(x => x.Username == username);
-            return user;
+            return await _context.UserEntity.Where(u=>!u.IsDeleted).Include(u => u.RoleEntities).FirstOrDefaultAsync(x => x.Username == username);
         }
 
     }

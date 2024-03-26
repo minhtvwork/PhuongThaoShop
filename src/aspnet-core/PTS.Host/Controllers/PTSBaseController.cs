@@ -6,7 +6,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     public class PTSBaseController : ControllerBase
     {
     }

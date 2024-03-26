@@ -8,7 +8,7 @@ namespace PTS.EntityFrameworkCore.Repository.IRepository
         Task<bool> Update(UserEntity obj);
         Task<bool> Delete(int Id);
         Task<List<UserEntity>> GetAllUsers();
-        Task<UserEntity> GetUserById(int? id);
-        Task<UserEntity> GetUserByUserName(string userName);
+        Task<UserEntity> GetUserById(int id);
+        Task<UserEntity> GetUserByUsername(string username);
     }
 }

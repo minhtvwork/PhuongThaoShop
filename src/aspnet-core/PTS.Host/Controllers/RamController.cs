@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using PTS.Domain.Entities;
 using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Host.Controllers;
 
 namespace Shop_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RamController : ControllerBase
+    public class RamController : PTSBaseController
     {
         private readonly IRamRepository _repository;
         private readonly IConfiguration _config;

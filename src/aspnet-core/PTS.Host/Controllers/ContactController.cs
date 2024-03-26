@@ -7,8 +7,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
-    public class ContactController : Controller
+    public class ContactController : PTSBaseController
     {
         private readonly IContactRepository _contactRepository;
         private readonly IConfiguration _config;

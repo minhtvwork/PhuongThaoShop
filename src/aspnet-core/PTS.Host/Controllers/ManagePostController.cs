@@ -7,8 +7,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "ADMIN")]
-    public class ManagePostController : Controller
+    public class ManagePostController : PTSBaseController
     {
         private readonly IManagePostRepository _mpRepository;
         private readonly IConfiguration _config;

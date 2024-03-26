@@ -6,11 +6,12 @@ using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.EntityFrameworkCore.Repository.IRepository;
 using PTS.Host.AppCore.Request.Voucher;
+using PTS.Host.Controllers;
 namespace Shop_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductDetailController : ControllerBase
+    public class ProductDetailController : PTSBaseController
     {
         private readonly IProductDetailRepository _repository;
         private readonly ResponseDto _reponse;

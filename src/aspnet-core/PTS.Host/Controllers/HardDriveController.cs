@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Host.Controllers;
 
 namespace Shop_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
-    public class HardDriveController : ControllerBase
+    public class HardDriveController : PTSBaseController
     {
         private readonly IHardDriveRepository _repository;
         private readonly IConfiguration _config;

@@ -8,8 +8,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
-    public class ColorController : ControllerBase
+    public class ColorController : PTSBaseController
     {
         private readonly IColorRepository _colorRepository;
         private readonly IPagingRepository _iPagingRepository;

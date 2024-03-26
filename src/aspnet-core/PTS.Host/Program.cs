@@ -14,6 +14,7 @@ using PTS.Host.Service.IService;
 using PTS.Host.Service;
 using PTS.Data;
 using PTS.Host.AppCore.Request;
+using MS.Infrastructure.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,7 @@ builder.Services.AddTransient<IBillRepository, BillRepository>();
 builder.Services.AddTransient<IBillDetailRepository, BillDetailRepository>();
 builder.Services.AddTransient<IAllRepository<CpuEntity>, AllRepository<CpuEntity>>();
 //builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<ICartService, CartService>();
 builder.Services.AddTransient<IBillService, BillService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

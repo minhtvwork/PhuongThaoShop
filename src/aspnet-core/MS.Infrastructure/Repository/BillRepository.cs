@@ -29,8 +29,9 @@ namespace PTS.EntityFrameworkCore.Repository
         }
         public async Task<bool> Delete(int id)
         {
+            // Check trạng thái hóa đơn hoàn thành là không được phép xóa
             var bill = await _context.BillEntity.FindAsync(id);
-            if (bill == null)
+            if (bill == null || bill.Status == 5)
             {
                 return false;
             }

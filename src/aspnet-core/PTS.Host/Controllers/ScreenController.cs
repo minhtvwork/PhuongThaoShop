@@ -8,8 +8,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
-    public class ScreenController : ControllerBase
+    public class ScreenController : PTSBaseController
     {
         private readonly IScreenRepository _repository;
         private readonly IConfiguration _config;

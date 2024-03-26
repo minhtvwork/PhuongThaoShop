@@ -9,8 +9,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
-    public class ImagesController : ControllerBase
+    public class ImagesController : PTSBaseController
     {
         private readonly IImageRepository _repository;
         private readonly IConfiguration _config;

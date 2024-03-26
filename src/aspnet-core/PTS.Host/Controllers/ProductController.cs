@@ -8,9 +8,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
-    //[Authorize]
-    public class ProductController : ControllerBase
+    public class ProductController : PTSBaseController
     {
         private readonly IProductRepository _productRepository;
         private readonly IConfiguration _config;

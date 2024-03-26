@@ -8,8 +8,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize("")]
-    public class CardVGAController : ControllerBase
+    public class CardVGAController : PTSBaseController
     {
         private readonly ICardVGARepository _repository;
         private readonly IConfiguration _config;

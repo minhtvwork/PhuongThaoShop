@@ -41,6 +41,11 @@ namespace PTS.Host.Controllers
         {
             return Ok(await _mediator.Send(request));
         }
+        [HttpPost("PGetBill")]
+        public async Task<IActionResult> PGetBill(CreateOrUpdateBillQuery request)
+        {
+            return Ok(await _mediator.Send(request));
+        }
         //[AllowAnonymous]
         //[HttpGet("PGetBillByInvoiceCode")]
         //public async Task<IActionResult> PGetBillByInvoiceCode(string invoiceCode)

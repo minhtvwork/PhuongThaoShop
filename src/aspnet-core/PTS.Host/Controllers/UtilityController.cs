@@ -7,8 +7,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
-    public class UtilityController : ControllerBase
+    public class UtilityController : PTSBaseController
     {
         private readonly ISendMailService _emailService;
         private readonly ResponseDto _reponse;

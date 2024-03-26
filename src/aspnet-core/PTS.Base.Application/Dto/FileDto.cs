@@ -12,17 +12,21 @@ namespace PTS.Base.Application.Dto
 
         [Required]
         public string FileToken { get; set; }
+        public byte[] FileBytes { get; set; }
+        public string FileBase64 { get; set; }
+        public bool IsSuccess { get; set; }
 
         public FileDto()
         {
-            
+
         }
 
-        public FileDto(string fileName, string fileType)
+        public FileDto(string fileName, string fileType, bool isSetFileName = false, bool isSuccess = true)
         {
             FileName = fileName;
             FileType = fileType;
-            FileToken = Guid.NewGuid().ToString("N");
+            FileToken = isSetFileName ? fileName : Guid.NewGuid().ToString();
+            IsSuccess = isSuccess;
         }
     }
 }
