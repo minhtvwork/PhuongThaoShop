@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace PTS.Domain.Dto
 {
-    public class UserLoginDto
+    public record LoginResponse(bool IsSuccess,bool IsAdmin, string? AccessToken, object? Result)
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
     }
 }

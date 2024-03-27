@@ -20,21 +20,33 @@ namespace MS.Infrastructure.Service
         {
             _userRepository = userRepository;
         }
-        public async Task<ServiceResponse> Login(string username, string password)
+        public async Task<LoginResponse> Login(string username, string password)
         {
-            var user = await _userRepository.GetUserByUsername(username);
-            if (user.Username != username)
+            try
             {
-                return new ServiceResponse(false, "Thất bại");
-            }
+                var user = await _userRepository.GetUserByUsername(username);
+                if (user.Username != username)
+                {
+                    return new LoginResponse(false, false, "", null);
+                }
 
-            if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+                if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+                {
+                    return new LoginResponse(false, false, "", null);
+                }
+
+                string token = CreateToken(user);
+                if (user.RoleEntities.RoleName == "admin")
+                {
+                    return new LoginResponse(true, true, $"{token}", null);
+                }
+                return new LoginResponse(true, true, $"{token}", null);
+            }
+            catch (Exception)
             {
-                return new ServiceResponse(false, "Thất bại");
+                return new LoginResponse(false, false, "", null);
             }
-
-            string token = CreateToken(user);
-            return new ServiceResponse(true, $"{token}");
+           ;
         }
         private string CreateToken(UserEntity user)
         {

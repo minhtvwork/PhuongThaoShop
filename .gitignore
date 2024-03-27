@@ -13,3 +13,5 @@
 /src/aspnet-core/.vs/ProjectEvaluation
 /src/aspnet-core/MS.Infrastructure/bin/Debug/net8.0
 /src/aspnet-core/MS.Infrastructure/obj
+/src/aspnet-core/PTS.Infrastructure/bin/Debug/net8.0
+/src/aspnet-core/PTS.Infrastructure/obj

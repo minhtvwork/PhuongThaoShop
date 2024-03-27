@@ -1,144 +1,59 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using PTS.Domain.Dto;
-using PTS.Domain.Entities;
-using PTS.EntityFrameworkCore.Repository.IRepository;
+﻿//using AutoMapper;
+//using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Mvc;
+//using PTS.Domain.Dto;
+//using PTS.Domain.Entities;
+//using PTS.Host.Repository.IRepository;
 
-namespace PTS.Host.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CardVGAController : PTSBaseController
-    {
-        private readonly ICardVGARepository _repository;
-        private readonly IConfiguration _config;
-        private readonly IPagingRepository _iPagingRepository;
-        private readonly ResponseDto _reponse;
-        public CardVGAController(ICardVGARepository repository, IConfiguration config, IPagingRepository pagingRepository)
-        {
-            _repository = repository;
-            _config = config;
-            _iPagingRepository = pagingRepository;
-            _reponse = new ResponseDto();
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetAllCardVGA()
-        {
+//namespace PTS.Host.Controllers
+//{
+//    [Route("api/[controller]")]
+//    [ApiController]
+//    public class CardVGAController : PTSBaseController
+//    {
+//        private readonly IAllRepository<CardVGAEntity> _repository;
+//        private readonly IMapper _mapper;
+//        public CardVGAController(IAllRepository<CardVGAEntity> repository, IMapper mapper)
+//        {
+//            _repository = repository;
+//            _mapper = mapper;
+//        }
 
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
+//        [HttpGet("GetAllAsync")]
+//        public async Task<ActionResult<IEnumerable<CardVGADto>>> GetAllAsync()
+//        {
+//            var listObj = await _repository.GetAllAsync();
+//            return Ok(listObj.Where(x => !x.IsDeleted));
+//        }
+//        [HttpGet("GetByIdAsync")]
+//        public async Task<ActionResult<CardVGADto>> GetByIdAsync(int id)
+//        {
+//            var obj = await _repository.GetByIdAsync(id);
+//            return Ok(obj);
+//        }
+//        [HttpPost("GetPagesAsync")]
+//        public async Task<ActionResult<IEnumerable<CardVGADto>>> GetPagesAsync(int page = 1, int pageSize = 10)
+//        {
+//            var products = await _repository.GetPagedAsync(page, pageSize);
+//            return Ok(products);
+//        }
+//        [HttpPost("CreateOrUpdateAsync")]
+//        public async Task<ActionResult> CreateOrUpdateAsync(CardVGADto objDto)
+//        {
+//            var obj = _mapper.Map<CardVGAEntity>(objDto);
+//            if (obj.Id > 0)
+//            {
+//                if (await _repository.UpdateAsync(obj))
+//                    return Ok(obj);
+//                return BadRequest();
+//            }
+//            else
+//            {
+//                if (await _repository.CreateAsync(obj))
+//                    return Ok(obj);
+//                return BadRequest();
+//            }
 
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            return Ok(await _repository.GetAllCardVGA());
-        }
-        [HttpPost("CreateCardVGA")]
-        public async Task<IActionResult> CreateCardVGA(CardVGAEntity obj)
-        {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _repository.Create(obj))
-            {
-                return Ok("Thêm thành công");
-            }
-            return BadRequest("Thêm thất bại");
-        }
-        [HttpPut]
-        public async Task<IActionResult> UpdateCardVGA(CardVGAEntity obj)
-        {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _repository.Update(obj))
-            {
-                return Ok("Sửa thành công");
-            }
-            return BadRequest("Sửa thất bại");
-        }
-        [HttpDelete("DeleteCardVGA")]
-        public async Task<IActionResult> DeleteCardVGA(int id)
-        {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _repository.Delete(id))
-            {
-                return Ok("Xóa thành công");
-            }
-            return BadRequest("Xóa thất bại");
-        }
-        [AllowAnonymous]
-        [HttpGet("GetCardVGAFSP")]
-        public IActionResult GetCardVGAFSP(string? search, decimal? from, decimal? to, string? sortBy, int page)
-        {
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            _reponse.Result = _iPagingRepository.GetAllCardVGA(search, from, to, sortBy, page);
-            var count = _reponse.Count = _iPagingRepository.GetAllCardVGA(search, from, to, sortBy, page).Count;
-            return Ok(_reponse);
-        }
-
-        [HttpGet("GetCardVGAById")]
-        public async Task<IActionResult> GetCardVGAById(int id)
-        {
-
-            //    string apiKey = _config.GetSection("ApiKey").Value;
-            //    if (apiKey == null)
-            //    {
-            //        return Unauthorized();
-            //    }
-
-            //    var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            //    if (keyDomain != apiKey.ToLower())
-            //    {
-            //        return Unauthorized();
-            //    }
-            _reponse.Result = await _repository.GetById(id);
-            return Ok(_reponse);
-        }
-
-    }
-}
+//        }
+//    }
+//}

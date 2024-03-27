@@ -19,19 +19,25 @@ namespace PTS.Host.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllAsync")]
         public async Task<ActionResult<IEnumerable<CpuDto>>> GetAllAsync()
         {
-            var products = await _repository.GetAllAsync();
+            var listObj = await _repository.GetAllAsync();
+            return Ok(listObj.Where(x=>!x.IsDeleted));
+        }
+        [HttpGet("GetByIdAsync")]
+        public async Task<ActionResult<CpuDto>> GetByIdAsync(int id)
+        {
+            var obj = await _repository.GetByIdAsync(id);
+            return Ok(obj);
+        }
+        [HttpPost("GetPagesAsync")]
+        public async Task<ActionResult<IEnumerable<CpuDto>>> GetPagesAsync(int page = 1, int pageSize = 10)
+        {
+            var products = await _repository.GetPagedAsync(page, pageSize);
             return Ok(products);
         }
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<CpuDto>>> GetPagesAsync(int page = 1, int pageSize = 10)
-        //{
-        //    var products = await _repository.GetPagedAsync(page, pageSize).Result.Where(x => !x.IsDeleted).ToList();
-        //    return Ok(products);
-        //}
-        [HttpPost]
+        [HttpPost("CreateOrUpdateAsync")]
         public async Task<ActionResult> CreateOrUpdateAsync(CpuDto objDto)
         {
             var obj = _mapper.Map<CpuEntity>(objDto);

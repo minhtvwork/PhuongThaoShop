@@ -40,9 +40,14 @@ namespace PTS.Host.Controllers
             return Ok(await _mediator.Send(query));
         }
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login(UserLoginDto obj)
         {
-          return Ok(await _accountService.Login(username, password));
+            var result = await _accountService.Login(obj.Username, obj.Password);
+            if (result.IsSuccess)
+            {
+              return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }

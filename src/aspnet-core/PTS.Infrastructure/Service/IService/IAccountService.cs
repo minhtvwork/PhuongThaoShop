@@ -4,6 +4,6 @@ namespace PTS.Host.Service.IService
 {
     public interface IAccountService
     {
-        Task<ServiceResponse> Login(string username, string password);
+        Task<LoginResponse> Login(string username, string password);
     }
 }

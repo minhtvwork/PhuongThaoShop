@@ -29,9 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MS.Infrastructure\MS.Infrastructure.csproj" />
     <ProjectReference Include="..\PTS.Base.Application\PTS.Base.Application.csproj" />
     <ProjectReference Include="..\PTS.Domain\PTS.Domain.csproj" />
+    <ProjectReference Include="..\PTS.Infrastructure\PTS.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
