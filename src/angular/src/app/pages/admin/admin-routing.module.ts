@@ -7,14 +7,15 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 import { ProductComponent } from './product/product.component';
 import { MainComponent } from './main/main.component';
 import { LoginComponent } from './login/login.component';
-
+import { AuthGuard } from 'src/app/shared/services/auth-guard.service';
 const routes: Routes = [
   {
-    path: '', component: DashboardComponent,
+    //canActivate: [AuthGuard],
+    path: '',canActivate: [AuthGuard],  component: DashboardComponent,
     children: [
-     { path: '', component: VoucherComponent},
-     { path: '**', component: MainComponent},
-     { path: 'admin/voucher', component: VoucherComponent},
+      { path: 'login', component: LoginComponent},
+     { path: 'main', component: MainComponent},
+     { path: 'voucher', component: VoucherComponent},
      { path: 'product', component: ProductComponent},
      { path: 'product-detail', component: ProductDetailComponent}
     ], 

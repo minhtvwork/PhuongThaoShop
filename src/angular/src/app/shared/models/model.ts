@@ -50,7 +50,7 @@ export interface ResponseDto {
 }
 export interface CartItemDto {
   id: number;
-  userId: number;
+  userId?: number;
   idProductDetails: number;
   quantity: number;
   maProductDetail?: string;
