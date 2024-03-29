@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
@@ -10,138 +11,42 @@ namespace PTS.Host.Controllers
     [ApiController]
     public class ColorController : PTSBaseController
     {
-        private readonly IColorRepository _colorRepository;
-        private readonly IPagingRepository _iPagingRepository;
-        private readonly IConfiguration _config;
+        private readonly IColorRepository _repo;
+        private readonly IMapper _mapper;
         private readonly ResponseDto _reponse;
-        public ColorController(IColorRepository colorRepository, IConfiguration config, IProductDetailRepository repository, IPagingRepository pagingRepository)
+        public ColorController(IColorRepository repo, IMapper mapper)
         {
-            _colorRepository = colorRepository;
-            _config = config;
+            _repo = repo;
+            _mapper = mapper;
             _reponse = new ResponseDto();
-            _iPagingRepository = pagingRepository;
         }
-
-        [HttpGet/*, Authorize(Roles = "Admin,User")*/]
-        public async Task<IActionResult> GetAllColor()
+        [HttpGet("GetList")]
+        public async Task<IActionResult> GetList()
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            return Ok(await _colorRepository.GetAllColors());
+            return Ok(await _repo.GetList());
         }
-        [HttpPost("CreateColor")]
-        public async Task<IActionResult> CreateColor(ColorEntity obj)
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(int id)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _colorRepository.Create(obj))
-            {
-                return Ok("Thêm thành công");
-            }
-            return BadRequest("Thêm thất bại");
+            return Ok(await _repo.GetById(id));
         }
-        [HttpPut]
-        public async Task<IActionResult> UpdateColor(ColorEntity obj)
+        [HttpPost("CreateOrUpdateAsync")]
+        public async Task<IActionResult> CreateOrUpdateAsync(ColorDto objDto)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
+            var obj = _mapper.Map<ColorEntity>(objDto);
+            if(objDto.Id > 0)
+            {  
+              return Ok(await _repo.Update(obj));
             }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
+            else
             {
-                return Unauthorized();
+                return Ok(await _repo.Create(obj));
             }
-            if (await _colorRepository.Update(obj))
-            {
-                return Ok("Sửa thành công");
-            }
-            return BadRequest("Sửa thất bại");
         }
-        [HttpDelete("id")]
-        public async Task<IActionResult> DeleteColor(int id)
+        [HttpPost("Delete")]
+        public async Task<IActionResult> Delete(int id)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _colorRepository.Delete(id))
-            {
-                return Ok("Xóa thành công");
-            }
-            return BadRequest("Xóa thất bại");
-
+         return Ok(await _repo.Delete(id));
         }
-
-
-        [HttpGet("GetColorFSP")]
-        public async Task<IActionResult> GetColorFSP(string? search,  decimal? from, decimal? to, string? sortBy, int page)
-        {
-            //string apiKey = _config.GetSection("ApiKey").Value;
-            //if (apiKey == null)
-            //{
-            //    return Unauthorized();
-            //}
-
-            //var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            //if (keyDomain != apiKey.ToLower())
-            //{
-            //    return Unauthorized();
-            //}
-            _reponse.Result = _iPagingRepository.GetAllColor(search, from, to, sortBy, page);
-            _reponse.Count = 10;
-            return Ok(_reponse);
-        }
-
-        [HttpGet("GetColorById")]
-        public async Task<IActionResult> GetColorById(int id)
-        {
-
-            //    string apiKey = _config.GetSection("ApiKey").Value;
-            //    if (apiKey == null)
-            //    {
-            //        return Unauthorized();
-            //    }
-
-            //    var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            //    if (keyDomain != apiKey.ToLower())
-            //    {
-            //        return Unauthorized();
-            //    }
-            //_reponse.Result = _colorRepository.GetById(guid);
-            return Ok(await _colorRepository.GetById(id));
-        }
-
     }
 }

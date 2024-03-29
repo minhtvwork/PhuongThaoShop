@@ -3,6 +3,7 @@
 using PTS.EntityFrameworkCore.Repository.IRepository;
 using PTS.Domain.Entities;
 using PTS.Data;
+using PTS.Domain.Dto;
 
 namespace PTS.EntityFrameworkCore.Repository
 {
@@ -14,57 +15,55 @@ namespace PTS.EntityFrameworkCore.Repository
         {
             _dbContext = context;
         }
-        public async Task<bool> Create(ContactEntity contact)
+        public async Task<ServiceResponse> Create(ContactEntity contact)
         {
             if (contact == null)
             {
-                return false;
+                return new ServiceResponse(false, "Thêm thất bại");
             }
             try
             {
                 await _dbContext.ContactEntity.AddAsync(contact);
                 await _dbContext.SaveChangesAsync();
-                return true;
+                return new ServiceResponse(true, "Thêm thành công");
             }
             catch (Exception)
             {
-                return false;
+                return new ServiceResponse(false, "Thêm thất bại");
             }
         }
 
-        public async Task<bool> Delete(int Id)
+        public async Task<ServiceResponse> Delete(int Id)
         {
             var obj = await _dbContext.ContactEntity.FindAsync(Id);
             if (obj == null)
             {
-                return false;
+                return new ServiceResponse(false, "Xóa thất bại");
             }
             try
             {
-                obj.Status = 0;
+                obj.IsDeleted = true;
                 _dbContext.ContactEntity.Update(obj);
                 await _dbContext.SaveChangesAsync();
-                return true;
+                return new ServiceResponse(true, "Xóa thành công");
             }
             catch (Exception)
             {
-                return false;
+                return new ServiceResponse(false, "Xóa thất bại");
             }
         }
 
-        public async Task<List<ContactEntity>> GetAllContacts()
+        public async Task<IEnumerable<ContactEntity>> GetList()
         {
-            var list = await _dbContext.ContactEntity.ToListAsync();
-            var listContact = list.Where(x => x.Status != 0).ToList();
-            return listContact;
+            return await _dbContext.ContactEntity.Where(a=>!a.IsDeleted).ToListAsync();
         }
 
-        public async Task<bool> Update(ContactEntity contact)
+        public async Task<ServiceResponse> Update(ContactEntity contact)
         {
             var obj = await _dbContext.ContactEntity.FindAsync(contact.Id);
             if (obj == null)
             {
-                return false;
+                return new ServiceResponse(false, "Cập nhật thất bại");
             }
             try
             {
@@ -77,11 +76,11 @@ namespace PTS.EntityFrameworkCore.Repository
                 obj.Website = contact.Website;
                 _dbContext.ContactEntity.Update(obj);
                 await _dbContext.SaveChangesAsync();
-                return true;
+                return new ServiceResponse(true, "Cập nhật thành công");
             }
             catch (Exception)
             {
-                return false;
+                return new ServiceResponse(false, "Cập nhật thất bại");
             }
         }
     }

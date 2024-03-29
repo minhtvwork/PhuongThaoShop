@@ -4,6 +4,9 @@ using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using System.Net.NetworkInformation;
 using PTS.Data;
+using System.Globalization;
+using System.Runtime.Intrinsics.Arm;
+using System.Security.Cryptography;
 
 namespace PTS.EntityFrameworkCore.Repository
 {
@@ -256,7 +259,7 @@ namespace PTS.EntityFrameworkCore.Repository
             .Where(x=>x.Id == id)
             .Select(a => new ProductDetailDto
             {
-                Id = a.Id,
+                  Id = a.Id,
                   Code = a.Code,
                   OldPrice = a.OldPrice,
                   Price = a.Price,
@@ -286,6 +289,74 @@ namespace PTS.EntityFrameworkCore.Repository
                   OtherImages = (a.ImageEntities.Where(image => image.Ma != "Anh1").Select(image => image.LinkImage).ToList()),
               }).FirstOrDefaultAsync();
             return query;
+        }
+
+        public async Task<IEnumerable<ProductDetailDto>> PGetList(PGetListDto request)
+        {
+            var query = _context.ProductDetailEntity.Where(a=>!a.IsDeleted).AsNoTracking();
+            if (!string.IsNullOrEmpty(request.ProductType))
+            {
+                query = query.Where(a => a.ProductEntity.ProductTypeEntity.Name == request.ProductType);
+            }
+            if (request.GetNumber > 0)
+            {
+                query = query.Take(Convert.ToInt32(request.GetNumber));
+            }
+            if (!string.IsNullOrEmpty(request.Search))
+            {
+                query = query.Where(a => a.ProductEntity.Name.Contains(request.Search) || a.Code == request.Search);
+            }
+            if (!string.IsNullOrEmpty(request.SortBy))
+            {
+                switch (request.SortBy)
+                {
+                    case "price_asc":
+                        query = query.OrderBy(x => x.Price);
+                        break;
+                    case "price_desc":
+                        query = query.OrderByDescending(x => x.Price);
+                        break;
+                }
+            }
+            var result = await query.Include(a => a.ImageEntities)
+                             .Select(a => new ProductDetailDto
+                             {
+                                 Id = a.Id,
+                                 Code = a.Code,
+                                 OldPrice = a.OldPrice,
+                                 Price = a.Price,
+                                 Status = a.Status,
+                                 Upgrade = a.Upgrade,
+                                 Description = a.Description,
+                                 AvailableQuantity = 1,
+                                 ThongSoRam = a.RamEntity.ThongSo,
+                                 MaRam = a.RamEntity.Ma,
+                                 TenCpu = a.CpuEntity.Ten,
+                                 MaCpu = a.CpuEntity.Ma,
+                                 ThongSoHardDrive = a.HardDriveEntity.ThongSo,
+                                 MaHardDrive = a.HardDriveEntity.Ma,
+                                 NameColor = a.ColorEntity.Name,
+                                 MaColor = a.ColorEntity.Ma,
+                                 MaCardVGA = a.CardVGAEntity.Ma,
+                                 TenCardVGA = a.CardVGAEntity.Ten,
+                                 ThongSoCardVGA = a.CardVGAEntity.ThongSo,
+                                 MaManHinh = a.ScreenEntity.Ma,
+                                 KichCoManHinh = a.ScreenEntity.KichCo,
+                                 TanSoManHinh = a.ScreenEntity.TanSo,
+                                 ChatLieuManHinh = a.ScreenEntity.ChatLieu,
+                                 NameProduct = a.ProductEntity.Name,
+                                 NameProductType = a.ProductEntity.ProductTypeEntity.Name,
+                                 NameManufacturer = a.ProductEntity.ManufacturerEntity.Name,
+                                 LinkImage = (a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1") != null) ? a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1").LinkImage : null,
+                                 OtherImages = (a.ImageEntities.Where(image => image.Ma != "Anh1").Select(image => image.LinkImage).ToList()),
+                             }).ToListAsync();
+
+            foreach (var productDetail in result)
+            {
+                productDetail.AvailableQuantity = GetCountProductDetail(productDetail.Code);
+            }
+
+            return result;
         }
     }
 }

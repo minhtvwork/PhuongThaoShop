@@ -11,7 +11,9 @@ namespace PTS.Host
             {
                 config.CreateMap<ProductDto, ProductEntity>().ReverseMap();
                 config.CreateMap<CpuDto, CpuEntity>().ReverseMap();
+                config.CreateMap<ColorDto, ColorEntity>().ReverseMap();
                 config.CreateMap<VoucherDto, VoucherEntity>().ReverseMap();
+                config.CreateMap<ContactDto, ContactEntity>().ReverseMap();
                 config.CreateMap<CreateProductDetailDto, ProductDetailEntity>().ReverseMap();
             });
             return mappingConfig;

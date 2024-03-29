@@ -5,10 +5,10 @@ namespace PTS.EntityFrameworkCore.Repository.IRepository
 {
     public interface IColorRepository
     {
-        Task<bool> Create(ColorEntity obj);
-        Task<bool> Update(ColorEntity obj);
-        Task<bool> Delete(int id);
-        Task<List<ColorEntity>> GetAllColors();
+        Task<ServiceResponse> Create(ColorEntity obj);
+        Task<ServiceResponse> Update(ColorEntity obj);
+        Task<ServiceResponse> Delete(int id);
+        Task<IEnumerable<ColorEntity>> GetList();
         Task<ColorEntity> GetById(int id);
     }
 }

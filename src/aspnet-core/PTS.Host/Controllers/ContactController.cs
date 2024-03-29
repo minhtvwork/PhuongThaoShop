@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.EntityFrameworkCore.Repository.IRepository;
 
@@ -9,94 +11,37 @@ namespace PTS.Host.Controllers
     [ApiController]
     public class ContactController : PTSBaseController
     {
-        private readonly IContactRepository _contactRepository;
-        private readonly IConfiguration _config;
-
-        public ContactController(IContactRepository contactRepository, IConfiguration config)
+        private readonly IContactRepository _repo;
+        private readonly IMapper _mapper;
+        private readonly ResponseDto _reponse;
+        public ContactController(IContactRepository repo, IMapper mapper)
         {
-            _contactRepository = contactRepository;
-            _config = config;
+            _repo = repo;
+            _mapper = mapper;
+            _reponse = new ResponseDto();
         }
-        [HttpGet]
-        public async Task<IActionResult> GetAllContacts()
+        [HttpGet("GetList")]
+        public async Task<IActionResult> GetList()
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            return Ok(await _contactRepository.GetAllContacts());
+            return Ok(await _repo.GetList());
         }
-        [HttpPost]
-        public async Task<IActionResult> CreateContact(ContactEntity obj)
+        [HttpPost("CreateOrUpdateAsync")]
+        public async Task<IActionResult> CreateOrUpdateAsync(ContactDto objDto)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
+            var obj = _mapper.Map<ContactEntity>(objDto);
+            if (objDto.Id > 0)
             {
-                return Unauthorized();
+                return Ok(await _repo.Update(obj));
             }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
+            else
             {
-                return Unauthorized();
+                return Ok(await _repo.Create(obj));
             }
-            if (await _contactRepository.Create(obj))
-            {
-                return Ok("Thêm thành công");
-            }
-            return BadRequest("Thêm thất bại");
         }
-        [HttpPut]
-        public async Task<IActionResult> UpdateContact(ContactEntity obj)
+        [HttpPost("Delete")]
+        public async Task<IActionResult> Delete(int id)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _contactRepository.Update(obj))
-            {
-                return Ok("Sửa thành công");
-            }
-            return BadRequest("Sửa thất bại");
-        }
-        [HttpDelete("id")]
-        public async Task<IActionResult> DeleteContact(int id)
-        {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _contactRepository.Delete(id))
-            {
-                return Ok("Xóa thành công");
-            }
-            return BadRequest("Xóa thất bại");
-
+            return Ok(await _repo.Delete(id));
         }
     }
 }

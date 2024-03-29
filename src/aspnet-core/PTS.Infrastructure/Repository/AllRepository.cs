@@ -2,6 +2,7 @@
 using PTS.Data;
 using PTS.Data;
 using PTS.Host.Repository.IRepository;
+using System.Linq.Expressions;
 
 namespace PTS.Host.Repository
 {
@@ -19,6 +20,34 @@ namespace PTS.Host.Repository
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
+        }
+        public async Task<IEnumerable<TEntity>> GetPagedAsync(int page, int pageSize)
+        {
+            if (page < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(page), "Page number must be greater than 0.");
+            }
+
+            if (pageSize < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(pageSize), "Page size must be greater than 0.");
+            }
+
+            IQueryable<TEntity> entities = _context.Set<TEntity>();
+            int totalCount = await entities.CountAsync();
+
+            int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+            if (page > totalPages)
+            {
+                page = totalPages;
+            }
+
+            var pagedEntities = await entities.Skip((page - 1) * pageSize)
+                                              .Take(pageSize)
+                                              .ToListAsync();
+
+            return pagedEntities;
         }
 
         public async Task<TEntity> GetByIdAsync(int id)
@@ -49,12 +78,6 @@ namespace PTS.Host.Repository
                 await _context.SaveChangesAsync();
             }
         }
-
-        public async Task<IEnumerable<TEntity>> GetPagedAsync(int page, int pageSize)
-        {
-            return await _dbSet.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-        }
-
         public async Task<int> CountAsync()
         {
             return await _dbSet.CountAsync();

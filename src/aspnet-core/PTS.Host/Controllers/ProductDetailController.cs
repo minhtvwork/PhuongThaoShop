@@ -32,7 +32,13 @@ namespace Shop_API.Controllers
         {
             return Ok(await _repository.GetAll());
         }
-
+        [AllowAnonymous]
+        [HttpPost("PGetList")]
+        public async Task<IActionResult> PGetList(PGetListDto request)
+        {
+            return Ok(await _repository.PGetList(request));
+        }
+        [AllowAnonymous]
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById(int id)
         {

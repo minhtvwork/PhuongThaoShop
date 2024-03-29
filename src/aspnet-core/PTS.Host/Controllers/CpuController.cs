@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using Abp.Application.Services.Dto;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PTS.Domain.Dto;
@@ -31,11 +33,12 @@ namespace PTS.Host.Controllers
             var obj = await _repository.GetByIdAsync(id);
             return Ok(obj);
         }
+        [AllowAnonymous]
         [HttpPost("GetPagesAsync")]
-        public async Task<ActionResult<IEnumerable<CpuDto>>> GetPagesAsync(int page = 1, int pageSize = 10)
+        public async Task<ActionResult<IEnumerable<CpuEntity>>> GetPagesAsync(int page, int pageSize)
         {
-            var products = await _repository.GetPagedAsync(page, pageSize);
-            return Ok(products);
+            var result = await _repository.GetPagedAsync(page, pageSize);
+            return Ok(result);
         }
         [HttpPost("CreateOrUpdateAsync")]
         public async Task<ActionResult> CreateOrUpdateAsync(CpuDto objDto)

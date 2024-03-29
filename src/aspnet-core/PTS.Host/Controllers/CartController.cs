@@ -41,11 +41,13 @@ namespace PTS.Host.Controllers
             query.Id = Id;
             return Ok(await _mediator.Send(query));
         }
+        [AllowAnonymous]
         [HttpPost("AddToCart")]
         public async Task<ServiceResponse> AddToCart(CreateOrUpdateCartQuery query)
         {
             return await _mediator.Send(query);
         }
+        [AllowAnonymous]
         [HttpPost("UpdateQuantity")]
         public async Task<ServiceResponse> UpdateQuantity(UpdateQuantityCartItemQuery query)
         {

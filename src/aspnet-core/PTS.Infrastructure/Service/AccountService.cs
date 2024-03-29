@@ -27,24 +27,24 @@ namespace MS.Infrastructure.Service
                 var user = await _userRepository.GetUserByUsername(username);
                 if (user.Username != username)
                 {
-                    return new LoginResponse(false, false, "", null);
+                    return new LoginResponse(false,null,null,null,null,null,null, false,null);
                 }
 
                 if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
                 {
-                    return new LoginResponse(false, false, "", null);
+                    return new LoginResponse(false, null, null, null, null, null, null, false, null);
                 }
 
                 string token = CreateToken(user);
                 if (user.RoleEntities.RoleName == "admin")
                 {
-                    return new LoginResponse(true, true, $"{token}", null);
+                    return new LoginResponse(true, user.Username, user.FullName, user.PhoneNumber, user.Address, user.Email, user.RoleEntities.RoleName, true, token);
                 }
-                return new LoginResponse(true, true, $"{token}", null);
+                return new LoginResponse(true, user.Username, user.FullName, user.PhoneNumber, user.Address, user.Email, user.RoleEntities.RoleName, false, token);
             }
             catch (Exception)
             {
-                return new LoginResponse(false, false, "", null);
+                return new LoginResponse(false, null, null, null, null, null, null, false, null);
             }
            ;
         }
