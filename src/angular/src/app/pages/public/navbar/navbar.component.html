@@ -26,7 +26,7 @@
           <li nz-menu-item><a [routerLink]="'/'">Tra Cứu Đơn Hàng</a></li>
           <li nz-menu-item><a [routerLink]="'/cart'">Giỏ Hàng</a></li>
           <ng-container *ngIf="username; else loginLink">
-            <li nz-submenu nzTitle="{{username}}" nzIcon="setting">
+            <li nz-submenu nzTitle="{{username}}" nzIcon="user">
               <ul>
                 <li nz-menu-item>Thông tin cá nhân</li>
                 <li nz-menu-item>Đơn hàng của tôi</li>

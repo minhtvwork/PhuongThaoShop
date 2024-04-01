@@ -63,23 +63,6 @@ calculateTotalPrice(): number {
 cancel(): void {
   this.nzMessageService.info('Bạn đã hủy thao tác');
 }
-// deleteCartDetail(id: number): void {
-//   this.publicService.deleteCartDetai(id).subscribe(response => {
-//     this.loadCart();
-//     this.nzMessageService.success('Xóa thành công');
-//     console.log('Phản hồi từ server:', response);
-//   }, error => {
-//     this.nzMessageService.info('Xóa thất bại');
-//   });
-// }
-// quantityChange(idCartDetail: number, event: number) {
-//   this.publicService.updateQuantityCartItem(event, idCartDetail).subscribe(response => {
-//     this.loadCart();
-//     this.nzMessageService.success('Thay đổi số lượng thành công');
-//   }, error => {
-//     this.nzMessageService.info('Thay đổi số lượng thất bại');
-//   });
-//}
 deleteCartDetail(id: number): void {
   if (this.username) {
     this.publicService.deleteCartDetai(id).subscribe(response => {
@@ -119,7 +102,6 @@ quantityChange(idCartDetail: number, event: number): void {
     const cartItemsString = localStorage.getItem('cartItems');
     if (cartItemsString) {
       let cartItems: CartItemDto[] = JSON.parse(cartItemsString);
-      // Tìm kiếm và cập nhật số lượng cho mục có id tương ứng trong giỏ hàng trong localStorage
       const index = cartItems.findIndex(item => item.id === idCartDetail);
       if (index !== -1) {
         cartItems[index].quantity = event;

@@ -88,3 +88,12 @@ export interface VoucherDto {
   giaTri: number;
   soLuong: number;
 }
+export interface VoucherCreateDto {
+  id: number;
+  maVoucher: string | null;
+  tenVoucher: string | null;
+  starDay: Date | null;
+  endDay: Date | null;
+  giaTri: number;
+  soLuong: number;
+}

@@ -42,6 +42,10 @@ export class AccountService {
     const currentUser = localStorage.getItem('currentUser');
     return currentUser ? JSON.parse(currentUser).username : null;
   }
+  getAccessToken(): string {
+    const currentUser = localStorage.getItem('currentUser');
+    return currentUser ? JSON.parse(currentUser).accessToken : null;
+  }
   isLoggedIn(): boolean {
     // Kiểm tra xem người dùng đã đăng nhập hay chưa
     return !!localStorage.getItem('currentUser');
