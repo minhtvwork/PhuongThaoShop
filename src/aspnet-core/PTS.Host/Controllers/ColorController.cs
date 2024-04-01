@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
-using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Domain.IRepository;
 
 namespace PTS.Host.Controllers
 {
@@ -14,16 +14,21 @@ namespace PTS.Host.Controllers
         private readonly IColorRepository _repo;
         private readonly IMapper _mapper;
         private readonly ResponseDto _reponse;
-        public ColorController(IColorRepository repo, IMapper mapper)
+        private readonly IUnitOfWork _unitOfWork;
+        public ColorController(IColorRepository repo, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _repo = repo;
             _mapper = mapper;
             _reponse = new ResponseDto();
+            _unitOfWork = unitOfWork;
+
         }
+        [AllowAnonymous]
         [HttpGet("GetList")]
         public async Task<IActionResult> GetList()
         {
-            return Ok(await _repo.GetList());
+          var x=  _unitOfWork._colorRepository.GetList();
+          return Ok(x);
         }
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById(int id)

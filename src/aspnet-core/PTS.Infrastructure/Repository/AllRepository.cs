@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PTS.Data;
 using PTS.Data;
-using PTS.Host.Repository.IRepository;
+using PTS.Domain.IRepository;
+using System;
 using System.Linq.Expressions;
 
 namespace PTS.Host.Repository
@@ -21,7 +22,7 @@ namespace PTS.Host.Repository
         {
             return await _dbSet.ToListAsync();
         }
-        public async Task<IEnumerable<TEntity>> GetPagedAsync(int page, int pageSize)
+        public async Task<IEnumerable<TEntity>> GetPagedAsync(int page, int pageSize, Expression<Func<TEntity, bool>> predicate)
         {
             if (page < 1)
             {
@@ -33,7 +34,7 @@ namespace PTS.Host.Repository
                 throw new ArgumentOutOfRangeException(nameof(pageSize), "Page size must be greater than 0.");
             }
 
-            IQueryable<TEntity> entities = _context.Set<TEntity>();
+            IQueryable<TEntity> entities = _context.Set<TEntity>().Where(predicate);
             int totalCount = await entities.CountAsync();
 
             int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);

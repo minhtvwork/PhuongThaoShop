@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using PTS.Base.Application.Dto;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
-using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Domain.IRepository;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 

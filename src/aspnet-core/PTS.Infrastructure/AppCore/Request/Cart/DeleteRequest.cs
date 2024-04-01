@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
-using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Domain.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;

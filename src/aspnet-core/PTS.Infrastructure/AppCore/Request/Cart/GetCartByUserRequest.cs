@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using PTS.Domain.Entities;
 using PTS.Data;
-using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Domain.IRepository;
 using PTS.Domain.Dto;
-using PTS.Host.Service.IService;
+using PTS.Domain.IService;
 
 namespace PTS.Host.AppCore.Request
 {

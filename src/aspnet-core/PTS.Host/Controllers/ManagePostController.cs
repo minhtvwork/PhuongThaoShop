@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
-using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Domain.IRepository;
 namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]

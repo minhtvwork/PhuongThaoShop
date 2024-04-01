@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using PTS.Data;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
-using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Domain.IRepository;
 using PTS.Host.AppCore.Request.Bill;
 using PTS.Host.Request.Voucher;
-using PTS.Host.Service.IService;
+using PTS.Domain.IService;
 
 namespace PTS.Host.Controllers
 {

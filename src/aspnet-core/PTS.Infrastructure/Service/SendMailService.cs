@@ -3,7 +3,7 @@
 //using Microsoft.Extensions.Options;
 //using MimeKit;
 //using MimeKit.Text;
-//using PTS.Host.Service.IService;
+//using PTS.Domain.IService;
 //using Shop_API.Utilities;
 //using PTS.Domain.Dto;
 

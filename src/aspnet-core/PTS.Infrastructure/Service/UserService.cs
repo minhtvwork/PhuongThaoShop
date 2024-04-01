@@ -1,4 +1,4 @@
-﻿using PTS.Host.Service.IService;
+﻿using PTS.Domain.IService;
 using System.Security.Claims;
 
 namespace PTS.Host.Service

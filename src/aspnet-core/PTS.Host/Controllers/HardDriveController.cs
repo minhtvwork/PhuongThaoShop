@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
-using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Domain.IRepository;
 using PTS.Host.Controllers;
+using PTS.Domain.IRepository;
+using System.Linq.Expressions;
 
 namespace Shop_API.Controllers
 {
@@ -11,138 +14,59 @@ namespace Shop_API.Controllers
     [ApiController]
     public class HardDriveController : PTSBaseController
     {
-        private readonly IHardDriveRepository _repository;
-        private readonly IConfiguration _config;
-        private readonly IPagingRepository _iPagingRepository;
-        private readonly ResponseDto _reponse;
-        public HardDriveController(IHardDriveRepository repository, IConfiguration config, IPagingRepository pagingRepository)
+        private readonly IAllRepository<HardDriveEntity> _repository;
+        private readonly IMapper _mapper;
+        public HardDriveController(IAllRepository<HardDriveEntity> repository, IMapper mapper)
         {
             _repository = repository;
-            _config = config;
-            _iPagingRepository = pagingRepository;
-            _reponse = new ResponseDto();
+            _mapper = mapper;
         }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAllHardDrives()
+        [HttpGet("GetAllAsync")]
+        public async Task<ActionResult<IEnumerable<HardDriveDto>>> GetAllAsync()
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            return Ok(await _repository.GetAllHardDrives());
+            var listObj = await _repository.GetAllAsync();
+            return Ok(listObj.Where(x => !x.IsDeleted));
         }
-
-        [HttpPost("CreateHardDrive")]
-        public async Task<IActionResult> CreateHardDrive(HardDriveEntity obj)
+        [HttpGet("GetByIdAsync")]
+        public async Task<ActionResult<HardDriveDto>> GetByIdAsync(int id)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _repository.Create(obj))
-            {
-                return Ok("Thêm thành công");
-            }
-            return BadRequest("Thêm thất bại");
+            var obj = await _repository.GetByIdAsync(id);
+            return Ok(obj);
         }
-        [HttpPut]
-        public async Task<IActionResult> UpdateHardDrive(HardDriveEntity obj)
+        [AllowAnonymous]
+        [HttpPost("GetPagesAsync")]
+        public async Task<ActionResult<IEnumerable<HardDriveEntity>>> GetPagesAsync(int page, int pageSize)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _repository.Update(obj))
-            {
-                return Ok("Sửa thành công");
-            }
-            return BadRequest("Sửa thất bại");
+            Expression<Func<HardDriveEntity, bool>> predicate = x => x.IsDeleted == false;
+            var result = await _repository.GetPagedAsync(page, pageSize, predicate);
+            return Ok(result);
         }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteHardDrive(int id)
+        [HttpPost("CreateOrUpdateAsync")]
+        public async Task<ActionResult> CreateOrUpdateAsync(HardDriveDto objDto)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
+            var obj = _mapper.Map<HardDriveEntity>(objDto);
+            if (obj.Id > 0)
             {
-                return Unauthorized();
+                if (await _repository.UpdateAsync(obj))
+                    return Ok(obj);
+                return BadRequest();
             }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
+            else
             {
-                return Unauthorized();
+                if (await _repository.CreateAsync(obj))
+                    return Ok(obj);
+                return BadRequest();
             }
-            if (await _repository.Delete(id))
-            {
-                return Ok("Xóa thành công");
-            }
-            return BadRequest("Xóa thất bại");
         }
-
-        [HttpGet("GetHardDriveFSP")]
-        public async Task<IActionResult> GetHardDriveFSP(string? search, decimal? from, decimal? to, string? sortBy, int page)
+        [AllowAnonymous]
+        [HttpPost("DeleteAsync")]
+        public async Task<ActionResult> DeleteAsync(int id)
         {
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            _reponse.Result = _iPagingRepository.GetAllHardDrive(search, from, to, sortBy, page);
-            _reponse.Count = _iPagingRepository.GetAllHardDrive(search, from, to, sortBy, page).Count;
-            return Ok(_reponse);
+            var obj = await _repository.GetByIdAsync(id);
+            obj.IsDeleted = true;
+            if (await _repository.UpdateAsync(obj))
+                return Ok(obj);
+            return BadRequest();
         }
-
-        [HttpGet("GetHardById")]
-        public async Task<IActionResult> GetHardById(int id)
-        {
-
-            //    string apiKey = _config.GetSection("ApiKey").Value;
-            //    if (apiKey == null)
-            //    {
-            //        return Unauthorized();
-            //    }
-
-            //    var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            //    if (keyDomain != apiKey.ToLower())
-            //    {
-            //        return Unauthorized();
-            //    }
-            _reponse.Result = await _repository.GetById(id);
-            return Ok(_reponse);
-        }
-
     }
 }

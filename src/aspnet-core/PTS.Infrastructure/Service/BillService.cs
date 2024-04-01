@@ -1,5 +1,5 @@
-﻿using PTS.EntityFrameworkCore.Repository.IRepository;
-using PTS.Host.Service.IService;
+﻿using PTS.Domain.IRepository;
+using PTS.Domain.IService;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Base.Application.Utilities;

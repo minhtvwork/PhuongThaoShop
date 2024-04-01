@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace PTS.Domain.Dto
 {
-   public class CpuDto : BaseEntity
+   public class CpuDto 
     {
+        public int Id { get; set; }
         public string? Ma { get; set; }
-        [MaxLength(100)]
         public string? Ten { get; set; }
     }
 }

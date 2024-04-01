@@ -1,7 +1,7 @@
 ﻿
 using PTS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Domain.IRepository;
 using PTS.Data;
 
 namespace PTS.EntityFrameworkCore.Repository

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Domain.IRepository;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using System.Net.NetworkInformation;

@@ -14,6 +14,7 @@ namespace PTS.Host
                 config.CreateMap<ColorDto, ColorEntity>().ReverseMap();
                 config.CreateMap<VoucherDto, VoucherEntity>().ReverseMap();
                 config.CreateMap<ContactDto, ContactEntity>().ReverseMap();
+                config.CreateMap<HardDriveDto, HardDriveEntity>().ReverseMap();
                 config.CreateMap<CreateProductDetailDto, ProductDetailEntity>().ReverseMap();
             });
             return mappingConfig;

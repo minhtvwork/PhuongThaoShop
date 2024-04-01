@@ -2,19 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Domain.IRepository;
 using PTS.EntityFrameworkCore.Repository;
 using PTS.Host;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 using PTS.Host.Repository;
 using PTS.Domain.Entities;
-using PTS.Host.Repository.IRepository;
-using PTS.Host.Service.IService;
+using PTS.Domain.IRepository;
+using PTS.Domain.IService;
 using PTS.Host.Service;
 using PTS.Data;
 using PTS.Host.AppCore.Request;
 using MS.Infrastructure.Service;
+using PTS.Infrastructure.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,8 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetCa
 //#region Đăng ký DI
 builder.Services.AddScoped<ApplicationDbContext, ApplicationDbContext>();
 
+builder.Services.AddTransient<IAllRepository<CpuEntity>, AllRepository<CpuEntity>>();
+builder.Services.AddTransient<IAllRepository<HardDriveEntity>, AllRepository<HardDriveEntity>>();
 //builder.Services.AddTransient<IRamRepository, RamRepository>();
 //builder.Services.AddTransient<IRepository<VoucherEntity>, IRepository<VoucherEntity>>();
 builder.Services.AddTransient<IVoucherRepository, VoucherRepository>();
@@ -47,12 +50,11 @@ builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddTransient<ICartDetailRepository, CartDetailRepository>();
 builder.Services.AddTransient<IBillRepository, BillRepository>();
 builder.Services.AddTransient<IBillDetailRepository, BillDetailRepository>();
-builder.Services.AddTransient<IAllRepository<CpuEntity>, AllRepository<CpuEntity>>();
 //builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<ICartService, CartService>();
 builder.Services.AddTransient<IBillService, BillService>();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(options =>
@@ -87,9 +89,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
 app.UseCors(t => t.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+app.UseAuthorization();
+app.MapControllers();
 app.Run();

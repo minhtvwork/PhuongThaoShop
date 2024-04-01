@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PTS.Domain.Dto;
-using PTS.EntityFrameworkCore.Repository.IRepository;
+using PTS.Domain.IRepository;
 using PTS.Host.AppCore.Request.Cart;
 using PTS.Host.AppCore.Request;
-using PTS.Host.Service.IService;
+using PTS.Domain.IService;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using MS.Infrastructure.AppCore.Request.Cart;
 

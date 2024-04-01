@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
-using PTS.Host.Repository.IRepository;
+using PTS.Domain.IRepository;
+using System.Linq.Expressions;
 
 namespace PTS.Host.Controllers
 {
@@ -20,7 +21,6 @@ namespace PTS.Host.Controllers
             _repository = repository;
             _mapper = mapper;
         }
-
         [HttpGet("GetAllAsync")]
         public async Task<ActionResult<IEnumerable<CpuDto>>> GetAllAsync()
         {
@@ -33,11 +33,11 @@ namespace PTS.Host.Controllers
             var obj = await _repository.GetByIdAsync(id);
             return Ok(obj);
         }
-        [AllowAnonymous]
         [HttpPost("GetPagesAsync")]
         public async Task<ActionResult<IEnumerable<CpuEntity>>> GetPagesAsync(int page, int pageSize)
         {
-            var result = await _repository.GetPagedAsync(page, pageSize);
+            Expression<Func<CpuEntity, bool>> predicate = x => x.IsDeleted == false;
+            var result = await _repository.GetPagedAsync(page, pageSize, predicate);
             return Ok(result);
         }
         [HttpPost("CreateOrUpdateAsync")]
@@ -56,7 +56,15 @@ namespace PTS.Host.Controllers
                     return Ok(obj);
                 return BadRequest();
             }
-          
+        }
+        [HttpPost("DeleteAsync")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            var obj = await _repository.GetByIdAsync(id);
+            obj.IsDeleted = true;
+            if (await _repository.UpdateAsync(obj))
+            return Ok(obj);
+            return BadRequest();
         }
     }
 }
