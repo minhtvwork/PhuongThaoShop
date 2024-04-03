@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace PTS.Domain.Dto
 {
-    public class RevenueDto
+    public class RoleDto
     {
-        public DateTime Date { get; set; }
-        public decimal Amount { get; set; }
+        public int Id { get; set; }
+        public string? RoleCode { get; set; }
+        public string? RoleName { get; set; }
     }
 }

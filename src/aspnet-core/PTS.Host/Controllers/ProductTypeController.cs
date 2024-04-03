@@ -1,6 +1,8 @@
 ﻿
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PTS.Base.Application.Dto;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Domain.IRepository;
@@ -10,135 +12,45 @@ namespace PTS.Host.Controllers
     [ApiController]
     public class ProductTypeController : PTSBaseController
     {
-        private readonly IProductTypeRepository _repository;
-        private readonly IPagingRepository _iPagingRepository;
-        private readonly IConfiguration _config;
-        private readonly ResponseDto _reponse;
-        public ProductTypeController(IProductTypeRepository repository, IConfiguration config, IPagingRepository pagingRepository)
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        public ProductTypeController(IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _repository = repository;
-            _config = config;
-            _reponse = new ResponseDto();
-            _iPagingRepository = pagingRepository;
-
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetAllProductType()
+        [HttpGet("GetList")]
+        public async Task<IActionResult> GetList()
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            return Ok(await _repository.GetAll());
+            return Ok(await _unitOfWork._productTypeRepository.GetList());
         }
-        [HttpGet("GetPagingProductsFSP")]
-        public async Task<IActionResult> GetPagingProductsFSP(string? search, decimal? from, decimal? to, string? sortBy, int page)
+        [HttpPost("GetPaged")]
+        public async Task<IActionResult> GetPaged(PagedRequestDto request)
         {
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-
-            _reponse.Result = _iPagingRepository.GetAll(search, from, to, sortBy, page);
-            var count = _reponse.Count = _iPagingRepository.GetAll(search, from, to, sortBy, page).Count;
-            return Ok(_reponse);
+            return Ok(await _unitOfWork._productTypeRepository.GetPagedAsync(request));
         }
-        [HttpPost("CreateProductType")]
-        public async Task<IActionResult> CreateProductType(ProductTypeEntity obj)
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(int id)
         {
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _repository.Create(obj))
-            {
-                return Ok("Thêm thành công");
-            }
-            return BadRequest("Thêm thất bại");
+            return Ok(await _unitOfWork._productTypeRepository.GetById(id));
         }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateProductType(ProductTypeEntity obj)
+        [HttpPost("CreateOrUpdateAsync")]
+        public async Task<IActionResult> CreateOrUpdateAsync(ProductTypeDto objDto)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
+            var obj = _mapper.Map<ProductTypeEntity>(objDto);
+            if (objDto.Id > 0)
             {
-                return Unauthorized();
+                return Ok(await _unitOfWork._productTypeRepository.Update(obj));
             }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
+            else
             {
-                return Unauthorized();
+                return Ok(await _unitOfWork._productTypeRepository.Create(obj));
             }
-            if (await _repository.Update(obj))
-            {
-                return Ok("Sửa thành công");
-            }
-            return BadRequest("Sửa thành công");
         }
-
-        [HttpDelete("id")]
-        public async Task<IActionResult> DeleteProductType(int id)
+        [HttpPost("Delete")]
+        public async Task<IActionResult> Delete(int id)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _repository.Delete(id))
-            {
-                return Ok("Xóa thành công");
-            }
-            return BadRequest("Xóa thất bại");
+            return Ok(await _unitOfWork._productTypeRepository.Delete(id));
         }
-
-        [HttpGet("ProductTypeById")]
-        public async Task<IActionResult> ProductTypeById(int id)
-        {
-
-            //    string apiKey = _config.GetSection("ApiKey").Value;
-            //    if (apiKey == null)
-            //    {
-            //        return Unauthorized();
-            //    }
-
-            //    var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            //    if (keyDomain != apiKey.ToLower())
-            //    {
-            //        return Unauthorized();
-            //    }
-            _reponse.Result = await _repository.GetById(id);
-            return Ok(_reponse);
-        }
-
     }
 }

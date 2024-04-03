@@ -11,7 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MS.Infrastructure.Service
+namespace PTS.Infrastructure.Service
 {
     public class AccountService : IAccountService
     {
@@ -46,7 +46,6 @@ namespace MS.Infrastructure.Service
             {
                 return new LoginResponse(false, null, null, null, null, null, null, false, null);
             }
-           ;
         }
         private string CreateToken(UserEntity user)
         {
@@ -55,7 +54,7 @@ namespace MS.Infrastructure.Service
                 new Claim(ClaimTypes.Role, user.RoleEntities.RoleName),
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("PTS KMM BMK 103845045 MPTM"));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 

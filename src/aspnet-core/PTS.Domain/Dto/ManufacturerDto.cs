@@ -7,13 +7,10 @@ using System.Threading.Tasks;
 
 namespace PTS.Domain.Dto
 {
-    public class ProductDto
+   public class ManufacturerDto
     {
         public int Id { get; set; }
-        [Required]
-        [MaxLength(150)]
-        public string? Name { get; set; }
-        public int? ManufacturerEntityId { get; set; }
-        public int? ProductTypeEntityId { get; set; }
+        [Required] 
+        public string Name { get; set; }
     }
 }

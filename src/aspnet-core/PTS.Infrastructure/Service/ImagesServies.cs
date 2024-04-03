@@ -2,9 +2,9 @@
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Data;
-using PTS.Host.Services.IServices;
+using PTS.Infrastructure.Services.IServices;
 
-namespace PTS.Host.Services
+namespace PTS.Infrastructure.Services
 {
     public class ImagesServies: IImagesServies
     {

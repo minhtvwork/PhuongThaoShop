@@ -7,7 +7,7 @@
 //using Shop_API.Utilities;
 //using PTS.Domain.Dto;
 
-//namespace PTS.Host.Service
+//namespace PTS.Infrastructure.Service
 //{
 //    public class SendMailService : ISendMailService
 //    {

@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PTS.Base.Application.Dto;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Domain.IRepository;
@@ -18,33 +19,37 @@ namespace Shop_API.Controllers
         private readonly IConfiguration _config;
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
-        public ProductDetailController(IProductDetailRepository repository, IConfiguration config, IMediator mediator, IMapper mapper)
+        private readonly IUnitOfWork _unitOfWork;
+        public ProductDetailController(IProductDetailRepository repository, IConfiguration config, IMediator mediator, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _reponse = new ResponseDto();
             _config = config;
             _mediator = mediator;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
-        [HttpGet("GetAllPDD")]
-
-        public async Task<IActionResult> GetAllPDD()
+        [HttpGet("GetListAsync")]
+        public async Task<IActionResult> GetListAsync()
         {
-            return Ok(await _repository.GetAll());
+            return Ok(await _unitOfWork._productDetailRepository.GetListAsync());
+        }
+        [HttpPost("GetPagedAsync")]
+        public async Task<IActionResult> GetPagedAsync(PagedRequestDto request)
+        {
+            return Ok(await _unitOfWork._productDetailRepository.GetPagedAsync(request));
         }
         [AllowAnonymous]
-        [HttpPost("PGetList")]
-        public async Task<IActionResult> PGetList(PGetListDto request)
+        [HttpPost("PublicGetList")]
+        public async Task<IActionResult> PublicGetList(GetProductDetailRequest request)
         {
-            return Ok(await _repository.PGetList(request));
+            return Ok(await _unitOfWork._productDetailRepository.PublicGetList(request));
         }
         [AllowAnonymous]
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById(int id)
         {
-            _reponse.Result = await _repository.GetById(id);
-            _reponse.Count = 1;
-            return Ok(_reponse);
+            return Ok(await _unitOfWork._productDetailRepository.GetById(id));
         }
         [AllowAnonymous]
         [HttpGet("PGetProductDetail")]
@@ -53,91 +58,26 @@ namespace Shop_API.Controllers
             
             var listProductDetail = await _repository.PGetProductDetail(getNumber, codeProductDetail, status, search, from, to, sortBy, page, productType, hangsx, ram,CPU,cardVGA);
             _reponse.Result = listProductDetail;
-            _reponse.Count = listProductDetail.ToList().Count;
             return Ok(_reponse);
         }
-        [HttpPost("Create")]
-        public async Task<IActionResult> CreateProductDetail(CreateProductDetailDto objDto)
+        [HttpPost("CreateOrUpdateAsync")]
+        public async Task<IActionResult> CreateOrUpdateAsync(CreateProductDetailDto objDto)
         {
-
             var obj = _mapper.Map<ProductDetailEntity>(objDto);
             CreateOrUpdateProductDetailQuery query = new CreateOrUpdateProductDetailQuery();
             query.ProductDetailEntity = obj;
             return Ok(await _mediator.Send(query));
         }
-
-      
         [HttpPost("CreateMany")]
         public async Task<IActionResult> CreateMany(List<ProductDetailEntity> list)
         {
           
             return BadRequest("Lỗi");
         }
-
-        //[HttpPut("UpdateProductDetail")]
-        //public async Task<IActionResult> UpdateProductDetail(ProductDetail obj)
-        //{
-        //    string apiKey = _config.GetSection("ApiKey").Value;
-        //    if (apiKey == null)
-        //    {
-        //        return Unauthorized();
-        //    }
-
-        //    var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-        //    if (keyDomain != apiKey.ToLower())
-        //    {
-        //        return Unauthorized();
-        //    }
-        //    if (await _repository.Update(obj))
-        //    {
-        //        _reponse.Result = obj;
-        //        return Ok(_reponse);
-        //    }
-        //    _reponse.Result = null;
-        //    _reponse.IsSuccess = false;
-        //    _reponse.Message = "Thất bại";
-        //    return BadRequest(_reponse);
-        //}
         [HttpDelete("id")]
         public async Task<IActionResult> DeleteProductDetail(int id)
         {
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _repository.Delete(id))
-            {
-                return Ok("Xóa thành công");
-            }
-            return BadRequest("Xóa thất bại");
-
+            return Ok(await _repository.Delete(id));
         }
-
-        //[HttpGet("ProductDetailById")]
-        //public async Task<IActionResult> ProductDetailById(Guid guid)
-        //{
-
-        //    string apiKey = _config.GetSection("ApiKey").Value;
-        //    if (apiKey == null)
-        //    {
-        //        return Unauthorized();
-        //    }
-
-        //    var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-        //    if (keyDomain != apiKey.ToLower())
-        //    {
-        //        return Unauthorized();
-        //    }
-        //    _reponse.Result = await _repository.GetById(guid);
-        //    return Ok(await _repository.GetById(guid));
-        //}
-
     }
 }

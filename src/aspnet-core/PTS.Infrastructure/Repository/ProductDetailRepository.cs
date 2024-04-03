@@ -7,81 +7,164 @@ using PTS.Data;
 using System.Globalization;
 using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
+using Abp.Application.Services.Dto;
+using PTS.Base.Application.Dto;
 
 namespace PTS.EntityFrameworkCore.Repository
 {
     public class ProductDetailRepository : IProductDetailRepository
     {
         private readonly ApplicationDbContext _context;
-        public static int Page_Size { get; set; } = 10;
-        private readonly ResponseDto responseDto;
         public ProductDetailRepository(ApplicationDbContext context)
         {
             _context = context;
-            responseDto = new ResponseDto();
         }
-        public async Task<List<ProductDetailEntity>> GetAll()
+        public async Task<IEnumerable<ProductDetailEntity>> GetListAsync()
         {
-
-            return await _context.ProductDetailEntity.Where(x => x.Status > 0).ToListAsync();
+            return await _context.ProductDetailEntity.Where(x => !x.IsDeleted).ToListAsync();
         }
-        public async Task<bool> Create(ProductDetailEntity obj)
+        public async Task<PagedResultDto<ProductDetailDto>> GetPagedAsync(PagedRequestDto request)
+        {
+            var query = _context.ProductDetailEntity.Where(x => !x.IsDeleted);
+
+            var totalCount = await query.CountAsync();
+
+            var obj = await query.Skip(request.SkipCount)
+                                    .Take(request.MaxResultCount)
+                                    .ToListAsync();
+
+            var objDto = obj.Select(p => new ProductDetailDto
+            {
+                Id = p.Id,
+                Code = p.Code,
+            }).ToList();
+
+            return new PagedResultDto<ProductDetailDto>(totalCount, objDto);
+        }
+        public async Task<IEnumerable<ProductDetailDto>> PublicGetList(GetProductDetailRequest request)
+        {
+            var query = _context.ProductDetailEntity.Where(a => !a.IsDeleted).AsNoTracking();
+            if (!string.IsNullOrEmpty(request.ProductType))
+            {
+                query = query.Where(a => a.ProductEntity.ProductTypeEntity.Name == request.ProductType);
+            }
+            if (request.GetNumber > 0)
+            {
+                query = query.Take(Convert.ToInt32(request.GetNumber));
+            }
+            if (!string.IsNullOrEmpty(request.Search))
+            {
+                query = query.Where(a => a.ProductEntity.Name.Contains(request.Search) || a.Code == request.Search);
+            }
+            if (!string.IsNullOrEmpty(request.SortBy))
+            {
+                switch (request.SortBy)
+                {
+                    case "price_asc":
+                        query = query.OrderBy(x => x.Price);
+                        break;
+                    case "price_desc":
+                        query = query.OrderByDescending(x => x.Price);
+                        break;
+                }
+            }
+            var result = await query.Include(a => a.ImageEntities)
+                             .Select(a => new ProductDetailDto
+                             {
+                                 Id = a.Id,
+                                 Code = a.Code,
+                                 OldPrice = a.OldPrice,
+                                 Price = a.Price,
+                                 Status = a.Status,
+                                 Upgrade = a.Upgrade,
+                                 Description = a.Description,
+                                 AvailableQuantity = 1,
+                                 ThongSoRam = a.RamEntity.ThongSo,
+                                 MaRam = a.RamEntity.Ma,
+                                 TenCpu = a.CpuEntity.Ten,
+                                 MaCpu = a.CpuEntity.Ma,
+                                 ThongSoHardDrive = a.HardDriveEntity.ThongSo,
+                                 MaHardDrive = a.HardDriveEntity.Ma,
+                                 NameColor = a.ColorEntity.Name,
+                                 MaColor = a.ColorEntity.Ma,
+                                 MaCardVGA = a.CardVGAEntity.Ma,
+                                 TenCardVGA = a.CardVGAEntity.Ten,
+                                 ThongSoCardVGA = a.CardVGAEntity.ThongSo,
+                                 MaManHinh = a.ScreenEntity.Ma,
+                                 KichCoManHinh = a.ScreenEntity.KichCo,
+                                 TanSoManHinh = a.ScreenEntity.TanSo,
+                                 ChatLieuManHinh = a.ScreenEntity.ChatLieu,
+                                 NameProduct = a.ProductEntity.Name,
+                                 NameProductType = a.ProductEntity.ProductTypeEntity.Name,
+                                 NameManufacturer = a.ProductEntity.ManufacturerEntity.Name,
+                                 LinkImage = (a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1") != null) ? a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1").LinkImage : null,
+                                 OtherImages = (a.ImageEntities.Where(image => image.Ma != "Anh1").Select(image => image.LinkImage).ToList()),
+                             }).ToListAsync();
+
+            foreach (var productDetail in result)
+            {
+                productDetail.AvailableQuantity = GetCountProductDetail(productDetail.Code);
+            }
+
+            return result;
+        } 
+        public async Task<ServiceResponse> Create(ProductDetailEntity obj)
         {
             var checkMa = await _context.ProductDetailEntity.AnyAsync(x => x.Code == obj.Code);
             if (obj == null || checkMa == true)
             {
-                return false;
+                return new ServiceResponse(false, "Thêm thất bại");
             }
             try
             {
 
                 await _context.ProductDetailEntity.AddAsync(obj);
                 await _context.SaveChangesAsync();
-                return true;
+                return new ServiceResponse(true, "Thêm thành công");
             }
             catch (Exception)
             {
-                return false;
+                return new ServiceResponse(false, "Thêm thất bại");
             }
         }
-        public async Task<bool> CreateMany(List<ProductDetailEntity> list)
+        public async Task<ServiceResponse> CreateMany(List<ProductDetailEntity> list)
         {
             foreach (var i in list)
             {
                 var checkMa = await _context.ProductDetailEntity.AnyAsync(x => x.Code == i.Code);
                 if (checkMa == true)
                 {
-                    return false;
+                    return new ServiceResponse(false, "Thêm thất bại");
                 }
             }
             try
             {
                 await _context.ProductDetailEntity.AddRangeAsync(list);
                 await _context.SaveChangesAsync();
-                return true;
+                return new ServiceResponse(true, "Thêm thành công");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                return new ServiceResponse(false, $"Thêm thất bại: {e.Message}");
             }
         }
-        public async Task<bool> Delete(int id)
+        public async Task<ServiceResponse> Delete(int id)
         {
             var productDetail = await _context.ProductDetailEntity.FindAsync(id);
             if (productDetail == null)
             {
-                return false;
+                return new ServiceResponse(false, "Xóa thất bại");
             }
             try
             {
                 productDetail.Status = 0;
                 _context.ProductDetailEntity.Update(productDetail);
                 await _context.SaveChangesAsync();
-                return true;
+                return new ServiceResponse(true, "Xóa thành công");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                return new ServiceResponse(false, $"Xóa thất bại: {e.Message}");
             }
         }
         private int GetCountProductDetail(string codeProductDetail)
@@ -191,9 +274,9 @@ namespace PTS.EntityFrameworkCore.Repository
                 }
             }
 
-            var pageSize = Page_Size;
+          //  var pageSize = Page_Size;
             var totalItems = await query.CountAsync();
-            var totalPages = (int)Math.Ceiling(totalItems / (decimal)pageSize);
+          //  var totalPages = (int)Math.Ceiling(totalItems / (decimal)pageSize);
             //page = Math.Clamp((byte)page, 1, totalPages);
             //query = query.Skip((int)((page - 1) * pageSize)).Take(pageSize);
 
@@ -208,12 +291,12 @@ namespace PTS.EntityFrameworkCore.Repository
         }
 
 
-        public async Task<bool> Update(ProductDetailEntity obj)
+        public async Task<ServiceResponse> Update(ProductDetailEntity obj)
         {
             var productDetail = await _context.ProductDetailEntity.FindAsync(obj.Id);
             if (productDetail == null)
             {
-                return false;
+                return new ServiceResponse(false, "Cập nhật thất bại");
             }
             try
             {
@@ -224,11 +307,11 @@ namespace PTS.EntityFrameworkCore.Repository
                 productDetail.Status = obj.Status;
                 _context.ProductDetailEntity.Update(productDetail);
                 await _context.SaveChangesAsync();
-                return true;
+                return new ServiceResponse(true, "Cập nhật thành công");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                return new ServiceResponse(false, $"Cập nhật thất bại: {e.Message}");
             }
         }
         public async Task<bool> UpdateSoLuong(int id, int soLuong)
@@ -289,74 +372,6 @@ namespace PTS.EntityFrameworkCore.Repository
                   OtherImages = (a.ImageEntities.Where(image => image.Ma != "Anh1").Select(image => image.LinkImage).ToList()),
               }).FirstOrDefaultAsync();
             return query;
-        }
-
-        public async Task<IEnumerable<ProductDetailDto>> PGetList(PGetListDto request)
-        {
-            var query = _context.ProductDetailEntity.Where(a=>!a.IsDeleted).AsNoTracking();
-            if (!string.IsNullOrEmpty(request.ProductType))
-            {
-                query = query.Where(a => a.ProductEntity.ProductTypeEntity.Name == request.ProductType);
-            }
-            if (request.GetNumber > 0)
-            {
-                query = query.Take(Convert.ToInt32(request.GetNumber));
-            }
-            if (!string.IsNullOrEmpty(request.Search))
-            {
-                query = query.Where(a => a.ProductEntity.Name.Contains(request.Search) || a.Code == request.Search);
-            }
-            if (!string.IsNullOrEmpty(request.SortBy))
-            {
-                switch (request.SortBy)
-                {
-                    case "price_asc":
-                        query = query.OrderBy(x => x.Price);
-                        break;
-                    case "price_desc":
-                        query = query.OrderByDescending(x => x.Price);
-                        break;
-                }
-            }
-            var result = await query.Include(a => a.ImageEntities)
-                             .Select(a => new ProductDetailDto
-                             {
-                                 Id = a.Id,
-                                 Code = a.Code,
-                                 OldPrice = a.OldPrice,
-                                 Price = a.Price,
-                                 Status = a.Status,
-                                 Upgrade = a.Upgrade,
-                                 Description = a.Description,
-                                 AvailableQuantity = 1,
-                                 ThongSoRam = a.RamEntity.ThongSo,
-                                 MaRam = a.RamEntity.Ma,
-                                 TenCpu = a.CpuEntity.Ten,
-                                 MaCpu = a.CpuEntity.Ma,
-                                 ThongSoHardDrive = a.HardDriveEntity.ThongSo,
-                                 MaHardDrive = a.HardDriveEntity.Ma,
-                                 NameColor = a.ColorEntity.Name,
-                                 MaColor = a.ColorEntity.Ma,
-                                 MaCardVGA = a.CardVGAEntity.Ma,
-                                 TenCardVGA = a.CardVGAEntity.Ten,
-                                 ThongSoCardVGA = a.CardVGAEntity.ThongSo,
-                                 MaManHinh = a.ScreenEntity.Ma,
-                                 KichCoManHinh = a.ScreenEntity.KichCo,
-                                 TanSoManHinh = a.ScreenEntity.TanSo,
-                                 ChatLieuManHinh = a.ScreenEntity.ChatLieu,
-                                 NameProduct = a.ProductEntity.Name,
-                                 NameProductType = a.ProductEntity.ProductTypeEntity.Name,
-                                 NameManufacturer = a.ProductEntity.ManufacturerEntity.Name,
-                                 LinkImage = (a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1") != null) ? a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1").LinkImage : null,
-                                 OtherImages = (a.ImageEntities.Where(image => image.Ma != "Anh1").Select(image => image.LinkImage).ToList()),
-                             }).ToListAsync();
-
-            foreach (var productDetail in result)
-            {
-                productDetail.AvailableQuantity = GetCountProductDetail(productDetail.Code);
-            }
-
-            return result;
         }
     }
 }

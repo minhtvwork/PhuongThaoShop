@@ -7,14 +7,10 @@ using PTS.EntityFrameworkCore.Repository;
 using PTS.Host;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
-using PTS.Host.Repository;
-using PTS.Domain.Entities;
-using PTS.Domain.IRepository;
 using PTS.Domain.IService;
-using PTS.Host.Service;
+using PTS.Infrastructure.Service;
 using PTS.Data;
 using PTS.Host.AppCore.Request;
-using MS.Infrastructure.Service;
 using PTS.Infrastructure.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,15 +32,22 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetCa
 //#region Đăng ký DI
 builder.Services.AddScoped<ApplicationDbContext, ApplicationDbContext>();
 
-builder.Services.AddTransient<IAllRepository<CpuEntity>, AllRepository<CpuEntity>>();
-builder.Services.AddTransient<IAllRepository<HardDriveEntity>, AllRepository<HardDriveEntity>>();
-//builder.Services.AddTransient<IRamRepository, RamRepository>();
-//builder.Services.AddTransient<IRepository<VoucherEntity>, IRepository<VoucherEntity>>();
+//builder.Services.AddTransient<IAllRepository<CpuEntity>, AllRepository<CpuEntity>>();
+builder.Services.AddTransient<IRamRepository, RamRepository>();
+builder.Services.AddTransient<ICpuRepository, CpuRepository>();
 builder.Services.AddTransient<IVoucherRepository, VoucherRepository>();
 builder.Services.AddTransient<IColorRepository, ColorRepository>();
 builder.Services.AddTransient<IVoucherRepository, VoucherRepository>();
 builder.Services.AddTransient<IContactRepository, ContactRepository>();
+builder.Services.AddTransient<IHardDriveRepository, HardDriveRepository>();
+builder.Services.AddTransient<IManagePostRepository, ManagePostRepository>();
 builder.Services.AddTransient<IProductDetailRepository, ProductDetailRepository>();
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<IProductTypeRepository, ProductTypeRepository>();
+builder.Services.AddTransient<IManufacturerRepository, ManufacturerRepository>();
+builder.Services.AddTransient<IScreenRepository, ScreenRepository>();
+builder.Services.AddTransient<ISerialRepository, SerialRepository>();
+builder.Services.AddTransient<IRoleRepository, RoleRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddTransient<ICartDetailRepository, CartDetailRepository>();
@@ -75,7 +78,7 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
         ValidateIssuerSigningKey = true,
         ValidateAudience = false,
         ValidateIssuer = false,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication"))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("PTS KMM BMK 103845045 MPTM"))
     };
 });
 

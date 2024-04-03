@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PTS.Data;
 using PTS.Domain.Entities;
 using PTS.Domain.IRepository;
-using PTS.Host.Services.IServices;
+using PTS.Infrastructure.Services.IServices;
 namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]

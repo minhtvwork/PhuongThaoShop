@@ -3,6 +3,10 @@ using PTS.Domain.IRepository;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Data;
+using System.Drawing;
+using System.Linq.Dynamic.Core;
+using Abp.Application.Services.Dto;
+using PTS.Base.Application.Dto;
 
 namespace PTS.EntityFrameworkCore.Repository
 {
@@ -18,7 +22,25 @@ namespace PTS.EntityFrameworkCore.Repository
         {
             return await _dbContext.ColorEntity.Where(x => !x.IsDeleted).ToListAsync();
         }
+        public async Task<PagedResultDto<ColorDto>> GetPagedAsync(PagedRequestDto request)
+        {
+            var query = _dbContext.ColorEntity.Where(x => !x.IsDeleted);
 
+            var totalCount = await query.CountAsync();
+
+            var obj = await query.Skip(request.SkipCount)
+                                    .Take(request.MaxResultCount)
+                                    .ToListAsync();
+
+            var objDto = obj.Select(color => new ColorDto
+            {
+                Id = color.Id,
+                Name = color.Name,
+                Ma = color.Ma
+            }).ToList();
+
+            return new PagedResultDto<ColorDto>(totalCount, objDto);
+        }
         public async Task<ColorEntity> GetById(int id)
         {
             return await _dbContext.ColorEntity.FindAsync(id);
@@ -43,6 +65,11 @@ namespace PTS.EntityFrameworkCore.Repository
         }
         public async Task<ServiceResponse> Update(ColorEntity obj)
         {
+            var checkMa = await _dbContext.ColorEntity.AnyAsync(x => x.Ma == obj.Ma);
+            if (obj == null || checkMa == true || obj.Ma == null || obj.Name == null)
+            {
+                return new ServiceResponse(false, "Thêm thất bại");
+            }
             var color = await _dbContext.ColorEntity.FindAsync(obj.Id);
             if (color == null)
             {

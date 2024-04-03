@@ -3,27 +3,48 @@ using PTS.Domain.IRepository;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Data;
+using Abp.Application.Services.Dto;
+using PTS.Base.Application.Dto;
 
 namespace PTS.EntityFrameworkCore.Repository
 {
     public class RamRepository : IRamRepository
     {
-        private readonly ApplicationDbContext _context;
-        public RamRepository(ApplicationDbContext context)
+        private readonly ApplicationDbContext _dbContext;
+        public RamRepository(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
+        }
+        public async Task<PagedResultDto<RamDto>> GetPagedAsync(PagedRequestDto request)
+        {
+            var query = _dbContext.RamEntity.Where(x => !x.IsDeleted);
+
+            var totalCount = await query.CountAsync();
+
+            var obj = await query.Skip(request.SkipCount)
+                                    .Take(request.MaxResultCount)
+                                    .ToListAsync();
+
+            var objDto = obj.Select(ram => new RamDto
+            {
+                Id = ram.Id,
+                Ma = ram.Ma,
+                ThongSo = ram.ThongSo
+            }).ToList();
+
+            return new PagedResultDto<RamDto>(totalCount, objDto);
         }
         public async Task<bool> Create(RamEntity obj)
         {
-            var checkMa = await _context.RamEntity.AnyAsync(x => x.Ma == obj.Ma);// tìm mã, trả về true nếu đã có, false nếu chưa có
-            if (obj == null || checkMa == true)
+            var check = await _dbContext.RamEntity.AnyAsync(x => x.Ma == obj.Ma);
+            if (obj == null || check == true)
             {
                 return false;
             }
             try
             {
-                await _context.RamEntity.AddAsync(obj);
-                await _context.SaveChangesAsync();
+                await _dbContext.RamEntity.AddAsync(obj);
+                await _dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -33,7 +54,7 @@ namespace PTS.EntityFrameworkCore.Repository
         }
         public async Task<bool> Delete(int id)
         {
-            var ram = await _context.RamEntity.FindAsync(id);
+            var ram = await _dbContext.RamEntity.FindAsync(id);
             if (ram == null)
             {
                 return false;
@@ -41,8 +62,8 @@ namespace PTS.EntityFrameworkCore.Repository
             try
             {
                 ram.IsDeleted = true;
-                _context.RamEntity.Update(ram);
-                await _context.SaveChangesAsync();
+                _dbContext.RamEntity.Update(ram);
+                await _dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -50,23 +71,24 @@ namespace PTS.EntityFrameworkCore.Repository
                 return false;
             }
         }
-        public async Task<List<RamEntity>> GetAllRams()
+        public async Task<IEnumerable<RamEntity>> GetList()
         {
-            var list = await _context.RamEntity.ToListAsync();// lấy tất cả ram
-            var listRam = list.Where(x => !x.IsDeleted).ToList();// lấy tất cả ram với điều kiện trạng thái khác 0
-            return listRam;
+           return await _dbContext.RamEntity.Where(a=>!a.IsDeleted).ToListAsync();
         }
 
         public async Task<RamEntity> GetById(int id)
         {
-            var result = await _context.RamEntity.FindAsync(id);
-            return result;
+            return await _dbContext.RamEntity.FindAsync(id);
         }
 
         public async Task<bool> Update(RamEntity obj)
         {
-           
-            var ram = await _context.RamEntity.FindAsync(obj.Id);
+            var check = await _dbContext.RamEntity.AnyAsync(x => x.Ma == obj.Ma);
+            if (obj == null || check == true)
+            {
+                return false;
+            }
+            var ram = await _dbContext.RamEntity.FindAsync(obj.Id);
             if (ram == null)
             {
                 return false;
@@ -75,9 +97,8 @@ namespace PTS.EntityFrameworkCore.Repository
             {
                 ram.Ma = obj.Ma;
                 ram.ThongSo = obj.ThongSo;
-                //ram.TrangThai = obj.TrangThai;
-                _context.RamEntity.Update(ram);
-                await _context.SaveChangesAsync();
+                _dbContext.RamEntity.Update(ram);
+                await _dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception)

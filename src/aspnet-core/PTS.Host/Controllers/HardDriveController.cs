@@ -7,6 +7,7 @@ using PTS.Domain.IRepository;
 using PTS.Host.Controllers;
 using PTS.Domain.IRepository;
 using System.Linq.Expressions;
+using PTS.Base.Application.Dto;
 
 namespace Shop_API.Controllers
 {
@@ -14,59 +15,45 @@ namespace Shop_API.Controllers
     [ApiController]
     public class HardDriveController : PTSBaseController
     {
-        private readonly IAllRepository<HardDriveEntity> _repository;
         private readonly IMapper _mapper;
-        public HardDriveController(IAllRepository<HardDriveEntity> repository, IMapper mapper)
+        private readonly IUnitOfWork _unitOfWork;
+        public HardDriveController(IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _repository = repository;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
-        [HttpGet("GetAllAsync")]
-        public async Task<ActionResult<IEnumerable<HardDriveDto>>> GetAllAsync()
+        [HttpGet("GetList")]
+        public async Task<IActionResult> GetList()
         {
-            var listObj = await _repository.GetAllAsync();
-            return Ok(listObj.Where(x => !x.IsDeleted));
+            return Ok(await _unitOfWork._hardDriveRepository.GetList());
         }
-        [HttpGet("GetByIdAsync")]
-        public async Task<ActionResult<HardDriveDto>> GetByIdAsync(int id)
+        [HttpPost("GetPaged")]
+        public async Task<IActionResult> GetPaged(PagedRequestDto request)
         {
-            var obj = await _repository.GetByIdAsync(id);
-            return Ok(obj);
+            return Ok(await _unitOfWork._hardDriveRepository.GetPagedAsync(request));
         }
-        [AllowAnonymous]
-        [HttpPost("GetPagesAsync")]
-        public async Task<ActionResult<IEnumerable<HardDriveEntity>>> GetPagesAsync(int page, int pageSize)
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(int id)
         {
-            Expression<Func<HardDriveEntity, bool>> predicate = x => x.IsDeleted == false;
-            var result = await _repository.GetPagedAsync(page, pageSize, predicate);
-            return Ok(result);
+            return Ok(await _unitOfWork._hardDriveRepository.GetById(id));
         }
         [HttpPost("CreateOrUpdateAsync")]
-        public async Task<ActionResult> CreateOrUpdateAsync(HardDriveDto objDto)
+        public async Task<IActionResult> CreateOrUpdateAsync(HardDriveDto objDto)
         {
             var obj = _mapper.Map<HardDriveEntity>(objDto);
-            if (obj.Id > 0)
+            if (objDto.Id > 0)
             {
-                if (await _repository.UpdateAsync(obj))
-                    return Ok(obj);
-                return BadRequest();
+                return Ok(await _unitOfWork._hardDriveRepository.Update(obj));
             }
             else
             {
-                if (await _repository.CreateAsync(obj))
-                    return Ok(obj);
-                return BadRequest();
+                return Ok(await _unitOfWork._hardDriveRepository.Create(obj));
             }
         }
-        [AllowAnonymous]
-        [HttpPost("DeleteAsync")]
-        public async Task<ActionResult> DeleteAsync(int id)
+        [HttpPost("Delete")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var obj = await _repository.GetByIdAsync(id);
-            obj.IsDeleted = true;
-            if (await _repository.UpdateAsync(obj))
-                return Ok(obj);
-            return BadRequest();
+            return Ok(await _unitOfWork._hardDriveRepository.Delete(id));
         }
     }
 }

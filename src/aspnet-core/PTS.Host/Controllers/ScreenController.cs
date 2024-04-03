@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PTS.Base.Application.Dto;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Domain.IRepository;
@@ -10,136 +12,45 @@ namespace PTS.Host.Controllers
     [ApiController]
     public class ScreenController : PTSBaseController
     {
-        private readonly IScreenRepository _repository;
-        private readonly IConfiguration _config;
-        private readonly ResponseDto _reponse;
-        private readonly IPagingRepository _iPagingRepository;
-        public ScreenController(IScreenRepository repository, IConfiguration config, IPagingRepository pagingRepository)
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        public ScreenController(IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _repository = repository;
-            _config = config;
-            _iPagingRepository = pagingRepository;
-            _reponse = new ResponseDto();
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetAllScreens()
+        [HttpGet("GetList")]
+        public async Task<IActionResult> GetList()
         {
-
-            //string apiKey = _config.GetSection("ApiKey").Value;
-            //if (apiKey == null)
-            //{
-            //    return Unauthorized();
-            //}
-
-            //var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            //if (keyDomain != apiKey.ToLower())
-            //{
-            //    return Unauthorized();
-            //}
-            return Ok(await _repository.GetAll());
+            return Ok(await _unitOfWork._screenRepository.GetList());
         }
-        [HttpPost("CreateScreen")]
-        public async Task<IActionResult> CreateScreen(ScreenEntity obj)
+        [HttpPost("GetPaged")]
+        public async Task<IActionResult> GetPaged(PagedRequestDto request)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _repository.Create(obj))
-            {
-                return Ok("Thêm thành công");
-            }
-            return BadRequest("Thêm thất bại");
+            return Ok(await _unitOfWork._screenRepository.GetPagedAsync(request));
         }
-        [HttpPut]
-        public async Task<IActionResult> UpdateScreen(ScreenEntity obj)
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(int id)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _repository.Update(obj))
-            {
-                return Ok("Sửa thành công");
-            }
-            return BadRequest("Sửa thất bại");
+            return Ok(await _unitOfWork._screenRepository.GetById(id));
         }
-        [HttpDelete("id")]
-        public async Task<IActionResult> DeleteScreen(int id)
+        [HttpPost("CreateOrUpdateAsync")]
+        public async Task<IActionResult> CreateOrUpdateAsync(ScreenDto objDto)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
+            var obj = _mapper.Map<ScreenEntity>(objDto);
+            if (objDto.Id > 0)
             {
-                return Unauthorized();
+                return Ok(await _unitOfWork._screenRepository.Update(obj));
             }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
+            else
             {
-                return Unauthorized();
+                return Ok(await _unitOfWork._screenRepository.Create(obj));
             }
-            if (await _repository.Delete(id))
-            {
-                return Ok("Xóa thành công");
-            }
-            return BadRequest("Xóa thất bại");
-
         }
-
-        [HttpGet("GetScreenFSP")]
-        public async Task<IActionResult> GetScreenFSP(string? search, decimal? from, decimal? to, string? sortBy, int page)
+        [HttpPost("Delete")]
+        public async Task<IActionResult> Delete(int id)
         {
-            //string apiKey = _config.GetSection("ApiKey").Value;
-            //if (apiKey == null)
-            //{
-            //    return Unauthorized();
-            //}
-
-            //var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            //if (keyDomain != apiKey.ToLower())
-            //{
-            //    return Unauthorized();
-            //}
-            _reponse.Result = _iPagingRepository.GetAllScreen(search, from, to, sortBy, page);
-            _reponse.Count = _iPagingRepository.GetAllScreen(search, from, to, sortBy, page).Count;
-            return Ok(_reponse);
+            return Ok(await _unitOfWork._screenRepository.Delete(id));
         }
-
-        [HttpGet("ScreenById")]
-        public async Task<IActionResult> ScreenById(int id)
-        {
-
-            //    string apiKey = _config.GetSection("ApiKey").Value;
-            //    if (apiKey == null)
-            //    {
-            //        return Unauthorized();
-            //    }
-
-            //    var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            //    if (keyDomain != apiKey.ToLower())
-            //    {
-            //        return Unauthorized();
-            //    }
-            _reponse.Result = await _repository.GetById(id);
-            return Ok(_reponse);
-        }
-
     }
 }

@@ -3,7 +3,7 @@ using PTS.Domain.IService;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 
-namespace PTS.Host.Service
+namespace PTS.Infrastructure.Service
 {
     public class CartService : ICartService
     {
@@ -197,7 +197,6 @@ namespace PTS.Host.Service
             else
             {
                 _reponse.Result = cartItem;
-                _reponse.Count = cartItem.Count();
                 _reponse.Code = 200;
                 return _reponse;
             }

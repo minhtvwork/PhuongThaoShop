@@ -4,6 +4,8 @@ using PTS.Domain.IRepository;
 using PTS.Domain.Entities;
 using PTS.Data;
 using PTS.Domain.Dto;
+using Abp.Application.Services.Dto;
+using PTS.Base.Application.Dto;
 
 namespace PTS.EntityFrameworkCore.Repository
 {
@@ -15,9 +17,36 @@ namespace PTS.EntityFrameworkCore.Repository
         {
             _dbContext = context;
         }
+        public async Task<PagedResultDto<ContactDto>> GetPagedAsync(PagedRequestDto request)
+        {
+            var query = _dbContext.ContactEntity.Where(x => !x.IsDeleted);
+
+            var totalCount = await query.CountAsync();
+
+            var obj = await query.Skip(request.SkipCount)
+                                    .Take(request.MaxResultCount)
+                                    .ToListAsync();
+
+            var objDto = obj.Select(contact => new ContactDto
+            {
+                Id = contact.Id,
+               Email = contact.Email,
+               Name = contact.Name,
+               Message = contact.Message,
+               CodeManagePost = contact.CodeManagePost,
+              Website = contact.Website
+        }).ToList();
+
+            return new PagedResultDto<ContactDto>(totalCount, objDto);
+        }
+        public async Task<ContactEntity> GetById(int id)
+        {
+            return await _dbContext.ContactEntity.FindAsync(id);
+        }
         public async Task<ServiceResponse> Create(ContactEntity contact)
         {
-            if (contact == null)
+            var checkMa = await _dbContext.ContactEntity.AnyAsync(x => x.CodeManagePost == contact.CodeManagePost);
+            if (contact == null || checkMa == true)
             {
                 return new ServiceResponse(false, "Thêm thất bại");
             }
@@ -35,6 +64,7 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<ServiceResponse> Delete(int Id)
         {
+
             var obj = await _dbContext.ContactEntity.FindAsync(Id);
             if (obj == null)
             {
@@ -60,6 +90,11 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<ServiceResponse> Update(ContactEntity contact)
         {
+            var checkMa = await _dbContext.ContactEntity.AnyAsync(x => x.CodeManagePost == contact.CodeManagePost);
+            if (contact == null || checkMa == true)
+            {
+                return new ServiceResponse(false, "Thêm thất bại");
+            }
             var obj = await _dbContext.ContactEntity.FindAsync(contact.Id);
             if (obj == null)
             {

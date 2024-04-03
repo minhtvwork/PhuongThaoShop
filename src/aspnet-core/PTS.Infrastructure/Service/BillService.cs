@@ -4,7 +4,7 @@ using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Base.Application.Utilities;
 
-namespace PTS.Host.Service
+namespace PTS.Infrastructure.Service
 {
     public class BillService : IBillService
     {
@@ -138,7 +138,6 @@ namespace PTS.Host.Service
         }
         public async Task<ResponseDto> GetAllBill(string? phoneNumber)
         {
-            _reponse.Count = _billRepository.GetAll().Result.Count();
             _reponse.Result = await _billRepository.GetAll();
             return _reponse;
         }

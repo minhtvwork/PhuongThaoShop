@@ -4,28 +4,46 @@ using PTS.Domain.IRepository;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Data;
+using Abp.Application.Services.Dto;
+using PTS.Base.Application.Dto;
 
 namespace PTS.EntityFrameworkCore.Repository
 {
     public class ProductTypeRepository : IProductTypeRepository
     {
-        private readonly ApplicationDbContext _context;
-        public ProductTypeRepository(ApplicationDbContext context)
+        private readonly ApplicationDbContext _dbContext;
+        public ProductTypeRepository(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
+        public async Task<PagedResultDto<ProductTypeDto>> GetPagedAsync(PagedRequestDto request)
+        {
+            var query = _dbContext.ProductTypeEntity.Where(x => !x.IsDeleted);
 
+            var totalCount = await query.CountAsync();
+
+            var obj = await query.Skip(request.SkipCount)
+                                    .Take(request.MaxResultCount)
+                                    .ToListAsync();
+
+            var objDto = obj.Select(productType => new ProductTypeDto
+            {
+                Id = productType.Id,
+                Name = productType.Name
+            }).ToList();
+            return new PagedResultDto<ProductTypeDto>(totalCount, objDto);
+        }
         public async Task<bool> Create(ProductTypeEntity obj)
         {
-            var check = await _context.ProductTypeEntity.AnyAsync(x => x.Name == obj.Name);
+            var check = await _dbContext.ProductTypeEntity.AnyAsync(x => x.Name == obj.Name);
             if (check || obj == null)
             {
                 return false;
             }
             try
             {
-                await _context.ProductTypeEntity.AddAsync(obj);
-                await _context.SaveChangesAsync();
+                await _dbContext.ProductTypeEntity.AddAsync(obj);
+                await _dbContext.SaveChangesAsync();
                 return true;
 
             }
@@ -36,16 +54,16 @@ namespace PTS.EntityFrameworkCore.Repository
         }
         public async Task<bool> Delete(int id)
         {
-            var productType = await _context.ProductTypeEntity.FindAsync(id);
+            var productType = await _dbContext.ProductTypeEntity.FindAsync(id);
             if (productType == null)
             {
                 return false;
             }
             try
             {
-                productType.Status = 0;
-                _context.ProductTypeEntity.Update(productType);
-                await _context.SaveChangesAsync();
+                productType.IsDeleted = true;
+                _dbContext.ProductTypeEntity.Update(productType);
+                await _dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -53,24 +71,24 @@ namespace PTS.EntityFrameworkCore.Repository
                 return false;
             }
         }
-
-        public async Task<IEnumerable<ProductTypeEntity>> GetAll()
+        public async Task<IEnumerable<ProductTypeEntity>> GetList()
         {
-            var listAll = await _context.ProductTypeEntity.ToListAsync();
-            var list = listAll.Where(x => x.Status > 0).ToList();
-            return list;
+        return await _dbContext.ProductTypeEntity.Where(a=>!a.IsDeleted).ToListAsync();
         }
 
         public async Task<ProductTypeEntity> GetById(int id)
         {
-            var result = await _context.ProductTypeEntity.FindAsync(id);
-            return result;
+            return await _dbContext.ProductTypeEntity.FindAsync(id);
         }
 
         public async Task<bool> Update(ProductTypeEntity obj)
         {
-            obj.Name = obj.Name.TrimEnd();
-            var productType = await _context.ProductTypeEntity.FindAsync(obj.Id);
+            var check = await _dbContext.ProductTypeEntity.AnyAsync(x => x.Name == obj.Name);
+            if (check || obj == null)
+            {
+                return false;
+            }
+            var productType = await _dbContext.ProductTypeEntity.FindAsync(obj.Id);
             if (obj == null || productType == null)
             {
                 return false;
@@ -78,9 +96,8 @@ namespace PTS.EntityFrameworkCore.Repository
             try
             {
                 productType.Name = obj.Name;
-                productType.Status = obj.Status;
-                _context.ProductTypeEntity.Update(productType);
-                await _context.SaveChangesAsync();
+                _dbContext.ProductTypeEntity.Update(productType);
+                await _dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception)

@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
 using PTS.Domain.IRepository;
 using PTS.Domain.Entities;
 using PTS.Data;
+using Abp.Application.Services.Dto;
+using PTS.Base.Application.Dto;
+using PTS.Domain.Dto;
 
 namespace PTS.EntityFrameworkCore.Repository
 {
@@ -13,10 +15,30 @@ namespace PTS.EntityFrameworkCore.Repository
         {
             _context = context;
         }
+        public async Task<PagedResultDto<ScreenDto>> GetPagedAsync(PagedRequestDto request)
+        {
+            var query = _context.ScreenEntity.Where(x => !x.IsDeleted);
+
+            var totalCount = await query.CountAsync();
+
+            var obj = await query.Skip(request.SkipCount)
+                                    .Take(request.MaxResultCount)
+                                    .ToListAsync();
+
+            var objDto = obj.Select(screen => new ScreenDto
+            {
+                Id = screen.Id,
+               Ma = screen.Ma,
+               KichCo = screen.KichCo,
+               TanSo = screen.TanSo,
+               ChatLieu = screen.ChatLieu
+            }).ToList();
+            return new PagedResultDto<ScreenDto>(totalCount, objDto);
+        }
         public async Task<bool> Create(ScreenEntity obj)
         {
-            var checkMa = await _context.ScreenEntity.AnyAsync(x => x.Ma == obj.Ma);// tìm mã, trả về true nếu đã có, false nếu chưa có
-            if (obj == null || checkMa == true)
+            var check = await _context.ScreenEntity.AnyAsync(x => x.Ma == obj.Ma);
+            if (obj == null || check == true)
             {
                 return false;
             }
@@ -31,7 +53,6 @@ namespace PTS.EntityFrameworkCore.Repository
                 return false;
             }
         }
-
         public async Task<bool> Delete(int id)
         {
             var screen = await _context.ScreenEntity.FindAsync(id);
@@ -51,22 +72,22 @@ namespace PTS.EntityFrameworkCore.Repository
                 return false;
             }
         }
-
-        public async Task<IEnumerable<ScreenEntity>> GetAll()
+        public async Task<IEnumerable<ScreenEntity>> GetList()
         {
-            var list = await _context.ScreenEntity.ToListAsync();// lấy tất cả ram
-            var listScreen = list.Where(x => !x.IsDeleted).ToList();// lấy tất cả ram với điều kiện trạng thái khác 0
-            return listScreen;
+         return await _context.ScreenEntity.Where(x => !x.IsDeleted).ToListAsync();
         }
 
         public async Task<ScreenEntity> GetById(int id)
         {
-            var result = await _context.ScreenEntity.FindAsync(id);
-            return result;
+            return  await _context.ScreenEntity.FindAsync(id);
         }
-
         public async Task<bool> Update(ScreenEntity obj)
         {
+            var check = await _context.ScreenEntity.AnyAsync(x => x.Ma == obj.Ma);
+            if (obj == null || check == true)
+            {
+                return false;
+            }
             var screen = await _context.ScreenEntity.FindAsync(obj.Id);
             if (screen == null)
             {
@@ -74,10 +95,10 @@ namespace PTS.EntityFrameworkCore.Repository
             }
             try
             {
+                screen.Ma = obj.Ma;
                 screen.KichCo = obj.KichCo;
                 screen.TanSo = obj.TanSo;
                 screen.ChatLieu = obj.ChatLieu;
-                //screen.TrangThai = obj.TrangThai;
                 _context.ScreenEntity.Update(screen);
                 await _context.SaveChangesAsync();
                 return true;

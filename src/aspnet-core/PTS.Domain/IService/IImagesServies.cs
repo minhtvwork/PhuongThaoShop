@@ -1,7 +1,7 @@
 ﻿using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 
-namespace PTS.Host.Services.IServices
+namespace PTS.Infrastructure.Services.IServices
 {
     public interface IImagesServies
     {

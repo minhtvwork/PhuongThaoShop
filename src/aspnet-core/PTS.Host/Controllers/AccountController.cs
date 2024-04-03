@@ -49,5 +49,11 @@ namespace PTS.Host.Controllers
             }
             return BadRequest(result);
         }
+        [HttpGet("GetMyInfor")]
+        public async Task<IActionResult> GetMyInfor()
+        {
+            var username = User.Identity.Name;
+            return Ok(username);
+        }
     }
 }

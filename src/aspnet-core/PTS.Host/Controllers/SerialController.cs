@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PTS.Base.Application.Dto;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Domain.IRepository;
@@ -10,139 +12,51 @@ namespace PTS.Host.Controllers
     [ApiController]
     public class SerialController : PTSBaseController
     {
-        private readonly ISerialRepository _repository;
-        private readonly IConfiguration _config;
-        private readonly ResponseDto _reponse;
-        private readonly IPagingRepository _iPagingRepository;
-        public SerialController(ISerialRepository repository, IConfiguration config, IPagingRepository iPagingRepository)
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        public SerialController(IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _repository = repository;
-            _config = config;
-            _reponse = new ResponseDto();
-            _iPagingRepository = iPagingRepository;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetAllSerials()
+        [HttpGet("GetList")]
+        public async Task<IActionResult> GetList()
         {
-
-            //string apiKey = _config.GetSection("ApiKey").Value;
-            //if (apiKey == null)
-            //{
-            //    return Unauthorized();
-            //}
-
-            //var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            //if (keyDomain != apiKey.ToLower())
-            //{
-            //    return Unauthorized();
-            //}
-            return Ok(await _repository.GetAll());
+            return Ok(await _unitOfWork._serialRepository.GetList());
         }
-        [HttpPost("CreateSerial")]
-        public async Task<IActionResult> CreateSerial(SerialEntity obj)
+        [HttpPost("GetPaged")]
+        public async Task<IActionResult> GetPaged(PagedRequestDto request)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
+            return Ok(await _unitOfWork._serialRepository.GetPagedAsync(request));
+        }
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            return Ok(await _unitOfWork._serialRepository.GetById(id));
+        }
+        [HttpPost("CreateOrUpdateAsync")]
+        public async Task<IActionResult> CreateOrUpdateAsync(SerialDto objDto)
+        {
+            var obj = _mapper.Map<SerialEntity>(objDto);
+            if (objDto.Id > 0)
             {
-                return Unauthorized();
+                return Ok(await _unitOfWork._serialRepository.Update(obj));
             }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
+            else
             {
-                return Unauthorized();
+                return Ok(await _unitOfWork._serialRepository.Create(obj));
             }
-            var result = await _repository.Create(obj);
-            if (result.IsSuccess)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
         }
         [HttpPost("CreateMany")]
-        public async Task<IActionResult> CreateManySerial(List<SerialEntity> listObj)
+        public async Task<IActionResult> CreateMany(List<SerialDto> listObjDto)
         {
-
-            //string apiKey = _config.GetSection("ApiKey").Value;
-            //if (apiKey == null)
-            //{
-            //    return Unauthorized();
-            //}
-
-            //var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            //if (keyDomain != apiKey.ToLower())
-            //{
-            //    return Unauthorized();
-            //}
-            if (await _repository.CreateMany(listObj))
-            {
-                return Ok("Thêm thành công");
-            }
-            return BadRequest("Thêm thất bại");
+            var listObj = _mapper.Map<List<SerialEntity>>(listObjDto);
+            return Ok(await _unitOfWork._serialRepository.CreateMany(listObj));
         }
-        [HttpPut]
-        public async Task<IActionResult> UpdateSerial(SerialEntity obj)
+        [HttpPost("Delete")]
+        public async Task<IActionResult> Delete(int id)
         {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            var result = await  _repository.Update(obj);
-            if (result.IsSuccess)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpDelete("id")]
-        public async Task<IActionResult> DeleteSerial(int id)
-        {
-
-            string apiKey = _config.GetSection("ApiKey").Value;
-            if (apiKey == null)
-            {
-                return Unauthorized();
-            }
-
-            var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            if (keyDomain != apiKey.ToLower())
-            {
-                return Unauthorized();
-            }
-            if (await _repository.Delete(id))
-            {
-                return Ok("Xóa thành công");
-            }
-            return BadRequest("Xóa thất bại");
-        }
-
-        [HttpGet("GetSerialPG")]
-        public IActionResult GetSerialPG(string? search, decimal? from, decimal? to, string? sortBy, int page)
-        {
-            //string apiKey = _config.GetSection("ApiKey").Value;
-            //if (apiKey == null)
-            //{
-            //    return Unauthorized();
-            //}
-
-            //var keyDomain = Request.Headers["Key-Domain"].FirstOrDefault();
-            //if (keyDomain != apiKey.ToLower())
-            //{
-            //    return Unauthorized();
-            //}
-            _reponse.Result = _iPagingRepository.GetAllSerial(search, from, to, sortBy, page);
-            var count = _reponse.Count = _iPagingRepository.GetAllSerial(search, from, to, sortBy, page).Count;
-            return Ok(_reponse);
+            return Ok(await _unitOfWork._serialRepository.Delete(id));
         }
     }
 }

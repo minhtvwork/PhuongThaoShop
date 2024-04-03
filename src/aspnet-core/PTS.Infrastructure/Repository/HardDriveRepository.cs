@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿ using Microsoft.EntityFrameworkCore;
 using PTS.Domain.IRepository;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Data;
+using Abp.Application.Services.Dto;
+using PTS.Base.Application.Dto;
 
 namespace PTS.EntityFrameworkCore.Repository
 {
@@ -14,7 +16,25 @@ namespace PTS.EntityFrameworkCore.Repository
         {
             _context = context;
         }
+        public async Task<PagedResultDto<HardDriveDto>> GetPagedAsync(PagedRequestDto request)
+        {
+            var query = _context.HardDriveEntity.Where(x => !x.IsDeleted);
 
+            var totalCount = await query.CountAsync();
+
+            var obj = await query.Skip(request.SkipCount)
+                                    .Take(request.MaxResultCount)
+                                    .ToListAsync();
+
+            var objDto = obj.Select(hardDrive => new HardDriveDto
+            {
+                Id = hardDrive.Id,
+                Ma = hardDrive.Ma,
+                ThongSo = hardDrive.ThongSo
+            }).ToList();
+
+            return new PagedResultDto<HardDriveDto>(totalCount, objDto);
+        }
         public async Task<bool> Create(HardDriveEntity obj)
         {
             var checkMa = await _context.HardDriveEntity.AnyAsync(x => x.Ma == obj.Ma);
@@ -53,22 +73,23 @@ namespace PTS.EntityFrameworkCore.Repository
                 return false;
             }
         }
-
-        public async Task<List<HardDriveEntity>> GetAllHardDrives()
+        public async Task<IEnumerable<HardDriveEntity>> GetList()
         {
-            var list = await _context.HardDriveEntity.ToListAsync();
-            var listHardDrives = list.Where(x => !x.IsDeleted).ToList();
-            return listHardDrives;
+             return await _context.HardDriveEntity.Where(x => !x.IsDeleted).ToListAsync();
         }
 
         public async Task<HardDriveEntity> GetById(int id)
         {
-            var result = await _context.HardDriveEntity.FindAsync(id);
-            return result;
+           return await _context.HardDriveEntity.FindAsync(id);
         }
 
         public async Task<bool> Update(HardDriveEntity obj)
         {
+            var checkMa = await _context.HardDriveEntity.AnyAsync(x => x.Ma == obj.Ma);
+            if (obj == null || checkMa)
+            {
+                return false;
+            }
             var hardDrive = await _context.HardDriveEntity.FindAsync(obj.Id);
             if (hardDrive == null)
             {
@@ -76,8 +97,8 @@ namespace PTS.EntityFrameworkCore.Repository
             }
             try
             {
+                hardDrive.Ma = obj.Ma;
                 hardDrive.ThongSo = obj.ThongSo;
-                //hardDrive.TrangThai = obj.TrangThai;
                 _context.HardDriveEntity.Update(hardDrive);
                 await _context.SaveChangesAsync();
                 return true;

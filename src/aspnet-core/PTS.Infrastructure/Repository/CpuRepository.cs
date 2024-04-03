@@ -3,6 +3,8 @@ using PTS.Domain.IRepository;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Data;
+using Abp.Application.Services.Dto;
+using PTS.Base.Application.Dto;
 
 namespace PTS.EntityFrameworkCore.Repository
 {
@@ -14,7 +16,25 @@ namespace PTS.EntityFrameworkCore.Repository
         {
             _dbContext = dbContext;
         }
+        public async Task<PagedResultDto<CpuDto>> GetPagedAsync(PagedRequestDto request)
+        {
+            var query = _dbContext.CpuEntity.Where(x => !x.IsDeleted);
 
+            var totalCount = await query.CountAsync();
+
+            var obj = await query.Skip(request.SkipCount)
+                                    .Take(request.MaxResultCount)
+                                    .ToListAsync();
+
+            var objDto = obj.Select(cpu => new CpuDto
+            {
+                Id = cpu.Id,
+                Ma = cpu.Ma,
+                Ten = cpu.Ten
+            }).ToList();
+
+            return new PagedResultDto<CpuDto>(totalCount, objDto);
+        }
         public async Task<bool> Create(CpuEntity obj)
         {
             var checkMa = await _dbContext.CpuEntity.AnyAsync(x => x.Ma == obj.Ma);
@@ -35,15 +55,15 @@ namespace PTS.EntityFrameworkCore.Repository
         }
         public async Task<bool> Delete(int id)
         {
-            var ram = await _dbContext.CpuEntity.FindAsync(id);
-            if (ram == null)
+            var obj = await _dbContext.CpuEntity.FindAsync(id);
+            if (obj == null)
             {
                 return false;
             }
             try
             {
-                ram.IsDeleted = true;
-                _dbContext.CpuEntity.Update(ram);
+                obj.IsDeleted = true;
+                _dbContext.CpuEntity.Update(obj);
                 await _dbContext.SaveChangesAsync();
                 return true;
             }
@@ -52,22 +72,23 @@ namespace PTS.EntityFrameworkCore.Repository
                 return false;
             }
         }
-
-        public async Task<List<CpuEntity>> GetAllCpuEntity()
+        public async Task<IEnumerable<CpuEntity>> GetList()
         {
-            var list = await _dbContext.CpuEntity.ToListAsync();
-            var listCpu = list.Where(x => !x.IsDeleted).ToList();
-            return listCpu;
+            return await _dbContext.CpuEntity.Where(x => !x.IsDeleted).ToListAsync();
         }
 
         public async Task<CpuEntity> GetById(int id)
         {
-            var result = await _dbContext.CpuEntity.FindAsync(id);
-            return result;
+          return await _dbContext.CpuEntity.FindAsync(id);
         }
 
         public async Task<bool> Update(CpuEntity obj)
         {
+            var checkMa = await _dbContext.CpuEntity.AnyAsync(x => x.Ma == obj.Ma);
+            if (obj == null || checkMa == true)
+            {
+                return false;
+            }
             var cpu = await _dbContext.CpuEntity.FindAsync(obj.Id);
             if (cpu == null)
             {
@@ -75,8 +96,8 @@ namespace PTS.EntityFrameworkCore.Repository
             }
             try
             {
+                cpu.Ma = obj.Ma;
                 cpu.Ten = obj.Ten;
-                //cpu.TrangThai = obj.TrangThai;
                 _dbContext.CpuEntity.Update(cpu);
                 await _dbContext.SaveChangesAsync();
                 return true;

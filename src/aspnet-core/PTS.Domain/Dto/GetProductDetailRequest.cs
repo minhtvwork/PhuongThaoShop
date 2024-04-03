@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PTS.Domain.Dto
 {
-   public class PGetListDto
+   public class GetProductDetailRequest
     {
         public string? ProductType { get; set; }
         public int? GetNumber { get; set; } = 5;

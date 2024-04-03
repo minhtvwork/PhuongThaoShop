@@ -20,21 +20,12 @@ namespace PTS.Host.AppCore.Request.Voucher
         {
             if (request.ProductDetailEntity.Id > 0)
             {
-                if (await _repository.Update(request.ProductDetailEntity))
-                {
-                    return new ServiceResponse(true, "Cập nhật thành công");
-
-                }
-                return new ServiceResponse(false, "Cập nhật hất bại");
+                return await _repository.Update(request.ProductDetailEntity);
             }
             else
             {
-                if(await _repository.Create(request.ProductDetailEntity))
-                      return new ServiceResponse(true, "Thêm thành công");
-                return new ServiceResponse(false, "Thêm thất bại");
+                return await _repository.Create(request.ProductDetailEntity);
             }
-
-
         }
     }
 }

@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PTS.Base.Application.Dto;
+using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Domain.IRepository;
 using PTS.Host.Controllers;
@@ -10,53 +13,45 @@ namespace Shop_API.Controllers
     [ApiController]
     public class RamController : PTSBaseController
     {
-        private readonly IRamRepository _repository;
-        private readonly IConfiguration _config;
-        private readonly IPagingRepository _iPagingRepository;
-       // private readonly ResponseDto _reponse;
-
-
-        public RamController(IRamRepository repository, IConfiguration config)
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        public RamController(IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _repository = repository;
-            _config = config;
-          //  _reponse = new ResponseDto();
-
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetAllRam()
+        [HttpGet("GetList")]
+        public async Task<IActionResult> GetList()
         {
-            return Ok(await _repository.GetAllRams());
+            return Ok(await _unitOfWork._ramRepository.GetList());
         }
-        [HttpPost("CreateRam")]
-        public async Task<IActionResult> CreateRam(RamEntity obj)
+        [HttpPost("GetPaged")]
+        public async Task<IActionResult> GetPaged(PagedRequestDto request)
         {
-            if (await _repository.Create(obj))
+            return Ok(await _unitOfWork._ramRepository.GetPagedAsync(request));
+        }
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            return Ok(await _unitOfWork._ramRepository.GetById(id));
+        }
+        [HttpPost("CreateOrUpdateAsync")]
+        public async Task<IActionResult> CreateOrUpdateAsync(RamDto objDto)
+        {
+            var obj = _mapper.Map<RamEntity>(objDto);
+            if (objDto.Id > 0)
             {
-                return Ok("Thêm thành công");
+                return Ok(await _unitOfWork._ramRepository.Update(obj));
             }
-            return BadRequest("Thêm thất bại");
-        }
-        [HttpPut]
-        public async Task<IActionResult> UpdateRam(RamEntity obj)
-        {
-
-            if (await _repository.Update(obj))
+            else
             {
-                return Ok("Sửa thành công");
+                return Ok(await _unitOfWork._ramRepository.Create(obj));
             }
-            return BadRequest("Sửa thất bại");
         }
-        [HttpDelete("id")]
-        public async Task<IActionResult> DeleteRam(int id)
+        [HttpPost("Delete")]
+        public async Task<IActionResult> Delete(int id)
         {
-            if (await _repository.Delete(id))
-            {
-                return Ok("Xóa thành công");
-            }
-            return BadRequest("Xóa thất bại");
-
+            return Ok(await _unitOfWork._ramRepository.Delete(id));
         }
-
     }
 }

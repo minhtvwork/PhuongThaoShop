@@ -4,6 +4,8 @@ using PTS.Domain.IRepository;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Data;
+using Abp.Application.Services.Dto;
+using PTS.Base.Application.Dto;
 
 namespace PTS.EntityFrameworkCore.Repository
 {
@@ -14,53 +16,54 @@ namespace PTS.EntityFrameworkCore.Repository
         {
             _context = context;
         }
-        public async Task<ResponseDto> Create(SerialEntity obj)
+        public async Task<PagedResultDto<SerialDto>> GetPagedAsync(PagedRequestDto request)
+        {
+            var query = _context.SerialEntity.Where(x => !x.IsDeleted);
+
+            var totalCount = await query.CountAsync();
+
+            var obj = await query.Skip(request.SkipCount)
+                                    .Take(request.MaxResultCount)
+                                    .ToListAsync();
+
+            var objDto = obj.Select(serial => new SerialDto
+            {
+                Id = serial.Id,
+                SerialNumber = serial.SerialNumber,
+                ProductDetailEntityId = serial.ProductDetailEntityId,
+                BillDetailEntityId = serial.BillDetailEntityId,
+                Status = serial.Status,
+            }).ToList();
+            return new PagedResultDto<SerialDto>(totalCount, objDto);
+        }
+        public async Task<bool> Create(SerialEntity obj)
         {
             var checkMa = await _context.SerialEntity.AnyAsync(x => x.SerialNumber == obj.SerialNumber);
             if (obj == null || checkMa == true)
             {
-                return new ResponseDto
-                {
-                    Result = null,
-                    IsSuccess = false,
-                    Code = 400,
-                    Message = "Trùng Serial",
-                };
+              return false;
             }
             try
             {
                 await _context.SerialEntity.AddAsync(obj);
                 await _context.SaveChangesAsync();
-                return new ResponseDto
-                {
-                    Result = obj,
-                    IsSuccess = true,
-                    Code = 200,
-                    Message = "Thêm thành công",
-                };
+                return true;
             }
             catch (Exception)
             {
-                return new ResponseDto
-                {
-                    Result = null,
-                    IsSuccess = false,
-                    Code = 500,
-                    Message = "Lỗi Hệ Thống",
-                };
+                return false;
             }
         }
         public async Task<bool> CreateMany(List<SerialEntity> listObj)
         {
             foreach (var obj in listObj)
             {
-                var checkMa = await _context.SerialEntity.AnyAsync(x => x.SerialNumber == obj.SerialNumber);
-                if (checkMa == true)
+                var check = await _context.SerialEntity.AnyAsync(x => x.SerialNumber == obj.SerialNumber);
+                if (check == true)
                 {
                     return false;
                 }
             }
-
             try
             {
                 await _context.SerialEntity.AddRangeAsync(listObj);
@@ -74,15 +77,47 @@ namespace PTS.EntityFrameworkCore.Repository
         }
         public async Task<bool> Delete(int id)
         {
-            var Serial = await _context.SerialEntity.FindAsync(id);
-            if (Serial == null)
+            var obj = await _context.SerialEntity.FindAsync(id);
+            if (obj == null)
             {
                 return false;
             }
             try
             {
-                Serial.Status = 0;
-                _context.SerialEntity.Update(Serial);
+                obj.IsDeleted = true;
+                _context.SerialEntity.Update(obj);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public async Task<IEnumerable<SerialEntity>> GetList()
+        {
+         return await _context.SerialEntity.Where(x => !x.IsDeleted).ToListAsync();
+        }
+
+        public async Task<bool> Update(SerialEntity obj)
+        {
+            var check = await _context.SerialEntity.AnyAsync(x => x.SerialNumber == obj.SerialNumber);
+            if (obj == null || check == true)
+            {
+                return false;
+            }
+            var serial = await _context.SerialEntity.FindAsync(obj.Id);
+            if (serial == null)
+            {
+               return true;
+            }
+            try
+            {
+                serial.SerialNumber = obj.SerialNumber;
+                serial.BillDetailEntityId = obj.BillDetailEntityId;
+                serial.ProductDetailEntityId = obj.ProductDetailEntityId;
+                serial.Status = obj.Status;
+                _context.SerialEntity.Update(serial);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -92,52 +127,9 @@ namespace PTS.EntityFrameworkCore.Repository
             }
         }
 
-        public async Task<IEnumerable<SerialEntity>> GetAll()
+        public async Task<SerialEntity> GetById(int id)
         {
-            var list = await _context.SerialEntity.ToListAsync();
-            var listSerial = list.Where(x => x.Status > 0).ToList();
-            return listSerial;
-        }
-
-        public async Task<ResponseDto> Update(SerialEntity obj)
-        {
-            var Serial = await _context.SerialEntity.FindAsync(obj.Id);
-            if (Serial == null)
-            {
-                return new ResponseDto
-                {
-                    Result = null,
-                    IsSuccess = false,
-                    Code = 400,
-                    Message = "Không Tìm Thấy Serial",
-                };
-            }
-            try
-            {
-                Serial.SerialNumber = obj.SerialNumber;
-                //Serial.Status = 1;
-                Serial.BillDetailEntityId = obj.BillDetailEntityId;
-                Serial.ProductDetailEntityId = obj.ProductDetailEntityId;
-                _context.SerialEntity.Update(Serial);
-                await _context.SaveChangesAsync();
-                return new ResponseDto
-                {
-                    Result = obj,
-                    IsSuccess = true,
-                    Code = 200,
-                    Message = "Sửa thành công",
-                };
-            }
-            catch (Exception)
-            {
-                return new ResponseDto
-                {
-                    Result = null,
-                    IsSuccess = false,
-                    Code = 500,
-                    Message = "Lỗi hệ thống",
-                };
-            }
+            return await _context.SerialEntity.FindAsync(id);
         }
     }
 }

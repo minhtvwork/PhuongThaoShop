@@ -44,7 +44,7 @@ namespace PTS.EntityFrameworkCore.Repository
             }
             try
             {
-                role.Status = 0;
+                role.IsDeleted = true;
                 _dbContext.RoleEntity.Update(role);
                 await _dbContext.SaveChangesAsync();
                 return true;
@@ -54,24 +54,24 @@ namespace PTS.EntityFrameworkCore.Repository
                 return false;
             }
         }
-
-        public async Task<List<RoleEntity>> GetAllRoles()
+        public async Task<IEnumerable<RoleEntity>> GetList()
         {
-            var list = await _dbContext.RoleEntity.ToListAsync();// lấy tất cả role
-            var listRoles = list.Where(x => x.Status != 0).ToList();// lấy tất cả role với điều kiện trạng thái khác 0
-            return listRoles;
+            return await _dbContext.RoleEntity.Where(a=>!a.IsDeleted).ToListAsync();
         }
 
         public async Task<RoleEntity> GetById(int id)
         {
-            var respone = await _dbContext.RoleEntity.FirstOrDefaultAsync(x => x.Id == id);
-            if (respone==null)
-                throw new ArgumentException(IRoleRepository.Role_NoteFound);
-            return respone;
+            return await _dbContext.RoleEntity.FindAsync(id);
         }
 
         public async Task<bool> Update(RoleEntity obj)
         {
+            var checkRoleName = await _dbContext.RoleEntity.AnyAsync(x => x.RoleName == obj.RoleName);
+
+            if (obj == null || checkRoleName == true)
+            {
+                return false;
+            }
             var role = await _dbContext.RoleEntity.FindAsync(obj.Id);
             if (role == null)
             {
@@ -80,7 +80,6 @@ namespace PTS.EntityFrameworkCore.Repository
             try
             {
                 role.RoleName = obj.RoleName;
-                role.Status = obj.Status;
                 _dbContext.RoleEntity.Update(role);
                 await _dbContext.SaveChangesAsync();
                 return true;

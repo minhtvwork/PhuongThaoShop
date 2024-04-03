@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PTS.Base.Application.Dto;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Domain.IRepository;
@@ -14,57 +15,45 @@ namespace PTS.Host.Controllers
     [ApiController]
     public class CpuController : PTSBaseController
     {
-        private readonly IAllRepository<CpuEntity> _repository;
         private readonly IMapper _mapper;
-        public CpuController(IAllRepository<CpuEntity> repository, IMapper mapper)
+        private readonly IUnitOfWork _unitOfWork;
+        public CpuController(IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _repository = repository;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
-        [HttpGet("GetAllAsync")]
-        public async Task<ActionResult<IEnumerable<CpuDto>>> GetAllAsync()
+        [HttpGet("GetList")]
+        public async Task<IActionResult> GetList()
         {
-            var listObj = await _repository.GetAllAsync();
-            return Ok(listObj.Where(x=>!x.IsDeleted));
+            return Ok(await _unitOfWork._cpuRepository.GetList());
         }
-        [HttpGet("GetByIdAsync")]
-        public async Task<ActionResult<CpuDto>> GetByIdAsync(int id)
+        [HttpPost("GetPaged")]
+        public async Task<IActionResult> GetPaged(PagedRequestDto request)
         {
-            var obj = await _repository.GetByIdAsync(id);
-            return Ok(obj);
+            return Ok(await _unitOfWork._cpuRepository.GetPagedAsync(request));
         }
-        [HttpPost("GetPagesAsync")]
-        public async Task<ActionResult<IEnumerable<CpuEntity>>> GetPagesAsync(int page, int pageSize)
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(int id)
         {
-            Expression<Func<CpuEntity, bool>> predicate = x => x.IsDeleted == false;
-            var result = await _repository.GetPagedAsync(page, pageSize, predicate);
-            return Ok(result);
+            return Ok(await _unitOfWork._cpuRepository.GetById(id));
         }
         [HttpPost("CreateOrUpdateAsync")]
-        public async Task<ActionResult> CreateOrUpdateAsync(CpuDto objDto)
+        public async Task<IActionResult> CreateOrUpdateAsync(CpuDto objDto)
         {
             var obj = _mapper.Map<CpuEntity>(objDto);
-            if (obj.Id > 0)
+            if (objDto.Id > 0)
             {
-                if (await _repository.UpdateAsync(obj))
-                    return Ok(obj);
-                return BadRequest();
+                return Ok(await _unitOfWork._cpuRepository.Update(obj));
             }
             else
             {
-                if (await _repository.CreateAsync(obj))
-                    return Ok(obj);
-                return BadRequest();
+                return Ok(await _unitOfWork._cpuRepository.Create(obj));
             }
         }
-        [HttpPost("DeleteAsync")]
-        public async Task<ActionResult> DeleteAsync(int id)
+        [HttpPost("Delete")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var obj = await _repository.GetByIdAsync(id);
-            obj.IsDeleted = true;
-            if (await _repository.UpdateAsync(obj))
-            return Ok(obj);
-            return BadRequest();
+            return Ok(await _unitOfWork._cpuRepository.Delete(id));
         }
     }
 }

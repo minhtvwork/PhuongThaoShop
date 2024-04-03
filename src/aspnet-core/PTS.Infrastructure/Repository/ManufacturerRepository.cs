@@ -4,69 +4,68 @@ using PTS.Domain.IRepository;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Data;
+using Abp.Application.Services.Dto;
+using PTS.Base.Application.Dto;
 
 namespace PTS.EntityFrameworkCore.Repository
 {
     public class ManufacturerRepository : IManufacturerRepository
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly ApplicationDbContext _dbContext;
 
-        public ManufacturerRepository(ApplicationDbContext applicationDb)
+        public ManufacturerRepository(ApplicationDbContext dbContext)
         {
-            dbContext = applicationDb;
+            _dbContext = dbContext;
+        }
+        public async Task<PagedResultDto<ManufacturerDto>> GetPagedAsync(PagedRequestDto request)
+        {
+            var query = _dbContext.ManufacturerEntity.Where(x => !x.IsDeleted);
+
+            var totalCount = await query.CountAsync();
+
+            var obj = await query.Skip(request.SkipCount)
+                                    .Take(request.MaxResultCount)
+                                    .ToListAsync();
+
+            var objDto = obj.Select(manufacturer => new ManufacturerDto
+            {
+                Id = manufacturer.Id,
+                Name = manufacturer.Name
+            }).ToList();
+
+            return new PagedResultDto<ManufacturerDto>(totalCount, objDto);
         }
 
-        public async Task<ResponseDto> Create(ManufacturerEntity obj)
+        public async Task<bool> Create(ManufacturerEntity obj)
         {
-            var checktt = await dbContext.ManufacturerEntity.AnyAsync(p => p.Name == obj.Name);
-            if (obj == null || checktt == true)
-            {
-                return new ResponseDto
-                {
-                    Result = null,
-                    IsSuccess = false,
-                    Code = 400,
-                    Message = "Trùng Mã",
-                };
-            }
-            try
-            {
-                await dbContext.ManufacturerEntity.AddAsync(obj);
-                await dbContext.SaveChangesAsync();
-                return new ResponseDto
-                {
-                    Result = obj,
-                    IsSuccess = true,
-                    Code = 200,
-                    Message = "Thêm thành công",
-                }; 
-            }
-            catch (Exception)
-            {
-                return new ResponseDto
-                {
-                    Result = null,
-                    IsSuccess = false,
-                    Code = 500,
-                    Message = "Lỗi Hệ Thống",
-                };
-
-            }
-        }
-
-        public async Task<bool> Delete(int id)
-        {
-            var manu = await dbContext.ManufacturerEntity.FindAsync(id);
-            if (manu == null)
+            var check = await _dbContext.ManufacturerEntity.AnyAsync(p => p.Name == obj.Name);
+            if (obj == null || check == true)
             {
                 return false;
             }
             try
             {
-
-                manu.Status = 0;
-                dbContext.ManufacturerEntity.Update(manu);
-                await dbContext.SaveChangesAsync();
+                await _dbContext.ManufacturerEntity.AddAsync(obj);
+                await _dbContext.SaveChangesAsync();
+               return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public async Task<bool> Delete(int id)
+        {
+            var obj = await _dbContext.ManufacturerEntity.FindAsync(id);
+            if (obj == null)
+            {
+                return false;
+            }
+            try
+            {
+                obj.IsDeleted = true;
+                _dbContext.ManufacturerEntity.Update(obj);
+                await _dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -77,30 +76,31 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<ManufacturerEntity> GetById(int id)
         {
-            var result = await dbContext.ManufacturerEntity.FindAsync(id);
-            return result;
+           return await _dbContext.ManufacturerEntity.FindAsync(id);
         }
 
-        public async Task<IEnumerable<ManufacturerEntity>> GetAll()
+        public async Task<IEnumerable<ManufacturerEntity>> GetList()
         {
-            var list = await dbContext.ManufacturerEntity.ToListAsync();
-            var listx = list.Where(x => x.Status > 0).ToList();
-            return listx;
+           return await _dbContext.ManufacturerEntity.Where(a=>!a.IsDeleted).ToListAsync();
         }
 
         public async Task<bool> Update(ManufacturerEntity obj)
         {
-            var manu = await dbContext.ManufacturerEntity.FindAsync(obj.Id);
-            if (manu == null)
+            var check = await _dbContext.ManufacturerEntity.AnyAsync(p => p.Name == obj.Name);
+            if (obj == null || check == true)
+            {
+                return false;
+            }
+            var manufacturer = await _dbContext.ManufacturerEntity.FindAsync(obj.Id);
+            if (manufacturer == null)
             {
                 return false;
             }
             try
             {
-                manu.Name = obj.Name;
-                manu.Status = obj.Status;
-                dbContext.ManufacturerEntity.Update(manu);
-                await dbContext.SaveChangesAsync();
+                manufacturer.Name = obj.Name;
+                _dbContext.ManufacturerEntity.Update(manufacturer);
+                await _dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception)

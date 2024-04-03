@@ -1,4 +1,6 @@
-﻿using PTS.Domain.Dto;
+﻿using Abp.Application.Services.Dto;
+using PTS.Base.Application.Dto;
+using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 namespace PTS.Domain.IRepository
 {
@@ -6,10 +8,9 @@ namespace PTS.Domain.IRepository
     {
         Task<bool> Create(ProductEntity obj);
         Task<bool> Update(ProductEntity obj);
-        Task<bool> Delete(int idobj);
-
-        Task<IEnumerable<ProductEntity>> GetAll();
+        Task<bool> Delete(int id);
+        Task<IEnumerable<ProductEntity>> GetList();
+        Task<PagedResultDto<ProductDto>> GetPagedAsync(PagedRequestDto request);
         Task<ProductEntity> GetById(int id);
-        Task<IEnumerable<ProductDto>> GetProductDtos(string? search, decimal? from, decimal? to, string? sortBy, int page = 1);
     }
 }
