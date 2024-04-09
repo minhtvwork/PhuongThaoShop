@@ -9,11 +9,11 @@ using PTS.Data;
 
 #nullable disable
 
-namespace PTS.Host.Migrations
+namespace PTS.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240227140747_UpdateDatabseV2")]
-    partial class UpdateDatabseV2
+    [Migration("20240409080243_InitDatabase")]
+    partial class InitDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -83,11 +83,6 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<bool> Update(RamEntity obj)
         {
-            var check = await _dbContext.RamEntity.AnyAsync(x => x.Ma == obj.Ma);
-            if (obj == null || check == true)
-            {
-                return false;
-            }
             var ram = await _dbContext.RamEntity.FindAsync(obj.Id);
             if (ram == null)
             {

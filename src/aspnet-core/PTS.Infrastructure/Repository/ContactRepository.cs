@@ -90,11 +90,6 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<ServiceResponse> Update(ContactEntity contact)
         {
-            var checkMa = await _dbContext.ContactEntity.AnyAsync(x => x.CodeManagePost == contact.CodeManagePost);
-            if (contact == null || checkMa == true)
-            {
-                return new ServiceResponse(false, "Thêm thất bại");
-            }
             var obj = await _dbContext.ContactEntity.FindAsync(contact.Id);
             if (obj == null)
             {

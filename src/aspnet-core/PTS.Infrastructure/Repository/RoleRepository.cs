@@ -66,12 +66,6 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<bool> Update(RoleEntity obj)
         {
-            var checkRoleName = await _dbContext.RoleEntity.AnyAsync(x => x.RoleName == obj.RoleName);
-
-            if (obj == null || checkRoleName == true)
-            {
-                return false;
-            }
             var role = await _dbContext.RoleEntity.FindAsync(obj.Id);
             if (role == null)
             {

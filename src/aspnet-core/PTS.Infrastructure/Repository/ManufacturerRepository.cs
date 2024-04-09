@@ -86,11 +86,6 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<bool> Update(ManufacturerEntity obj)
         {
-            var check = await _dbContext.ManufacturerEntity.AnyAsync(p => p.Name == obj.Name);
-            if (obj == null || check == true)
-            {
-                return false;
-            }
             var manufacturer = await _dbContext.ManufacturerEntity.FindAsync(obj.Id);
             if (manufacturer == null)
             {

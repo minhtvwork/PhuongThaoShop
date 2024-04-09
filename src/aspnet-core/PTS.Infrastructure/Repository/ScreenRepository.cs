@@ -83,11 +83,6 @@ namespace PTS.EntityFrameworkCore.Repository
         }
         public async Task<bool> Update(ScreenEntity obj)
         {
-            var check = await _context.ScreenEntity.AnyAsync(x => x.Ma == obj.Ma);
-            if (obj == null || check == true)
-            {
-                return false;
-            }
             var screen = await _context.ScreenEntity.FindAsync(obj.Id);
             if (screen == null)
             {

@@ -65,11 +65,6 @@ namespace PTS.EntityFrameworkCore.Repository
         }
         public async Task<ServiceResponse> Update(ColorEntity obj)
         {
-            var checkMa = await _dbContext.ColorEntity.AnyAsync(x => x.Ma == obj.Ma);
-            if (obj == null || checkMa == true || obj.Ma == null || obj.Name == null)
-            {
-                return new ServiceResponse(false, "Thêm thất bại");
-            }
             var color = await _dbContext.ColorEntity.FindAsync(obj.Id);
             if (color == null)
             {

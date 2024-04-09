@@ -87,11 +87,6 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<bool> Update(ManagePostEntity obj)
         {
-            var checkMa = await _context.ManagePostEntity.AnyAsync(x => x.Code == obj.Code);
-            if (obj == null || checkMa)
-            {
-                return false;
-            }
             var managePost = await _context.ManagePostEntity.FindAsync(obj.Id);
             if (managePost == null)
             {

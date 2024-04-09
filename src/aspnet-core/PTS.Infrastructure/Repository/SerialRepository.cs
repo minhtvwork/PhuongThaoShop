@@ -101,11 +101,6 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<bool> Update(SerialEntity obj)
         {
-            var check = await _context.SerialEntity.AnyAsync(x => x.SerialNumber == obj.SerialNumber);
-            if (obj == null || check == true)
-            {
-                return false;
-            }
             var serial = await _context.SerialEntity.FindAsync(obj.Id);
             if (serial == null)
             {

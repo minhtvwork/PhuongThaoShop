@@ -85,11 +85,6 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<bool> Update(HardDriveEntity obj)
         {
-            var checkMa = await _context.HardDriveEntity.AnyAsync(x => x.Ma == obj.Ma);
-            if (obj == null || checkMa)
-            {
-                return false;
-            }
             var hardDrive = await _context.HardDriveEntity.FindAsync(obj.Id);
             if (hardDrive == null)
             {

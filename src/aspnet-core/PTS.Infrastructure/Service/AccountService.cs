@@ -54,7 +54,7 @@ namespace PTS.Infrastructure.Service
                 new Claim(ClaimTypes.Role, user.RoleEntities.RoleName),
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("PTS KMM BMK 103845045 MPTM"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("PTS KMM BMK 1038 MPTM PTS KMM BMK 1038 MPTM"));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 

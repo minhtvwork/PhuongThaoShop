@@ -3,6 +3,7 @@ using PTS.Domain.IService;
 using PTS.Domain.Dto;
 using PTS.Domain.Entities;
 using PTS.Base.Application.Utilities;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PTS.Infrastructure.Service
 {
@@ -34,13 +35,18 @@ namespace PTS.Infrastructure.Service
         public async Task<ResponseDto> CreateBill(RequestBillDto request)
         {
             try
-            {
+            { 
                 var user = _userRepository.GetAllUsers().Result.Where(x => x.Username == request.Usename).FirstOrDefault();
+                if (!string.IsNullOrEmpty(request.Usename))
+                {
+               
                 var cartItem = await _cartRepository.GetCartItem(request.Usename);
                 if (cartItem == null)
                 {
                     return NotFoundResponse("Không có sản phẩm trong giỏ hàng");
                 }
+                }
+                //request.C
                 var listVoucher = await _voucherRepository.GetAll();
                 var voucherX = listVoucher.FirstOrDefault(x => x.MaVoucher == request.CodeVoucher);
                 var bill = new BillEntity

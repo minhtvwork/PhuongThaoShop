@@ -34,11 +34,13 @@ namespace PTS.Host.Controllers
             _mediator = mediator;
             _mapper = mapper;
         }
+        [AllowAnonymous]
         [HttpPost("CreateOrUpdateAccount")]
         public async Task<IActionResult> CreateOrUpdateAccount(CreateOrUpdateAccountQuery query)
         {
             return Ok(await _mediator.Send(query));
         }
+        [AllowAnonymous]
         [HttpPost("Login")]
         public async Task<IActionResult> Login(UserLoginDto obj)
         {
@@ -49,6 +51,7 @@ namespace PTS.Host.Controllers
             }
             return BadRequest(result);
         }
+        [AllowAnonymous]
         [HttpGet("GetMyInfor")]
         public async Task<IActionResult> GetMyInfor()
         {

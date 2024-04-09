@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace PTS.Host.Migrations
+namespace PTS.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDb : Migration
+    public partial class InitDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -264,8 +264,7 @@ namespace PTS.Host.Migrations
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdRoleEntity = table.Column<int>(type: "int", nullable: true),
-                    IdRole = table.Column<int>(type: "int", nullable: true),
+                    RoleEntityId = table.Column<int>(type: "int", nullable: true),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
@@ -274,8 +273,8 @@ namespace PTS.Host.Migrations
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_User_Role_IdRole",
-                        column: x => x.IdRole,
+                        name: "FK_User_Role_RoleEntityId",
+                        column: x => x.RoleEntityId,
                         principalTable: "Role",
                         principalColumn: "Id");
                 });
@@ -381,7 +380,7 @@ namespace PTS.Host.Migrations
                 name: "Cart",
                 columns: table => new
                 {
-                    IdUser = table.Column<int>(type: "int", nullable: false),
+                    UserEntityId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -389,10 +388,10 @@ namespace PTS.Host.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cart", x => x.IdUser);
+                    table.PrimaryKey("PK_Cart", x => x.UserEntityId);
                     table.ForeignKey(
-                        name: "FK_Cart_User_IdUser",
-                        column: x => x.IdUser,
+                        name: "FK_Cart_User_UserEntityId",
+                        column: x => x.UserEntityId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -453,22 +452,22 @@ namespace PTS.Host.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CartId = table.Column<int>(type: "int", nullable: false),
-                    ProductDetailEntityId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    CartEntityIdUser = table.Column<int>(type: "int", nullable: true),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    CartEntityId = table.Column<int>(type: "int", nullable: false),
+                    ProductDetailEntityId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CartDetail", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CartDetail_Cart_CartEntityIdUser",
-                        column: x => x.CartEntityIdUser,
+                        name: "FK_CartDetail_Cart_CartEntityId",
+                        column: x => x.CartEntityId,
                         principalTable: "Cart",
-                        principalColumn: "IdUser");
+                        principalColumn: "UserEntityId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CartDetail_ProductDetail_ProductDetailEntityId",
                         column: x => x.ProductDetailEntityId,
@@ -521,9 +520,9 @@ namespace PTS.Host.Migrations
                 column: "BillEntityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartDetail_CartEntityIdUser",
+                name: "IX_CartDetail_CartEntityId",
                 table: "CartDetail",
-                column: "CartEntityIdUser");
+                column: "CartEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CartDetail_ProductDetailEntityId",
@@ -591,9 +590,9 @@ namespace PTS.Host.Migrations
                 column: "ProductDetailEntityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_IdRole",
+                name: "IX_User_RoleEntityId",
                 table: "User",
-                column: "IdRole");
+                column: "RoleEntityId");
         }
 
         /// <inheritdoc />

@@ -8,7 +8,7 @@ using PTS.Data;
 
 #nullable disable
 
-namespace PTS.Host.Migrations
+namespace PTS.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot

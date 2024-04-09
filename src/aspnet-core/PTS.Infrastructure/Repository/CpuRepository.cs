@@ -84,11 +84,6 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<bool> Update(CpuEntity obj)
         {
-            var checkMa = await _dbContext.CpuEntity.AnyAsync(x => x.Ma == obj.Ma);
-            if (obj == null || checkMa == true)
-            {
-                return false;
-            }
             var cpu = await _dbContext.CpuEntity.FindAsync(obj.Id);
             if (cpu == null)
             {

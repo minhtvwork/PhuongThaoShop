@@ -83,11 +83,6 @@ namespace PTS.EntityFrameworkCore.Repository
 
         public async Task<bool> Update(ProductTypeEntity obj)
         {
-            var check = await _dbContext.ProductTypeEntity.AnyAsync(x => x.Name == obj.Name);
-            if (check || obj == null)
-            {
-                return false;
-            }
             var productType = await _dbContext.ProductTypeEntity.FindAsync(obj.Id);
             if (obj == null || productType == null)
             {
