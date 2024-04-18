@@ -65,4 +65,10 @@ export class PublicService {
     };
     return this.http.post<ServiceResponse>(`${this.apiUrl}Cart/UpdateQuantity`, params);
   }
+  createBill(): Observable<ResponseDto> {
+    const params = {
+     
+    };
+    return this.http.post<ResponseDto>(`${this.apiUrl}Bill/CreateBill`, params);
+  }
 }

@@ -3,6 +3,10 @@ export interface ServiceResponse {
   flag: boolean;
   message: string;
 }
+export interface PagedRequest {
+  skipCount: number;
+  maxResultCount: number;
+}
 export interface PagedResultDto<T> {
   totalCount: number;
   items: T[];
@@ -96,4 +100,9 @@ export interface VoucherCreateDto {
   endDay: Date | null;
   giaTri: number;
   soLuong: number;
+}
+export interface RamDto {
+  id: number;
+  ma?: string;
+  thongSo?: string;
 }

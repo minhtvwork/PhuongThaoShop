@@ -40,24 +40,11 @@
   </table>
   <form nz-form [nzLayout]="'inline'" [formGroup]="createBillForm">
     <nz-row>
-      
       <nz-col [nzSpan]="14">
-        <nz-form-item>
-          <nz-form-label nzFor="maTinh" [nzSm]="8" nzRequired>Mã</nz-form-label>
-          <nz-form-control [nzSm]="16" nzErrorTip="Giá trị bắt buộc!">
-              <input nz-input name="maTinh" required />
-          </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzFor="maTinh" [nzSm]="8" nzRequired>Mãjjjdjjdj</nz-form-label>
-        <nz-form-control [nzSm]="16" nzErrorTip="Giá trị bắt buộc!">
-            <input nz-input name="maTinh" required />
-        </nz-form-control>
-    </nz-form-item>
         <nz-form-item nzGutter="6">
           <nz-form-label nzFor="fullName" [nzSm]="4" nzRequired>Họ và tên</nz-form-label>
           <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
-            <input nz-input formControlName="fullName"  />
+            <input nz-input formControlName="fullName" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item nzGutter="6">
@@ -97,9 +84,9 @@
             <label nz-radio nzValue="4">Thanh toán trả góp</label>
           </nz-radio-group>
         </nz-form-item>
-        <button nz-button nzType="primary"(click)="createBill()">Gửi đơn hàng</button>
+        <button nz-button nzType="primary" (click)="createBill()">Gửi đơn hàng</button>
       </nz-col>
     </nz-row>
   </form>
-  
+
 </div>

@@ -8,6 +8,7 @@ import { ProductComponent } from './product/product.component';
 import { MainComponent } from './main/main.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from 'src/app/shared/services/auth-guard.service';
+import { RamComponent } from './ram/ram.component';
 const routes: Routes = [
   {
     //canActivate: [AuthGuard],
@@ -17,7 +18,8 @@ const routes: Routes = [
      { path: 'main', component: MainComponent},
      { path: 'voucher', component: VoucherComponent},
      { path: 'product', component: ProductComponent},
-     { path: 'product-detail', component: ProductDetailComponent}
+     { path: 'product-detail', component: ProductDetailComponent},
+     { path: 'ram', component: RamComponent},
     ], 
   }
 ];

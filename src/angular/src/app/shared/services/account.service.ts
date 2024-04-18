@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { ResponseDto, ProductDetailDto, VoucherDto, PagedResultDto,ServiceResponse} from '../models/model';
+import { ResponseDto, ProductDetailDto, VoucherDto, PagedResultDto, ServiceResponse } from '../models/model';
 import { tap } from 'rxjs/operators';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -16,7 +16,7 @@ export class AccountService {
   constructor(private http: HttpClient) { }
   login(username: string, password: string): Observable<any> {
     const url = `${this.apiUrl}Account/Login`;
-    const body = { username: username, password: password };
+    const body = { Username: username, Password: password };
     return this.http.post<any>(url, body).pipe(
       map(response => {
         if (response && response.accessToken) {
@@ -26,7 +26,7 @@ export class AccountService {
             accessToken: response.accessToken,
             isAdmin: response.isAdmin
           }));
-          return response; 
+          return response;
         } else {
           throw new Error('Invalid response from server');
         }
@@ -50,7 +50,7 @@ export class AccountService {
     // Kiểm tra xem người dùng đã đăng nhập hay chưa
     return !!localStorage.getItem('currentUser');
   }
-  
+
   logout(): void {
     // Xóa thông tin người dùng khỏi local storage khi đăng xuất
     localStorage.removeItem('currentUser');

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { ResponseDto, ProductDetailDto, VoucherDto, PagedResultDto,ServiceResponse} from '../models/model';
+import { ResponseDto, ProductDetailDto, VoucherDto, PagedResultDto,ServiceResponse, PagedRequest} from '../models/model';
 import { tap } from 'rxjs/operators';
 import { AccountService } from 'src/app/shared/services/account.service';
 
@@ -28,5 +28,39 @@ export class AdminService {
     };
     return this.http.post<PagedResultDto<any>>(url, body,{ headers: headers });
   }
- 
+  
+  getListRam(): Observable<any> {
+    return this.http.get(`${this.apiUrl}GetList`);
+  }
+
+  getPagedRam(request: PagedRequest): Observable<any> {
+    const token = this.accountService.getAccessToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post<any>(`${this.apiUrl}Ram/GetPaged`, request,{ headers: headers });
+  }
+
+  getByRamId(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}Ram/GetById?id=${id}`);
+  }
+
+  createOrUpdateRam(objDto: any): Observable<any> {
+    const token = this.accountService.getAccessToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post(`${this.apiUrl}Ram/CreateOrUpdateAsync`, objDto,{ headers: headers });
+  }
+
+  deleteRam(id: number): Observable<any> {
+    const token = this.accountService.getAccessToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post(`${this.apiUrl}Ram/Delete?id=${id}`,null,{ headers: headers });
+  }
 }

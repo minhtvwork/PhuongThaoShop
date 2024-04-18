@@ -10,6 +10,7 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 import { ProductComponent } from './product/product.component';
 import { MainComponent } from './main/main.component';
 import { LoginComponent } from './login/login.component';
+import { RamComponent } from './ram/ram.component';
 
 
 
@@ -21,7 +22,8 @@ import { LoginComponent } from './login/login.component';
     ProductDetailComponent,
     ProductComponent,
     MainComponent,
-    LoginComponent
+    LoginComponent,
+    RamComponent
   ],
   imports: [
     CommonModule,
