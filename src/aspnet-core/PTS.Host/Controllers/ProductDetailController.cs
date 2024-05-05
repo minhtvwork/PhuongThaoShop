@@ -49,7 +49,8 @@ namespace Shop_API.Controllers
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(await _unitOfWork._productDetailRepository.GetById(id));
+            _reponse.Result = await _unitOfWork._productDetailRepository.GetById(id);
+            return Ok(_reponse);
         }
         [AllowAnonymous]
         [HttpGet("PGetProductDetail")]

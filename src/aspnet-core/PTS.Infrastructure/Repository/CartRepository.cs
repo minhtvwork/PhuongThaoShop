@@ -135,8 +135,6 @@ namespace PTS.EntityFrameworkCore.Repository
             }
             catch (Exception)
             {
-                // Nếu idUser bị null tức là không tìm thấy, sẽ xảy ra Exception
-                // Sau đó trả về null
                 return null;
             }
 
