@@ -2,7 +2,7 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>Số Thứ Tự</th>
+        <th width="100px">Số Thứ Tự</th>
         <th>Tên Sản Phẩm</th>
         <th>Giá</th>
         <th>Số Lượng</th>
@@ -12,7 +12,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let data of cartItems; let i = index">
-        <td>{{ i + 1 }}</td>
+        <td >{{ i + 1 }}</td>
         <td>{{ data.maProductDetail}} {{ data.nameProduct }}</td>
         <td>{{ data.price | vndFormat }}</td>
         <!-- <nz-input-number  [(ngModel)]="data.quantity" (nzChange)="changeQuantity()"></nz-input-number>
@@ -38,55 +38,60 @@
       </td>
     </div>
   </table>
-  <form nz-form [nzLayout]="'inline'" [formGroup]="createBillForm">
-    <nz-row>
-      <nz-col [nzSpan]="14">
-        <nz-form-item nzGutter="6">
-          <nz-form-label nzFor="fullName" [nzSm]="4" nzRequired>Họ và tên</nz-form-label>
+  <div class="row">
+    <form nz-form [nzLayout]="'inline'" [formGroup]="createBillForm">
+      <div class="col-md-8 col-sm-8">
+        <nz-form-item class="pdt-15" nzGutter="6">
+          <nz-form-label class="width-200" nzFor="fullName" [nzSm]="4" nzRequired>Họ và tên</nz-form-label>
           <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
-            <input nz-input formControlName="fullName" />
+            <input nz-input class="input-w-300" formControlName="fullName" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="pdt-15" nzGutter="6">
+          <nz-form-label class="width-200" nzFor="address" [nzSm]="4" nzRequired>Địa chỉ</nz-form-label>
+          <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
+            <input nz-input class="input-w-300" formControlName="address" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="pdt-15" nzGutter="6">
+          <nz-form-label class="width-200" nzFor="phoneNumber" [nzSm]="4" nzRequired>Số điện thoại</nz-form-label>
+          <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
+            <input nz-input class="input-w-300" formControlName="phoneNumber" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="pdt-15" nzGutter="6">
+          <nz-form-label class="width-200" nzFor="email" [nzSm]="4" nzRequired>Email</nz-form-label>
+          <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
+            <input nz-input class="input-w-300" formControlName="email" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="col-md-4 col-sm-4">
+        <nz-form-item nzGutter="6">
+          <nz-form-control>
+            <label class="width-200">Mã giảm giá</label> <br>
+            <nz-select class="width-200" nzShowSearch nzAllowClear nzPlaceHolder="Chọn mã giảm giá"
+              [(ngModel)]="selectedValue" nzFor="discountCode">
+              <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+              <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
+              <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+            </nz-select>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item nzGutter="6">
-          <nz-form-label nzFor="address" [nzSm]="4" nzRequired>Địa chỉ</nz-form-label>
-          <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
-            <input nz-input formControlName="address" />
+          <nz-form-control>
+            <nz-radio-group formControlName="payment" nzName="paymentMethod">
+              <label class="width-200">Phương thức thanh toán</label> <br>
+              <label class="width-200" nz-radio nzValue="1">Thanh toán tại cửa hàng</label> <br>
+              <label class="width-200" nz-radio nzValue="2">Thanh toán khi nhận hàng (COD)</label><br>
+              <label class="width-200" nz-radio nzValue="3">Thanh toán bằng chuyển khoản ngân hàng</label><br>
+              <label class="width-200" nz-radio nzValue="4">Thanh toán trả góp</label>
+            </nz-radio-group>
           </nz-form-control>
-        </nz-form-item>
-        <nz-form-item nzGutter="6">
-          <nz-form-label nzFor="phoneNumber" [nzSm]="4" nzRequired>Số điện thoại</nz-form-label>
-          <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
-            <input nz-input formControlName="phoneNumber" />
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item nzGutter="6">
-          <nz-form-label nzFor="email" [nzSm]="4" nzRequired>Email</nz-form-label>
-          <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
-            <input nz-input formControlName="email" />
-          </nz-form-control>
-        </nz-form-item>
-      </nz-col>
-      <nz-col [nzSpan]="10">
-        <nz-form-item nzGutter="6">
-          <nz-form-label nzFor="email" [nzSm]="8">Mã giảm giá</nz-form-label>
-          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn mã giảm giá" [(ngModel)]="selectedValue">
-            <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
-            <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
-            <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
-          </nz-select>
-        </nz-form-item>
-        <nz-form-item nzGutter="6">
-          <nz-form-label nzFor="payment" [nzSm]="8">Phương thức thanh toán</nz-form-label>
-          <nz-radio-group formControlName="payment" nzName="radiogroup">
-            <label nz-radio nzValue="1">Thanh toán tại cửa hàng</label>
-            <label nz-radio nzValue="2">Thanh toán khi nhận hàng (COD)</label>
-            <label nz-radio nzValue="3">Thanh toán bằng chuyển khoản ngân hàng</label>
-            <label nz-radio nzValue="4">Thanh toán trả góp</label>
-          </nz-radio-group>
         </nz-form-item>
         <button nz-button nzType="primary" (click)="createBill()">Gửi đơn hàng</button>
-      </nz-col>
-    </nz-row>
-  </form>
 
+      </div>
+    </form>
+  </div>
 </div>

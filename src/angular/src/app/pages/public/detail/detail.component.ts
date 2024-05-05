@@ -15,7 +15,7 @@ export class DetailComponent implements OnInit {
   username!: string;
   private cartItems: CartItemDto[] = [];
   constructor(private route: ActivatedRoute, private publicService: PublicService, private router: Router,
-    private accountService: AccountService) { }
+ private accountService: AccountService) { }
 
   ngOnInit(): void {
     this.productId = this.route.snapshot.params['id']; // Lấy từ route
@@ -23,9 +23,10 @@ export class DetailComponent implements OnInit {
       this.publicService.getProductById(this.productId).subscribe(
         (data: ProductDetailDto) => {
           this.product = data;
+          console.log(this.product)
         },
         (error) => {
-          console.error('Error fetching products:', error);
+          console.error('Có lỗi xảy ra:', error);
         }
       );
     }
@@ -37,11 +38,9 @@ export class DetailComponent implements OnInit {
         .subscribe(
           (response) => {
             this.router.navigate(['/cart']);
-            console.log('Product added to cart:', response);
-
           },
           (error) => {
-            console.error('Error adding product to cart:', error);
+            console.error('Xảy ra lỗi khi thêm sản phẩm vào giỏ hàng:', error);
           }
         );
     }
@@ -53,6 +52,7 @@ export class DetailComponent implements OnInit {
         id: getRandomId(1, 1000),
         userId: getRandomId(1, 1000),
         quantity: 1,
+        maProductDetail: this.product.code,
         idProductDetails: Number(this.product.id),
         price: this.product.price,
       };

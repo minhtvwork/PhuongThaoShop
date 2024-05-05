@@ -16,7 +16,6 @@ export class AdminService {
   getVouchers(pageNumber: number, pageSize: number, sorting: string): Observable<PagedResultDto<any>> {
     const url = `${this.apiUrl}Voucher/GetPaged`;
     const token = this.accountService.getAccessToken();
-    console.log(token)
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`

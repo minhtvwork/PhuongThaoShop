@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { ResponseDto, ProductDetailDto, CartItemDto, ServiceResponse } from '../models/model';
+import { ResponseDto, ProductDetailDto, CartItemDto, ServiceResponse, RequestBillDto } from '../models/model';
+import { AccountService } from 'src/app/shared/services/account.service';
 @Injectable({
   providedIn: 'root'
 })
 export class PublicService {
   private apiUrl = 'https://localhost:44370/api/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private accountService: AccountService) { }
 
   getProducts(): Observable<ProductDetailDto[]> {
     const params = {
@@ -65,9 +66,15 @@ export class PublicService {
     };
     return this.http.post<ServiceResponse>(`${this.apiUrl}Cart/UpdateQuantity`, params);
   }
-  createBill(): Observable<ResponseDto> {
+  createBill(request: RequestBillDto): Observable<ResponseDto> {
+    request.username = this.accountService.getUsername();
+    const cartItemsString = localStorage.getItem('cartItems');
+      if (cartItemsString) {
+        request.cartItem = JSON.parse(cartItemsString);
+      }
+    console.log(request)
     const params = {
-     
+      requestBillDto: request,
     };
     return this.http.post<ResponseDto>(`${this.apiUrl}Bill/CreateBill`, params);
   }

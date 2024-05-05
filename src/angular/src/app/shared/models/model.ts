@@ -106,3 +106,12 @@ export interface RamDto {
   ma?: string;
   thongSo?: string;
 }
+export interface RequestBillDto {
+  phoneNumber?: string;
+  fullName?: string;
+  address?: string;
+  username?: string;
+  codeVoucher?: string;
+  payment: number;
+  cartItem?: CartItemDto[];
+}

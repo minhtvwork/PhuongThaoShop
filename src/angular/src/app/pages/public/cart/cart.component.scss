@@ -1,15 +1,11 @@
-// .nz-select {
-//     width: 200px;
-//   }
-//    [nz-radio] {
-//     display: block;
-//     height: 32px;
-//     line-height: 32px;
-//   }
-//   input {
-//     width: 100px;
-//     margin-left: 10px;
-//   }
-.custom-input {
-    margin-left: 100px !important; /* hoặc sử dụng padding-top */
+
+.input-w-300{
+    width: 300px;
+}
+.width-200{
+    width: 200px;
+    text-align: left;
+}
+.pdt-15{
+    padding-top: 15px;
 }
