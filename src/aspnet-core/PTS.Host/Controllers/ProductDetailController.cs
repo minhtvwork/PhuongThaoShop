@@ -2,10 +2,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PTS.Base.Application.Dto;
-using PTS.Domain.Dto;
-using PTS.Domain.Entities;
-using PTS.Domain.IRepository;
+using PTS.Shared.Dto;
+using PTS.Core.Dto;
+using PTS.Core.Entities;
+using PTS.Core.Repositories;
 using PTS.Host.AppCore.Request.Voucher;
 using PTS.Host.Controllers;
 namespace Shop_API.Controllers

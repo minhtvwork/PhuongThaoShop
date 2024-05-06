@@ -15,3 +15,6 @@
 /src/aspnet-core/MS.Infrastructure/obj
 /src/aspnet-core/PTS.Infrastructure/bin/Debug/net8.0
 /src/aspnet-core/PTS.Infrastructure/obj
+/src/aspnet-core/PTS.Core/bin/Debug/net8.0
+/src/aspnet-core/PTS.Core/obj
+/src/aspnet-core/PTS.Shared/bin/Debug/net8.0

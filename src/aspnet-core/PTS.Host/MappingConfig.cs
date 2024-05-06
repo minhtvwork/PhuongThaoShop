@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using PTS.Domain.Dto;
-using PTS.Domain.Entities;
+using PTS.Core.Dto;
+using PTS.Core.Entities;
 namespace PTS.Host
 {
     public class MappingConfig

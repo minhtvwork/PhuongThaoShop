@@ -3,11 +3,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PTS.Domain.Dto;
-using PTS.Domain.IRepository;
+using PTS.Core.Dto;
+using PTS.Core.Repositories;
 using PTS.Host.AppCore.Request.Cart;
 using PTS.Host.AppCore.Request;
-using PTS.Domain.IService;
+using PTS.Core.Services;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using MS.Infrastructure.AppCore.Request.Cart;
 

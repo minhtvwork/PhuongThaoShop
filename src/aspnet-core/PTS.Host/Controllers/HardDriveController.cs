@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PTS.Domain.Dto;
-using PTS.Domain.Entities;
-using PTS.Domain.IRepository;
+using PTS.Core.Dto;
+using PTS.Core.Entities;
+using PTS.Core.Repositories;
 using PTS.Host.Controllers;
-using PTS.Domain.IRepository;
+using PTS.Core.Repositories;
 using System.Linq.Expressions;
-using PTS.Base.Application.Dto;
+using PTS.Shared.Dto;
 
 namespace Shop_API.Controllers
 {

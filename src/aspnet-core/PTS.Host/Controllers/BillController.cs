@@ -3,12 +3,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PTS.Data;
-using PTS.Domain.Dto;
-using PTS.Domain.Entities;
-using PTS.Domain.IRepository;
+using PTS.Core.Dto;
+using PTS.Core.Entities;
+using PTS.Core.Repositories;
 using PTS.Host.AppCore.Request.Bill;
 using PTS.Host.Request.Voucher;
-using PTS.Domain.IService;
+using PTS.Core.Services;
 
 namespace PTS.Host.Controllers
 {

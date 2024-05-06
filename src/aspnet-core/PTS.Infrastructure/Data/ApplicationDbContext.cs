@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PTS.Domain.Entities;
+using PTS.Core.Entities;
 
 namespace PTS.Data
 {

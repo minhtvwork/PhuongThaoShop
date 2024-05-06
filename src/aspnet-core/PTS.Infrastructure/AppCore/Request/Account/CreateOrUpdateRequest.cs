@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using PTS.Domain.Dto;
-using PTS.Domain.Entities;
-using PTS.Domain.IRepository;
+using PTS.Core.Dto;
+using PTS.Core.Entities;
+using PTS.Core.Repositories;
 
 namespace PTS.Host.AppCore.Request.Account
 {

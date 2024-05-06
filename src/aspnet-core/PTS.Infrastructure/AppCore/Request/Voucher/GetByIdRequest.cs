@@ -1,10 +1,10 @@
 ﻿//using MediatR;
 //using Microsoft.EntityFrameworkCore;
-//using PTS.Domain.Entities;
+//using PTS.Core.Entities;
 //using PTS.Data;
-//using PTS.Domain.IRepository;
-//using PTS.Domain.Dto;
-//using PTS.Domain.IService;
+//using PTS.Core.Repositories;
+//using PTS.Core.Dto;
+//using PTS.Core.Services;
 
 //namespace PTS.Host.AppCore.Request.Voucher
 //{

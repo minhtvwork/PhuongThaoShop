@@ -1,9 +1,9 @@
 ﻿//using AutoMapper;
 //using Microsoft.AspNetCore.Http;
 //using Microsoft.AspNetCore.Mvc;
-//using PTS.Domain.Dto;
-//using PTS.Domain.Entities;
-//using PTS.Domain.IRepository;
+//using PTS.Core.Dto;
+//using PTS.Core.Entities;
+//using PTS.Core.Repositories;
 
 //namespace PTS.Host.Controllers
 //{

@@ -2,8 +2,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MS.Infrastructure.AppCore.Request.Voucher;
-using PTS.Domain.Dto;
-using PTS.Domain.Entities;
+using PTS.Core.Dto;
+using PTS.Core.Entities;
 using PTS.Host.AppCore.Request.Voucher;
 using PTS.Host.Request.Voucher;
 

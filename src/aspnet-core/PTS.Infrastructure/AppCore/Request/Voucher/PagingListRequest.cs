@@ -4,10 +4,10 @@ using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using PTS.Base.Application.Dto;
-using PTS.Domain.Dto;
-using PTS.Domain.Entities;
-using PTS.Domain.IRepository;
+using PTS.Shared.Dto;
+using PTS.Core.Dto;
+using PTS.Core.Entities;
+using PTS.Core.Repositories;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 

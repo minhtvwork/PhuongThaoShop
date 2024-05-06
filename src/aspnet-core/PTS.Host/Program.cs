@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PTS.Domain.IRepository;
-using PTS.EntityFrameworkCore.Repository;
+using PTS.Core.Repositories;
+using PTS.Infrastructure.Repositories;
 using PTS.Host;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
-using PTS.Domain.IService;
-using PTS.Infrastructure.Service;
+using PTS.Core.Services;
+using PTS.Infrastructure.Services;
 using PTS.Data;
 using PTS.Host.AppCore.Request;
 using PTS.Infrastructure.Repository;

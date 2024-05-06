@@ -18,7 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\PTS.Base.Application\PTS.Base.Application.csproj" />
-		<ProjectReference Include="..\PTS.Domain\PTS.Domain.csproj" />
+		<ProjectReference Include="..\PTS.Core\PTS.Core.csproj" />
+		<ProjectReference Include="..\PTS.Shared\PTS.Shared.csproj" />
 	</ItemGroup>
 </Project>
