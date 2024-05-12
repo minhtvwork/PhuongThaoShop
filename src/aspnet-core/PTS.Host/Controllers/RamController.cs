@@ -11,7 +11,7 @@ namespace Shop_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RamController : PTSBaseController
+    public class RamController : BaseController
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;

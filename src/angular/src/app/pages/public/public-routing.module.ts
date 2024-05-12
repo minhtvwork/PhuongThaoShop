@@ -4,12 +4,14 @@ import { MainComponent } from './main/main.component';
 import { HomeComponent } from './home/home.component';
 import { DetailComponent } from './detail/detail.component';
 import { CartComponent } from './cart/cart.component';
+import { ProductComponent } from './product/product.component';
 
 const routes: Routes = [
   {
     path: '', component: MainComponent,
     children: [
       { path: '', component: HomeComponent },
+      { path: 'product', component: ProductComponent },
       { path: 'product/:id', component: DetailComponent }, 
     // { path: '**', component: NotfoundComponent },
       { path: 'cart', component: CartComponent },

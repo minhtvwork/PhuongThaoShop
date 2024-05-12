@@ -12,7 +12,7 @@ namespace Shop_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductDetailController : PTSBaseController
+    public class ProductDetailController : BaseController
     {
         private readonly IProductDetailRepository _repository;
         private readonly ResponseDto _reponse;

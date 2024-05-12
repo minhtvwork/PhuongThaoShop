@@ -1,4 +1,4 @@
-<div class="container" >
+<div class="container">
   <div class="row">
     <div class="carousel col-sm-12 col-md-12">
       <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
@@ -48,7 +48,51 @@
       </ul>
     </div>
   </div>
-  <div nz-row [nzGutter]="16">
+  <div class="product-list">
+    <div class="container">
+      <div class="p-list d-flex flex-wrap">
+        <ng-container *ngIf="products && products.length > 0; else loading">
+          <div class="p-item" *ngFor="let p of products">
+            <div class="p-img">
+              <a>
+                <img src="https://laptopaz.vn/media/product/2487_laptopaz_dell_xps_9520_1.jpg" alt="">
+              </a>
+            </div>
+            <div class="p-emtry">
+              <a class="p-name">[New 100%] {{p.nameProduct }} {{p.code }} {{p.tenCpu }}
+                {{p.thongSoRam }} {{p.thongSoHardDrive }}</a>
+              <span class="p-price">
+                <span class="box-text-update2021">
+                  <span class="show-shadow">
+                    47.990.000
+                  </span>
+                </span>
+                <span class="p-mprice">
+                  58.890.000
+                </span>
+              </span>
+            </div>
+            <span class="productType">
+              <img class="img-fluid" src="../../../../assets/images/sales.png" alt="sale off">
+              <span class="percent">-19%</span>
+            </span>
+            
+          </div>
+        </ng-container>
+        <ng-template #loading>
+          <div>
+            <nz-spin nzTip="Loading...">
+              <nz-alert nzType="info" nzMessage="Alert message title"
+                nzDescription="Further details about the context of this alert."></nz-alert>
+            </nz-spin>
+          </div>
+        </ng-template>
+      </div>
+
+    </div>
+
+  </div>
+  <!-- <div nz-row [nzGutter]="16">
     <div nz-col nzSpan="24" nzSm="12" nzMd="8" nzLg="6" *ngFor="let p of products">
       <nz-card nzHoverable style="width:100%" [nzCover]="coverTemplate">
         <a [routerLink]="['/product', p.id]" class="text-card-product">{{p.nameProduct }} {{p.code }} {{p.tenCpu }}
@@ -70,5 +114,5 @@
       </ng-template>
       <p></p>
     </div>
-  </div>
+  </div> -->
 </div>

@@ -1,4 +1,18 @@
 /* footer.component.scss */
+/* messenger-button.component.css */
+.zalo-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000; /* Đảm bảo nút hiển thị trên các phần khác */
+  background-color: #0084ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 3px 3px;
+  cursor: pointer;
+}
+
 .container {
     width: 100%;
     padding: 20px;

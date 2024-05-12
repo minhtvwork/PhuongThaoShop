@@ -10,7 +10,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : PTSBaseController
+    public class ProductController : BaseController
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;

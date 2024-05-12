@@ -28,4 +28,59 @@
     background-color: transparent;
 
 }
+.list_cauhinh {
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 49% 49%;
+  grid-gap: 2%;
+}
+.list_cauhinh li{
+    border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 13px;
+ padding-top: 10px;
+  padding-bottom: 5px;
+margin-bottom: 5px;
+}
+.list_cauhinh li p{
+  color: #e00;
+  font-size: 17px;
+  margin-bottom: 0;
+}
+.list_cauhinh li.active{
+  border: 1px solid #2b80dd;
+  position: relative;           
+}
+.list_cauhinh li:hover{
+ border: 1px solid #2b80dd;             
+}
+.list_cauhinh li.active a{color: #222;}
+              
+.list_cauhinh .checkbox-option.checked::before {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  content: "\2714";
+  font-family: 'Font Awesome 5 Free';
+  font-size: 9px;
+  background: #2ea70d;
+  color: #fff;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  border-radius: 50%;
+              
+}
+.list_cauhinh .checkbox-option {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  background: #fff;
+  border: 2px solid;
+  position: relative;
+  margin-right: 3px;
+}
   

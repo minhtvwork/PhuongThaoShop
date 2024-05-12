@@ -10,7 +10,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ScreenController : PTSBaseController
+    public class ScreenController : BaseController
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;

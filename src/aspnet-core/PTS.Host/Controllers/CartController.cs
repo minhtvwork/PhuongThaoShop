@@ -15,7 +15,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CartController : PTSBaseController
+    public class CartController : BaseController
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;

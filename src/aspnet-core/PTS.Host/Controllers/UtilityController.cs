@@ -7,7 +7,7 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UtilityController : PTSBaseController
+    public class UtilityController : BaseController
     {
         private readonly ISendMailService _emailService;
         private readonly ResponseDto _reponse;

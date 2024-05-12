@@ -5,13 +5,14 @@ using MS.Infrastructure.AppCore.Request.Voucher;
 using PTS.Core.Dto;
 using PTS.Core.Entities;
 using PTS.Host.AppCore.Request.Voucher;
+using PTS.Host.Helper;
 using PTS.Host.Request.Voucher;
 
 namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VoucherController : PTSBaseController
+    public class VoucherController : BaseController
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
@@ -25,6 +26,7 @@ namespace PTS.Host.Controllers
         [HttpPost("GetPaged")]
         public async Task<IActionResult> GetPaged(VoucherPagingListRequest request)
          {
+            var s = AppUtils.SecurityKey;
             var vouchers = await _mediator.Send(request);
             return Ok(vouchers);
         }
