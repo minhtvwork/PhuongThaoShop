@@ -59,7 +59,12 @@ builder.Services.AddTransient<ICartService, CartService>();
 builder.Services.AddTransient<IBillService, BillService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "api.phuongthaoshop.vn", Version = "v1" });
+    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "api.phuongthaoshop.vn.xml");
+    c.IncludeXmlComments(filePath);
+});
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -88,11 +93,19 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api.phuongthaoshop.vn v1"));
 }
 
 app.UseHttpsRedirection();
+
 app.UseCors(t => t.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 app.UseAuthorization();
+app.UseStaticFiles();
+app.UseHttpsRedirection();
+app.UseRouting();
 app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 app.Run();

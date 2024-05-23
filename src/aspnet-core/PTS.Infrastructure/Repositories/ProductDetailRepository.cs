@@ -9,6 +9,9 @@ using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using Abp.Application.Services.Dto;
 using PTS.Shared.Dto;
+using Microsoft.Data.SqlClient;
+using System.Data;
+using Dapper;
 
 namespace PTS.Infrastructure.Repositories
 {
@@ -372,6 +375,50 @@ namespace PTS.Infrastructure.Repositories
                   OtherImages = (a.ImageEntities.Where(image => image.Ma != "Anh1").Select(image => image.LinkImage).ToList()),
               }).FirstOrDefaultAsync();
             return query;
+        }
+        public async Task<Tuple<List<ProductDetailDto>, int>> GetPage(int pageIndex = 0, string orderBy = "", int pageSize = 7, DateTime? dateFr = null, DateTime? dateTo = null)
+        {
+            int rowCount = 0;
+            List<ProductDetailDto> lLotteryKenos = new List<ProductDetailDto>();
+            var conn = (SqlConnection)_context.Database.GetDbConnection();
+            try
+            {
+                if (conn.State != ConnectionState.Open)
+                {
+                    await conn.OpenAsync();
+                }
+
+                DynamicParameters param = new DynamicParameters();
+
+                if (dateFr != null)
+                {
+                    param.Add("@DateFr", dateFr, DbType.DateTime);
+                }
+                if (dateTo != null)
+                {
+                    param.Add("@DateTo", dateTo, DbType.DateTime);
+                }
+                if (!string.IsNullOrEmpty(orderBy))
+                {
+                    param.Add("@OrderBy", orderBy, DbType.String);
+                }
+
+
+                param.Add("@PageSize", pageSize, DbType.Int32);
+                param.Add("@PageNumber", pageIndex, DbType.Int32);
+                param.Add("@RowCount", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                lLotteryKenos = await conn
+                    .QueryAsync<ProductDetailDto>("LotteryKenos_Search", param,
+                        commandType: CommandType.StoredProcedure) as List<ProductDetailDto>;
+                rowCount = param.Get<int>("RowCount");
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return Tuple.Create(lLotteryKenos, rowCount);
         }
     }
 }

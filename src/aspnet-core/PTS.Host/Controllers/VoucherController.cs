@@ -1,11 +1,11 @@
-﻿using AutoMapper;
+﻿using App.Helper;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MS.Infrastructure.AppCore.Request.Voucher;
 using PTS.Core.Dto;
 using PTS.Core.Entities;
 using PTS.Host.AppCore.Request.Voucher;
-using PTS.Host.Helper;
 using PTS.Host.Request.Voucher;
 
 namespace PTS.Host.Controllers
@@ -26,7 +26,6 @@ namespace PTS.Host.Controllers
         [HttpPost("GetPaged")]
         public async Task<IActionResult> GetPaged(VoucherPagingListRequest request)
          {
-            var s = AppUtils.SecurityKey;
             var vouchers = await _mediator.Send(request);
             return Ok(vouchers);
         }

@@ -14,6 +14,7 @@ using PTS.Core.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using App.Helper;
 
 namespace PTS.Host.Controllers
 {
@@ -55,6 +56,7 @@ namespace PTS.Host.Controllers
         [HttpGet("GetMyInfor")]
         public async Task<IActionResult> GetMyInfor()
         {
+            var x = AppSettings.RootPath;
             var username = User.Identity.Name;
             return Ok(username);
         }

@@ -8,6 +8,172 @@ namespace PTS.Shared.Helper
 {
     public static class StringHelper
     {
+        private static readonly string[] VietNamChar = new string[]
+    {
+            "aAeEoOuUiIdDyY",
+            "áàạảãâấầậẩẫăắằặẳẵ",
+            "ÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴ",
+            "éèẹẻẽêếềệểễ",
+            "ÉÈẸẺẼÊẾỀỆỂỄ",
+            "óòọỏõôốồộổỗơớờợởỡ",
+            "ÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠ",
+            "úùụủũưứừựửữ",
+            "ÚÙỤỦŨƯỨỪỰỬỮ",
+            "íìịỉĩ",
+            "ÍÌỊỈĨ",
+            "đ",
+            "Đ",
+            "ýỳỵỷỹ",
+            "ÝỲỴỶỸ"
+    };
+        public static string RemoveSign4VietnameseString(string str)
+        {
+            for (int i = 1; i < VietNamChar.Length; i++)
+            {
+                for (int j = 0; j < VietNamChar[i].Length; j++)
+                    str = str.Replace(VietNamChar[i][j], VietNamChar[0][i - 1]);
+            }
+            return str;
+        }
+
+        public static string InjectionString(string str)
+        {
+            string retVal = string.Empty;
+            if (!string.IsNullOrEmpty(str))
+            {
+                string[] sqlCheckList =
+                {
+                    "/*",
+                    "*/",
+                    "char",
+                    "nchar",
+                    "varchar",
+                    "nvarchar",
+                    "alter",
+                    "begin",
+                    "cast",
+                    "create",
+                    "cursor",
+                    "declare",
+                    "delete",
+                    "drop",
+                    "end",
+                    "exec",
+                    "execute",
+                    "fetch",
+                    "insert",
+                    "kill",
+                    "select",
+                    "sys",
+                    "sysobjects",
+                    "syscolumns",
+                    "table",
+                    "update",
+                    "xp_"
+                };
+                retVal = str.Replace("'", "''");
+                while (retVal.Contains("--"))
+                {
+                    retVal = retVal.Replace("--", "-");
+                }
+                foreach (var item in sqlCheckList)
+                    retVal = retVal.Replace(item, string.Empty);
+            }
+
+            return retVal;
+        }
+
+        public static string ToUrlSlug(string text)
+        {
+            if (!string.IsNullOrEmpty(text))
+            {
+                string retVal = RemoveSign4VietnameseString(text);
+                retVal = retVal.Replace(" ", "-");
+                retVal = retVal.Replace("/", "-");
+                retVal = retVal.Replace("?", "");
+                retVal = retVal.Replace(":", "");
+                retVal = retVal.Replace(",", "");
+                while (retVal.Contains("--"))
+                {
+                    retVal = retVal.Replace("--", "-");
+                }
+                return retVal.ToLower();
+            }
+
+            return string.Empty;
+        }
+
+        public static string RemoveSpecialSignatures(string inputString)
+        {
+            string resultVar = string.Empty;
+            if (!string.IsNullOrEmpty(inputString))
+            {
+                resultVar = inputString
+                    .Where(ch =>
+                        ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch >= '0' && ch <= '9' || ch == ' ')
+                    .Aggregate(resultVar, (current, ch) => current + ch.ToString());
+            }
+            return resultVar;
+        }
+
+        public static string RemoveSignatureForUrl(string input)
+        {
+            string resultVar = input;
+            if (string.IsNullOrEmpty(resultVar))
+                return resultVar;
+            resultVar = RemoveSign4VietnameseString(resultVar);
+            resultVar = resultVar.ToLower().Trim();
+            resultVar = RemoveSpecialSignatures(input);
+            while (resultVar.Contains("  "))
+                resultVar = resultVar.Replace("  ", " ");
+            resultVar = resultVar.Replace(" ", "-");
+
+            return resultVar;
+        }
+
+        public static string RemoveSignature(string input)
+        {
+            if (input == null)
+            {
+                return string.Empty;
+            }
+            input = input.Replace("\"", "");
+            for (int i = 1; i < VietNamChar.Length; i++)
+            {
+                for (int j = 0; j < VietNamChar[i].Length; j++)
+                    input = input.Replace(VietNamChar[i][j], VietNamChar[0][i - 1]);
+            }
+
+            return input;
+        }
+
+        public static string StripTags(string source)
+        {
+            char[] array = new char[source.Length];
+            int arrayIndex = 0;
+            bool inside = false;
+
+            for (int i = 0; i < source.Length; i++)
+            {
+                char let = source[i];
+                if (let == '<')
+                {
+                    inside = true;
+                    continue;
+                }
+                if (let == '>')
+                {
+                    inside = false;
+                    continue;
+                }
+                if (!inside)
+                {
+                    array[arrayIndex] = let;
+                    arrayIndex++;
+                }
+            }
+            return new string(array, 0, arrayIndex);
+        }
         public static string ConvertToUnsign(this string s)
         {
             if (string.IsNullOrEmpty(s)) return s;
