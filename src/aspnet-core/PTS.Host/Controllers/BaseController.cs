@@ -7,7 +7,8 @@ namespace PTS.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize(Roles = "admin")]
+    // [Authorize(Roles = "admin")]
+    [AllowAnonymous]
     public class BaseController : ControllerBase
     {
         private ISender _mediator = null;

@@ -4,6 +4,7 @@ using PTS.Data;
 using PTS.Core.Repositories;
 using System;
 using System.Linq.Expressions;
+using PTS.Core.Enums;
 
 namespace PTS.Host.Repository
 {

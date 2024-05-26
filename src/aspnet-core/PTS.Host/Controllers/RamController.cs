@@ -6,6 +6,7 @@ using PTS.Core.Dto;
 using PTS.Core.Entities;
 using PTS.Core.Repositories;
 using PTS.Host.Controllers;
+using PTS.Host.Model.Base;
 
 namespace Shop_API.Controllers
 {
@@ -39,19 +40,38 @@ namespace Shop_API.Controllers
         public async Task<IActionResult> CreateOrUpdateAsync(RamDto objDto)
         {
             var obj = _mapper.Map<RamEntity>(objDto);
+            bool isSuccess;
+
             if (objDto.Id > 0)
             {
-                return Ok(await _unitOfWork._ramRepository.Update(obj));
+                isSuccess = await _unitOfWork._ramRepository.Update(obj);
             }
             else
             {
-                return Ok(await _unitOfWork._ramRepository.Create(obj));
+                isSuccess = await _unitOfWork._ramRepository.Create(obj);
+            }
+
+            if (isSuccess)
+            {
+                return Ok(new ApiSuccessResult<RamEntity>(obj));
+            }
+            else
+            {
+                return Ok(new ApiErrorResult<RamEntity>("Error"));
             }
         }
+
         [HttpPost("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
-            return Ok(await _unitOfWork._ramRepository.Delete(id));
+            if(await _unitOfWork._ramRepository.Delete(id))
+            {
+                return Ok(new ApiSuccessResult<RamEntity>());
+            }
+            else
+            {
+                return Ok(new ApiErrorResult<RamEntity>("Error"));
+            }
         }
     }
 }

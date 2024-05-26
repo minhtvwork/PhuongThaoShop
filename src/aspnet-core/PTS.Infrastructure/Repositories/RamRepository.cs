@@ -5,6 +5,7 @@ using PTS.Core.Entities;
 using PTS.Data;
 using Abp.Application.Services.Dto;
 using PTS.Shared.Dto;
+using System.Linq.Dynamic.Core;
 
 namespace PTS.Infrastructure.Repositories
 {
@@ -61,7 +62,7 @@ namespace PTS.Infrastructure.Repositories
             }
             try
             {
-                ram.IsDeleted = true;
+                  ram.IsDeleted = true;
                 _dbContext.RamEntity.Update(ram);
                 await _dbContext.SaveChangesAsync();
                 return true;
@@ -83,8 +84,13 @@ namespace PTS.Infrastructure.Repositories
 
         public async Task<bool> Update(RamEntity obj)
         {
+            var check = await _dbContext.RamEntity.AnyAsync(x => x.Ma == obj.Ma);
             var ram = await _dbContext.RamEntity.FindAsync(obj.Id);
-            if (ram == null)
+            if (ram == null )
+            {
+                return false;
+            }
+            if(check && obj.Ma != ram.Ma)
             {
                 return false;
             }

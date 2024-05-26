@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTS.Infrastructure", "PTS.I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTS.Core", "PTS.Core\PTS.Core.csproj", "{B91F8DE3-CE3E-4CBF-BEAD-B33F90749374}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTS.Shared", "PTS.Shared\PTS.Shared.csproj", "{26E39935-B5AD-4A11-8670-63188BF8C07A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTS.Shared", "PTS.Shared\PTS.Shared.csproj", "{26E39935-B5AD-4A11-8670-63188BF8C07A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
