@@ -11,6 +11,7 @@ import { ProductComponent } from './product/product.component';
 import { MainComponent } from './main/main.component';
 import { LoginComponent } from './login/login.component';
 import { RamComponent } from './ram/ram.component';
+import { RoleComponent } from './role/role.component';
 
 
 
@@ -23,7 +24,8 @@ import { RamComponent } from './ram/ram.component';
     ProductComponent,
     MainComponent,
     LoginComponent,
-    RamComponent
+    RamComponent,
+    RoleComponent
   ],
   imports: [
     CommonModule,

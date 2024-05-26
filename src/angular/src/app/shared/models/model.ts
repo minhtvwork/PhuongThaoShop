@@ -106,6 +106,11 @@ export interface RamDto {
   ma?: string;
   thongSo?: string;
 }
+export interface RoleDto {
+  id: number;
+  code?: string;
+  name?: string;
+}
 export interface RequestBillDto {
   phoneNumber?: string;
   fullName?: string;

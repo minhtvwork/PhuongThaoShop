@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
   <div class="row">
     <div class="carousel col-sm-12 col-md-12">
       <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
@@ -29,7 +29,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 
 <div class="container">
@@ -48,37 +48,44 @@
       </ul>
     </div>
   </div>
-  <div class="product-list">
-    <div class="container">
+  <div class="product-list row">
+    <div class="container  ">
       <div class="p-list d-flex flex-wrap">
         <ng-container *ngIf="products && products.length > 0; else loading">
-          <div class="p-item" *ngFor="let p of products">
-            <div class="p-img">
-              <a>
-                <img src="https://laptopaz.vn/media/product/2487_laptopaz_dell_xps_9520_1.jpg" alt="">
-              </a>
-            </div>
-            <div class="p-emtry">
-              <a class="p-name">[New 100%] {{p.nameProduct }} {{p.code }} {{p.tenCpu }}
-                {{p.thongSoRam }} {{p.thongSoHardDrive }}</a>
-              <span class="p-price">
-                <span class="box-text-update2021">
-                  <span class="show-shadow">
-                    47.990.000
+          <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4" *ngFor="let p of products">
+              <div class="p-item">
+                <div class="p-img">
+                  <a>
+                    <img src="https://laptopaz.vn/media/product/2487_laptopaz_dell_xps_9520_1.jpg" alt="">
+                  </a>
+                </div>
+                <div class="p-emtry">
+                  <a class="p-name" [routerLink]="['/product', p.id]" >[New 100%] {{ p.nameProduct }} {{ p.code }} {{ p.tenCpu }} {{ p.thongSoRam }} {{ p.thongSoHardDrive }}</a>
+                  <span class="p-price">
+                    <span class="box-text-update2021">
+                      <span class="show-shadow">
+                        47.990.000
+                      </span>
+                    </span>
+                    <span class="p-mprice">
+                      58.890.000
+                    </span>
                   </span>
+                </div>
+                <span class="productType">
+                  <img class="img-fluid" src="../../../../assets/images/sales.png" alt="sale off">
+                  <span class="percent">-19%</span>
                 </span>
-                <span class="p-mprice">
-                  58.890.000
-                </span>
-              </span>
+              </div>
             </div>
-            <span class="productType">
-              <img class="img-fluid" src="../../../../assets/images/sales.png" alt="sale off">
-              <span class="percent">-19%</span>
-            </span>
-            
           </div>
         </ng-container>
+        
+        <ng-template #loading>
+          <div>Loading...</div>
+        </ng-template>
+        
         <ng-template #loading>
           <div>
             <nz-spin nzTip="Loading...">

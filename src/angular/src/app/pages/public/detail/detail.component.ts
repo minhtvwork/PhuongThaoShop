@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { PublicService } from '../../../shared/services/public.service';
 import { ProductDetailDto, CartItemDto } from '../../../shared/models/model';
 import { Observable } from 'rxjs';
 import { AccountService } from 'src/app/shared/services/account.service';
+
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
@@ -15,9 +17,12 @@ export class DetailComponent implements OnInit {
   username!: string;
   private cartItems: CartItemDto[] = [];
   constructor(private route: ActivatedRoute, private publicService: PublicService, private router: Router,
- private accountService: AccountService) { }
+ private accountService: AccountService,private location: Location) { }
 
   ngOnInit(): void {
+    this.location.onUrlChange(() => {
+      window.scrollTo(0, 0);
+    });
     this.productId = this.route.snapshot.params['id']; // Lấy từ route
     if (this.productId) {
       this.publicService.getProductById(this.productId).subscribe(

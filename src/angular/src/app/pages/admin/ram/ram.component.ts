@@ -16,8 +16,9 @@ export class RamComponent implements OnInit {
   modalTitle = 'Thêm Ram';
   listData: RamDto[] = [];
   fbForm!: FormGroup;
-  request: PagedRequest = { skipCount: 0, maxResultCount: 10 }; 
-  constructor(private adminService: AdminService,private modal: NzModalService,private nzMessageService: NzMessageService, private fb: FormBuilder) { }
+  request: PagedRequest = { skipCount: 0, maxResultCount: 10 };
+  listOfCurrentPageData: readonly RamDto[] = [];
+  constructor(private adminService: AdminService, private modal: NzModalService, private nzMessageService: NzMessageService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.fbForm = this.fb.group({
@@ -33,28 +34,38 @@ export class RamComponent implements OnInit {
       this.listData = response.items;
     });
   }
-  openModal(): void {
+  create(): void {
+    this.fbForm.reset({
+      id: '0'
+    });
     this.isVisible = true;
   }
   save(): void {
     if (this.fbForm.valid) {
       const obj = this.fbForm.value;
-      this.isSave = true; 
+      this.isSave = true;
       this.adminService.createOrUpdateRam(obj).subscribe(
-        () => {
-          this.nzMessageService.success('Thành công');
-          this.isSave = false; 
-          this.isVisible = false;
-          this.loadData(); 
-          this.fbForm.reset();
+        (response: any) => {
+          if (response.isSuccessed) {
+            this.nzMessageService.success('Thành công');
+            this.isSave = false;
+            this.isVisible = false;
+            this.loadData();
+            this.fbForm.reset({ id: '0' });
+          } else {
+            this.nzMessageService.error('Thất bại');
+            this.isSave = false;
+          }
         },
-        () => {
+        (error) => {
           this.isSave = false;
           this.nzMessageService.error('Thất bại');
+          console.error('API call failed:', error);
         }
       );
     }
   }
+
   close(): void {
     this.isVisible = false;
   }
@@ -65,11 +76,19 @@ export class RamComponent implements OnInit {
   }
 
   delete(id: number): void {
-    this.adminService.deleteRam(id).subscribe(() => {
-      this.nzMessageService.success('Thành công');
-      this.loadData();
-    }, error => {
-      this.nzMessageService.error('Thất bại');
-    });
+    this.adminService.deleteRam(id).subscribe(
+      (response: any) => {
+        if (response.isSuccessed) {
+          this.nzMessageService.success('Thành công');
+          this.loadData();
+        } else {
+          this.nzMessageService.error('Thất bại');
+        }
+      },
+      (error) => {
+        this.nzMessageService.error('Thất bại');
+        console.error('API call failed:', error);
+      }
+    );
   }
 }

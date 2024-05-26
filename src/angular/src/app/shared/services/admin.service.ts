@@ -46,6 +46,7 @@ export class AdminService {
   }
 
   createOrUpdateRam(objDto: any): Observable<any> {
+    console.log(objDto);
     const token = this.accountService.getAccessToken();
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -61,5 +62,41 @@ export class AdminService {
       'Authorization': `Bearer ${token}`
     });
     return this.http.post(`${this.apiUrl}Ram/Delete?id=${id}`,null,{ headers: headers });
+  }
+  // role
+  getListRole(): Observable<any> {
+    return this.http.get(`${this.apiUrl}GetList`);
+  }
+
+  getPagedRole(request: PagedRequest): Observable<any> {
+    const token = this.accountService.getAccessToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post<any>(`${this.apiUrl}Role/GetPaged`, request,{ headers: headers });
+  }
+
+  getByRoleId(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}Role/GetById?id=${id}`);
+  }
+
+  createOrUpdateRole(objDto: any): Observable<any> {
+    console.log(objDto);
+    const token = this.accountService.getAccessToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post(`${this.apiUrl}Role/CreateOrUpdateAsync`, objDto,{ headers: headers });
+  }
+
+  deleteRole(id: number): Observable<any> {
+    const token = this.accountService.getAccessToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post(`${this.apiUrl}Role/Delete?id=${id}`,null,{ headers: headers });
   }
 }
