@@ -20,3 +20,5 @@
 /src/aspnet-core/PTS.Shared/bin/Debug/net8.0
 /src/aspnet-core/PTS.Shared/obj/Debug/net8.0/ref/PTS.Shared.dll
 /src/aspnet-core/PTS.Shared/obj/Debug/net8.0
+/src/aspnet-core/PTS.Application/bin/Debug/net8.0
+/src/aspnet-core/PTS.Application/obj

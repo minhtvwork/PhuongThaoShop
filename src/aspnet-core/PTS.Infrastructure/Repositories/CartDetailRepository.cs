@@ -1,5 +1,5 @@
 ﻿using PTS.Core.Repositories;
-using PTS.Core.Entities;
+using PTS.Domain.Entities;
 using PTS.Data;
 using Microsoft.EntityFrameworkCore;
 

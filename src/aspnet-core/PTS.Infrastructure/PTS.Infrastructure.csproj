@@ -19,7 +19,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\PTS.Core\PTS.Core.csproj" />
+		<ProjectReference Include="..\PTS.Application\PTS.Application.csproj" />
+		<ProjectReference Include="..\PTS.Domain\PTS.Domain.csproj" />
 		<ProjectReference Include="..\PTS.Shared\PTS.Shared.csproj" />
 	</ItemGroup>
 </Project>

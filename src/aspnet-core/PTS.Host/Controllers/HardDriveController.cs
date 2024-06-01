@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PTS.Core.Dto;
-using PTS.Core.Entities;
+using PTS.Application.Dto;
+using PTS.Domain.Entities;
 using PTS.Core.Repositories;
 using PTS.Host.Controllers;
 using PTS.Core.Repositories;

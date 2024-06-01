@@ -25,7 +25,7 @@ namespace PTS.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("PTS.Core.Entities.BillDetailEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.BillDetailEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,7 +64,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("BillDetail");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.BillEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.BillEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -122,7 +122,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("Bill");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.CardVGAEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.CardVGAEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -156,7 +156,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("CardVGA");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.CartDetailEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.CartDetailEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -191,7 +191,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("CartDetail");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.CartEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.CartEntity", b =>
                 {
                     b.Property<int>("UserEntityId")
                         .HasColumnType("int");
@@ -214,7 +214,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("Cart");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ColorEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ColorEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -243,7 +243,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("Color");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ContactEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ContactEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -281,7 +281,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("Contact");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.CpuEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.CpuEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -311,7 +311,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("CPU");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.HardDriveEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.HardDriveEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -341,7 +341,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("HardDrive");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ImageEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ImageEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -375,7 +375,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("Image");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ManagePostEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ManagePostEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -406,7 +406,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("ManagePost");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ManufacturerEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ManufacturerEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -433,7 +433,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("Manufacturer");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ProductDetailEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ProductDetailEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -507,7 +507,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("ProductDetail");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ProductEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ProductEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -544,7 +544,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ProductTypeEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ProductTypeEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -571,7 +571,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("ProductType");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.RamEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.RamEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -600,7 +600,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("Ram");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.RoleEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.RoleEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -628,7 +628,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("Role");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ScreenEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ScreenEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -665,7 +665,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("Screen");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.SerialEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.SerialEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -701,7 +701,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("Serial");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.UserEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.UserEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -746,7 +746,7 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.VoucherEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.VoucherEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -788,9 +788,9 @@ namespace PTS.Infrastructure.Migrations
                     b.ToTable("Voucher");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.BillDetailEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.BillDetailEntity", b =>
                 {
-                    b.HasOne("PTS.Core.Entities.BillEntity", "BillEntity")
+                    b.HasOne("PTS.Domain.Entities.BillEntity", "BillEntity")
                         .WithMany("BillDetailEntities")
                         .HasForeignKey("BillEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -799,13 +799,13 @@ namespace PTS.Infrastructure.Migrations
                     b.Navigation("BillEntity");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.BillEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.BillEntity", b =>
                 {
-                    b.HasOne("PTS.Core.Entities.UserEntity", "UserEntity")
+                    b.HasOne("PTS.Domain.Entities.UserEntity", "UserEntity")
                         .WithMany()
                         .HasForeignKey("UserEntityId");
 
-                    b.HasOne("PTS.Core.Entities.VoucherEntity", "VoucherEntitity")
+                    b.HasOne("PTS.Domain.Entities.VoucherEntity", "VoucherEntitity")
                         .WithMany("BillEntities")
                         .HasForeignKey("VoucherEntityId");
 
@@ -814,15 +814,15 @@ namespace PTS.Infrastructure.Migrations
                     b.Navigation("VoucherEntitity");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.CartDetailEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.CartDetailEntity", b =>
                 {
-                    b.HasOne("PTS.Core.Entities.CartEntity", "CartEntity")
+                    b.HasOne("PTS.Domain.Entities.CartEntity", "CartEntity")
                         .WithMany("CartDetailEntities")
                         .HasForeignKey("CartEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PTS.Core.Entities.ProductDetailEntity", "ProductDetailEntity")
+                    b.HasOne("PTS.Domain.Entities.ProductDetailEntity", "ProductDetailEntity")
                         .WithMany("CartDetailEntities")
                         .HasForeignKey("ProductDetailEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -833,55 +833,55 @@ namespace PTS.Infrastructure.Migrations
                     b.Navigation("ProductDetailEntity");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.CartEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.CartEntity", b =>
                 {
-                    b.HasOne("PTS.Core.Entities.UserEntity", "UserEntity")
+                    b.HasOne("PTS.Domain.Entities.UserEntity", "UserEntity")
                         .WithOne("Cart")
-                        .HasForeignKey("PTS.Core.Entities.CartEntity", "UserEntityId")
+                        .HasForeignKey("PTS.Domain.Entities.CartEntity", "UserEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("UserEntity");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ImageEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ImageEntity", b =>
                 {
-                    b.HasOne("PTS.Core.Entities.ProductDetailEntity", "ProductDetailEntity")
+                    b.HasOne("PTS.Domain.Entities.ProductDetailEntity", "ProductDetailEntity")
                         .WithMany("ImageEntities")
                         .HasForeignKey("ProductDetailEntityId");
 
                     b.Navigation("ProductDetailEntity");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ProductDetailEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ProductDetailEntity", b =>
                 {
-                    b.HasOne("PTS.Core.Entities.CardVGAEntity", "CardVGAEntity")
+                    b.HasOne("PTS.Domain.Entities.CardVGAEntity", "CardVGAEntity")
                         .WithMany("ProductDetailEntities")
                         .HasForeignKey("CardVGAEntityId");
 
-                    b.HasOne("PTS.Core.Entities.ColorEntity", "ColorEntity")
+                    b.HasOne("PTS.Domain.Entities.ColorEntity", "ColorEntity")
                         .WithMany("ProductDetailEntities")
                         .HasForeignKey("ColorEntityId");
 
-                    b.HasOne("PTS.Core.Entities.CpuEntity", "CpuEntity")
+                    b.HasOne("PTS.Domain.Entities.CpuEntity", "CpuEntity")
                         .WithMany("ProductDetailEntities")
                         .HasForeignKey("CpuEntityId");
 
-                    b.HasOne("PTS.Core.Entities.HardDriveEntity", "HardDriveEntity")
+                    b.HasOne("PTS.Domain.Entities.HardDriveEntity", "HardDriveEntity")
                         .WithMany("ProductDetailEntities")
                         .HasForeignKey("HardDriveEntityId");
 
-                    b.HasOne("PTS.Core.Entities.ProductEntity", "ProductEntity")
+                    b.HasOne("PTS.Domain.Entities.ProductEntity", "ProductEntity")
                         .WithMany("ProductDetailEntities")
                         .HasForeignKey("ProductEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PTS.Core.Entities.RamEntity", "RamEntity")
+                    b.HasOne("PTS.Domain.Entities.RamEntity", "RamEntity")
                         .WithMany("ProductDetailEntities")
                         .HasForeignKey("RamEntityId");
 
-                    b.HasOne("PTS.Core.Entities.ScreenEntity", "ScreenEntity")
+                    b.HasOne("PTS.Domain.Entities.ScreenEntity", "ScreenEntity")
                         .WithMany("ProductDetailEntities")
                         .HasForeignKey("ScreenEntityId");
 
@@ -900,13 +900,13 @@ namespace PTS.Infrastructure.Migrations
                     b.Navigation("ScreenEntity");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ProductEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ProductEntity", b =>
                 {
-                    b.HasOne("PTS.Core.Entities.ManufacturerEntity", "ManufacturerEntity")
+                    b.HasOne("PTS.Domain.Entities.ManufacturerEntity", "ManufacturerEntity")
                         .WithMany("ProductEntities")
                         .HasForeignKey("ManufacturerEntityId");
 
-                    b.HasOne("PTS.Core.Entities.ProductTypeEntity", "ProductTypeEntity")
+                    b.HasOne("PTS.Domain.Entities.ProductTypeEntity", "ProductTypeEntity")
                         .WithMany("ProductEntities")
                         .HasForeignKey("ProductTypeEntityId");
 
@@ -915,13 +915,13 @@ namespace PTS.Infrastructure.Migrations
                     b.Navigation("ProductTypeEntity");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.SerialEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.SerialEntity", b =>
                 {
-                    b.HasOne("PTS.Core.Entities.BillDetailEntity", "BillDetailEntities")
+                    b.HasOne("PTS.Domain.Entities.BillDetailEntity", "BillDetailEntities")
                         .WithMany("SerialEntities")
                         .HasForeignKey("BillDetailEntityId");
 
-                    b.HasOne("PTS.Core.Entities.ProductDetailEntity", "ProductDetailEntities")
+                    b.HasOne("PTS.Domain.Entities.ProductDetailEntity", "ProductDetailEntities")
                         .WithMany("SerialEntities")
                         .HasForeignKey("ProductDetailEntityId");
 
@@ -930,56 +930,56 @@ namespace PTS.Infrastructure.Migrations
                     b.Navigation("ProductDetailEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.UserEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.UserEntity", b =>
                 {
-                    b.HasOne("PTS.Core.Entities.RoleEntity", "RoleEntities")
+                    b.HasOne("PTS.Domain.Entities.RoleEntity", "RoleEntities")
                         .WithMany("UserEntities")
                         .HasForeignKey("RoleEntityId");
 
                     b.Navigation("RoleEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.BillDetailEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.BillDetailEntity", b =>
                 {
                     b.Navigation("SerialEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.BillEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.BillEntity", b =>
                 {
                     b.Navigation("BillDetailEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.CardVGAEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.CardVGAEntity", b =>
                 {
                     b.Navigation("ProductDetailEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.CartEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.CartEntity", b =>
                 {
                     b.Navigation("CartDetailEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ColorEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ColorEntity", b =>
                 {
                     b.Navigation("ProductDetailEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.CpuEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.CpuEntity", b =>
                 {
                     b.Navigation("ProductDetailEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.HardDriveEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.HardDriveEntity", b =>
                 {
                     b.Navigation("ProductDetailEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ManufacturerEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ManufacturerEntity", b =>
                 {
                     b.Navigation("ProductEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ProductDetailEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ProductDetailEntity", b =>
                 {
                     b.Navigation("CartDetailEntities");
 
@@ -988,37 +988,37 @@ namespace PTS.Infrastructure.Migrations
                     b.Navigation("SerialEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ProductEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ProductEntity", b =>
                 {
                     b.Navigation("ProductDetailEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ProductTypeEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ProductTypeEntity", b =>
                 {
                     b.Navigation("ProductEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.RamEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.RamEntity", b =>
                 {
                     b.Navigation("ProductDetailEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.RoleEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.RoleEntity", b =>
                 {
                     b.Navigation("UserEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.ScreenEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.ScreenEntity", b =>
                 {
                     b.Navigation("ProductDetailEntities");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.UserEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.UserEntity", b =>
                 {
                     b.Navigation("Cart");
                 });
 
-            modelBuilder.Entity("PTS.Core.Entities.VoucherEntity", b =>
+            modelBuilder.Entity("PTS.Domain.Entities.VoucherEntity", b =>
                 {
                     b.Navigation("BillEntities");
                 });

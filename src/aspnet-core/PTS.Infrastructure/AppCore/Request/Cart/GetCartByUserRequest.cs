@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using PTS.Core.Entities;
+using PTS.Domain.Entities;
 using PTS.Data;
 using PTS.Core.Repositories;
-using PTS.Core.Dto;
+using PTS.Application.Dto;
 using PTS.Core.Services;
 
 namespace PTS.Host.AppCore.Request

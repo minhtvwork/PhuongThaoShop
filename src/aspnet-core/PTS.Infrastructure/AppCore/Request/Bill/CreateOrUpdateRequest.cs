@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using PTS.Core.Dto;
+using PTS.Application.Dto;
 using PTS.Core.Services;
 
 namespace PTS.Host.AppCore.Request.Bill

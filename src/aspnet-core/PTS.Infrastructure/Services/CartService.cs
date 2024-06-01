@@ -1,7 +1,7 @@
 ﻿using PTS.Core.Repositories;
 using PTS.Core.Services;
-using PTS.Core.Dto;
-using PTS.Core.Entities;
+using PTS.Application.Dto;
+using PTS.Domain.Entities;
 
 namespace PTS.Infrastructure.Services
 {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using PTS.Core.Repositories;
-using PTS.Core.Dto;
-using PTS.Core.Entities;
+using PTS.Application.Dto;
+using PTS.Domain.Entities;
 using Abp.Application.Services.Dto;
 using PTS.Shared.Dto;
 using PTS.Data;

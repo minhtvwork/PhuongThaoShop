@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PTS.Core.Repositories;
-using PTS.Core.Entities;
+using PTS.Domain.Entities;
 using PTS.Data;
 using Abp.Application.Services.Dto;
 using PTS.Shared.Dto;
-using PTS.Core.Dto;
+using PTS.Application.Dto;
 
 namespace PTS.Infrastructure.Repositories
 {

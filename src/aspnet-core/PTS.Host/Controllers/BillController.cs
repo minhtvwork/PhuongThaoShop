@@ -3,8 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PTS.Data;
-using PTS.Core.Dto;
-using PTS.Core.Entities;
+using PTS.Application.Dto;
+using PTS.Domain.Entities;
 using PTS.Core.Repositories;
 using PTS.Host.AppCore.Request.Bill;
 using PTS.Host.Request.Voucher;
@@ -28,13 +28,15 @@ namespace PTS.Host.Controllers
         //    _billRepository = billRepository;
         //    _context = context;
         //}
+        private readonly IBillRepository _billRepository;
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
-        public BillController(IMediator mediator, IMapper mapper)
+        public BillController(IMediator mediator, IMapper mapper, IBillRepository billRepository)
         {
             _mediator = mediator;
             _mapper = mapper;
+            _billRepository = billRepository;
         }
         [HttpPost("CreateBill")]
         public async Task<IActionResult> CreateBill(CreateOrUpdateBillQuery request)
@@ -45,6 +47,16 @@ namespace PTS.Host.Controllers
         public async Task<IActionResult> PGetBill(CreateOrUpdateBillQuery request)
         {
             return Ok(await _mediator.Send(request));
+        }
+        [HttpPost("GetListBill")]
+        public async Task<IActionResult> GetListBill()
+        {
+            return Ok(await _mediator.Send(new GetListBillQuery()));
+        }
+        [HttpPost("GetBill")]
+        public async Task<IActionResult> GetBill(GetPageBillDto request)
+        {
+            return Ok( await _billRepository.GetPage(request));
         }
         //[AllowAnonymous]
         //[HttpGet("PGetBillByInvoiceCode")]

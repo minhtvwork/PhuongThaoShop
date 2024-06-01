@@ -5,7 +5,7 @@
 //using MimeKit.Text;
 //using PTS.Core.Services;
 //using Shop_API.Utilities;
-//using PTS.Core.Dto;
+//using PTS.Application.Dto;
 
 //namespace PTS.Infrastructure.Services
 //{

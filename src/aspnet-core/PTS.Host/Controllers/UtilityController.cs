@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PTS.Core.Dto;
+using PTS.Application.Dto;
 using PTS.Core.Services;
 
 namespace PTS.Host.Controllers

@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using PTS.Core.Dto;
-using PTS.Core.Entities;
+using PTS.Application.Dto;
+using PTS.Domain.Entities;
 using PTS.Core.Repositories;
 using System;
 using System.Collections.Generic;

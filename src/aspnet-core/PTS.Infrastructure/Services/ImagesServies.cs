@@ -1,6 +1,6 @@
 ﻿
-using PTS.Core.Dto;
-using PTS.Core.Entities;
+using PTS.Application.Dto;
+using PTS.Domain.Entities;
 using PTS.Data;
 using PTS.Infrastructure.Services;
 

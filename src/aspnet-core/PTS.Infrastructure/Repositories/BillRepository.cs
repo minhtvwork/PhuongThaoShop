@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using PTS.Core.Repositories;
-using PTS.Core.Dto;
-using PTS.Core.Entities;
+using PTS.Application.Dto;
+using PTS.Domain.Entities;
 using PTS.Data;
+using PTS.Shared.Dto;
 
 namespace PTS.Infrastructure.Repositories
 {
@@ -37,7 +38,7 @@ namespace PTS.Infrastructure.Repositories
             }
             try
             {
-                bill.Status = 0;
+                bill.IsDeleted = true;
                 _context.BillEntity.Update(bill);
                 await _context.SaveChangesAsync();
                 return true;
@@ -50,8 +51,35 @@ namespace PTS.Infrastructure.Repositories
 
         public async Task<IEnumerable<BillEntity>> GetAll()
         {
-            return await _context.BillEntity.ToListAsync();
+            return await _context.BillEntity.Where(a=>!a.IsDeleted).AsNoTracking().ToListAsync();
         }
+        public async Task<PagedResult<BillEntity>> GetPage(GetPageBillDto request)
+        {
+            var query = _context.BillEntity
+                                .Where(a => !a.IsDeleted);
+
+            if (!string.IsNullOrEmpty(request.Code))
+            {
+                query = query.Where(a => a.InvoiceCode.Contains(request.Code));
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                              .AsNoTracking()
+                              .Skip((request.PageNumber - 1) * request.PageSize)
+                              .Take(request.PageSize)
+                              .ToListAsync();
+
+            return new PagedResult<BillEntity>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize
+            };
+        }
+
         public async Task<BillDto> GetBillByInvoiceCode(string invoiceCode)
         {
             var query = from bill in _context.BillEntity

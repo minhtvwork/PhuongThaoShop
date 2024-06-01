@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PTS.Core.Dto;
+using PTS.Application.Dto;
 using PTS.Core.Repositories;
 using PTS.Host.AppCore.Request.Cart;
 using PTS.Host.AppCore.Request;
