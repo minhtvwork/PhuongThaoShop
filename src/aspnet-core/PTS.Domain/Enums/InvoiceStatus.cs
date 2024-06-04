@@ -8,7 +8,7 @@ namespace PTS.Core.Enums
 {
     public enum InvoiceStatus
     { 
-        Pending,       // Đang chờ xử lý
+        Pending =100,       // Đang chờ xử lý
         Unpaid,        // Chưa thanh toán
         Paid,          // Đã thanh toán
         Shipping,       // Đang giao hàng

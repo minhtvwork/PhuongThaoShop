@@ -2,6 +2,7 @@
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
 using PTS.Core.Repositories;
+using BCrypt.Net;
 
 namespace PTS.Host.AppCore.Request.Account
 {
