@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { ResponseDto, ProductDetailDto, CartItemDto, ServiceResponse, RequestBillDto } from '../models/model';
 import { AccountService } from 'src/app/shared/services/account.service';
+import { AppConstants } from 'src/app/constants';
 @Injectable({
   providedIn: 'root'
 })
 export class PublicService {
-  private apiUrl = 'https://localhost:44370/api/';
+  private apiUrl = AppConstants.API_URL;
 
   constructor(private http: HttpClient, private accountService: AccountService) { }
 
