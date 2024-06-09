@@ -1,8 +1,15 @@
-<button nz-button nzType="primary"(click)="openEditModal()">
+<nz-input-group [nzSuffix]="suffixTemplate" class="input-custom">
+  <input type="text" nz-input placeholder="Search by keyword" [(ngModel)]="keywords" (ngModelChange)="onSearch()" />
+</nz-input-group>
+<ng-template #suffixTemplate>
+  <i nz-icon nzType="search"></i>
+</ng-template>
+<button nz-button nzType="primary" (click)="openEditModal()">
   <i class="fa fa-plus"></i> Thêm mới
 </button>
- <nz-table nzShowPagination nzShowSizeChanger [nzData]="listOfData" [nzLoading]="loading" [nzTotal]="total"
-  [nzPageSize]="pageSize" [nzPageIndex]="pageIndex">
+<nz-table nzShowPagination nzShowSizeChanger [nzData]="listOfData" [nzLoading]="loading" [nzTotal]="total"
+  [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" (nzPageIndexChange)="onPageChange($event)"
+  (nzPageSizeChange)="onPageSizeChange($event)">
   <thead>
     <tr>
       <th>Name</th>
@@ -31,40 +38,40 @@
     </tr>
   </tbody>
 </nz-table>
+
 <nz-modal [(nzVisible)]="isEditModalVisible" nzTitle="Edit" (nzOnCancel)="closeEditModal()" (nzOnOk)="handleEdit()">
   <nz-layout class="login-layout" *nzModalContent>
- <form nz-form #myForm="ngForm" nzLayout="horizontal">
-    <nz-form-item>
+    <form nz-form #myForm="ngForm" nzLayout="horizontal">
+      <nz-form-item>
         <nz-form-label nzFor="maTinh" [nzSm]="8" nzRequired>Mã</nz-form-label>
         <nz-form-control [nzSm]="16" nzErrorTip="Giá trị bắt buộc!">
-            <input nz-input name="maTinh" required />
+          <input nz-input name="maTinh" required />
         </nz-form-control>
-    </nz-form-item>
-    <nz-form-item nzGutter="6">
+      </nz-form-item>
+      <nz-form-item nzGutter="6">
         <nz-form-label nzFor="tenTinh" [nzSm]="8" nzRequired>Tên</nz-form-label>
         <nz-form-control [nzSm]="16" nzErrorTip="Giá trị bắt buộc!">
-            <input nz-input name="tenTinh" required>
+          <input nz-input name="tenTinh" required>
         </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
+      </nz-form-item>
+      <nz-form-item>
         <nz-form-label nzFor="cap" [nzSm]="8">Cấp</nz-form-label>
         <nz-form-control>
-          <nz-date-picker name="" >Ngày bắt đầu</nz-date-picker>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzFor="cap" [nzSm]="8">Ngày kết thúc</nz-form-label>
-      <nz-form-control>
-        <nz-date-picker name="" ></nz-date-picker>
-    </nz-form-control>
-  </nz-form-item>
-</form>
+          <nz-date-picker name="">Ngày bắt đầu</nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="cap" [nzSm]="8">Ngày kết thúc</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker name=""></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
   </nz-layout>
- 
-<div *nzModalFooter>
-    <button type="button" nz-button nzType="default" >Đóng</button>
-    <button type="button" nz-button nzType="primary"><i nz-icon
-                                                                                              nzType="save"></i>Lưu
+
+  <div *nzModalFooter>
+    <button type="button" nz-button nzType="default">Đóng</button>
+    <button type="button" nz-button nzType="primary"><i nz-icon nzType="save"></i>Lưu
     </button>
-</div>
+  </div>
 </nz-modal>

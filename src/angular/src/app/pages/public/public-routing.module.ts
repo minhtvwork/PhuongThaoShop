@@ -11,9 +11,9 @@ const routes: Routes = [
     path: '', component: MainComponent,
     children: [
       { path: '', component: HomeComponent },
-      { path: 'product', component: ProductComponent },
+      { path: 'laptop-moi.html', component: ProductComponent },
       { path: 'product/:id', component: DetailComponent }, 
-    // { path: '**', component: NotfoundComponent },
+     // { path: '**', component:  CartComponent },
       { path: 'cart', component: CartComponent },
       // { path: 'list-product', component: ListProductsComponent },
     ],

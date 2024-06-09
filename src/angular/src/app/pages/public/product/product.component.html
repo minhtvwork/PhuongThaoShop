@@ -1,100 +1,81 @@
 <div class="container">
-    <div class="product-sort d-flex justify-content-between">
-        <div class="">
-            <span>Sắp xếp theo</span>
-            <select onchange="location.href=this.value">
-
-                <option value="https://laptopaz.vn/dell-xps.html?sort=new">Mới nhất</option>
-
-                <option value="https://laptopaz.vn/dell-xps.html?sort=price-asc">Giá: thấp -> cao</option>
-
-                <option value="https://laptopaz.vn/dell-xps.html?sort=price-desc">Giá: cao -> thấp</option>
-
-                <option value="https://laptopaz.vn/dell-xps.html?sort=view">Xem nhiều nhất</option>
-
-                <option value="https://laptopaz.vn/dell-xps.html?sort=comment">Nhiều nhận xét</option>
-
-                <option value="https://laptopaz.vn/dell-xps.html?sort=rating">Đánh giá cao nhất</option>
-
-                <option value="https://laptopaz.vn/dell-xps.html?sort=name">Tên A->Z</option>
-
-            </select>
-        </div>
-        <div class="d-flex align-items-center">
-            <span>Xem</span>
-            <!-- <a href="javascript:;"  onclick="setUserOption('product_display', 'grid', 'https://laptopaz.vn/dell-xps.html')"   class="active"" ><i class="fa fa-th-large"></i></a>
-            <a href="javascript:;"  onclick="setUserOption('product_display', 'list', 'https://laptopaz.vn/dell-xps.html')"   "><i class="fa fa-bars"></i></a> -->
-        </div>
-    </div>
-</div>
-<div class="product-list">
-    <div class="container">
-        <div class="p-list d-flex flex-wrap   " id="product">
-
-            <div class="p-item js-p-item">
-                <div class="p-img">
-                    <a href="/moi-100-dell-xps-15-9520-core-i7-12700h-16gb-512gb-rtx-3050ti-15.6quot-fhd.html">
-                        <img src="https://laptopaz.vn/media/product/2487_laptopaz_dell_xps_9520_1.jpg"
-                            alt="[New 100%] Dell XPS 15 9520 (Core i7-12700H, 16GB, 512GB, RTX 3050Ti, 15.6&quot; FHD+)">
-                    </a>
-                </div>
-                <div class="p-emtry">
-                    <a href="/moi-100-dell-xps-15-9520-core-i7-12700h-16gb-512gb-rtx-3050ti-15.6quot-fhd.html"
-                        class="p-name">[New 100%] Dell XPS 15 9520 (Core i7-12700H, 16GB, 512GB, RTX 3050Ti, 15.6&quot;
-                        FHD+)</a>
-                    <span class="p-price">
-
-                        <span class="box-text-update2021">
-                            <span class="show-him">
-                                47.990.000
+    <nz-breadcrumb>
+        <nz-breadcrumb-item>Trang chủ</nz-breadcrumb-item>
+        <nz-breadcrumb-item>Laptop mới</nz-breadcrumb-item>
+    </nz-breadcrumb>
+    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Thương hiệu" [(ngModel)]="selectedValue">
+        <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+        <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
+        <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+    </nz-select>
+    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Giá" [(ngModel)]="selectedValue">
+        <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+        <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
+        <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+    </nz-select>
+    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="CPU" [(ngModel)]="selectedValue">
+        <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+        <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
+        <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+    </nz-select>
+    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Card VGA" [(ngModel)]="selectedValue">
+        <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+        <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
+        <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+    </nz-select>
+    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="RAM" [(ngModel)]="selectedValue">
+        <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+        <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
+        <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+    </nz-select>
+    <div class="row pd-top-50">
+        <div class="p-list d-flex flex-wrap">
+            <ng-container *ngIf="products && products.length > 0; else loading">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4" *ngFor="let p of products">
+                        <div class="p-item">
+                            <div class="p-img">
+                                <a>
+                                    <img src="https://laptopaz.vn/media/product/2487_laptopaz_dell_xps_9520_1.jpg"
+                                        alt="">
+                                </a>
+                            </div>
+                            <div class="p-emtry">
+                                <a class="p-name" [routerLink]="['/product', p.id]">[New 100%] {{ p.nameProduct }}
+                                    {{ p.code }} {{
+                                    p.tenCpu }} {{ p.thongSoRam }} {{ p.thongSoHardDrive }}</a>
+                                <span class="p-price">
+                                    <span class="box-text-update2021">
+                                        <span class="show-shadow">
+                                            47.990.000
+                                        </span>
+                                    </span>
+                                    <span class="p-mprice">
+                                        58.890.000
+                                    </span>
+                                </span>
+                            </div>
+                            <span class="productType">
+                                <img class="img-fluid" src="../../../../assets/images/sales.png" alt="sale off">
+                                <span class="percent">-19%</span>
                             </span>
-                            <span class="show-shadow">
-                                47.990.000
-                            </span>
-                        </span>
-
-
-
-                        <span class="p-mprice">
-                            58.890.000
-                        </span>
-
-                    </span>
-                </div>
-
-
-
-                <span class="productType">
-                    <img class="img-fluid" src="/template/t2021/images/sales.png" alt="sale off">
-                    <span class="percent">-19%</span>
-                </span>
-
-
-
-                <div class="p-hover">
-                    <a href="/moi-100-dell-xps-15-9520-core-i7-12700h-16gb-512gb-rtx-3050ti-15.6quot-fhd.html"
-                        class="p-name">[New 100%] Dell XPS 15 9520 (Core i7-12700H, 16GB, 512GB, RTX 3050Ti, 15.6&quot;
-                        FHD+)</a>
-                    <span class="p-price">47.990.000đ</span>
-                    <p><strong>Bảo hành: </strong> <span>12 tháng LaptopAZ</span></p>
-                    <p><strong>Kho hàng: </strong> <span>Còn hàng</span></p>
-                    <div class="p-summary">
-                        <strong>Mô tả tóm tắt</strong>
-
-
-                        <br>
-
+                        </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
+
+            <ng-template #loading>
+                <div>Loading...</div>
+            </ng-template>
+
+            <ng-template #loading>
+                <div>
+                    <nz-spin nzTip="Loading...">
+                        <nz-alert nzType="info" nzMessage="Alert message title"
+                            nzDescription="Further details about the context of this alert."></nz-alert>
+                    </nz-spin>
+                </div>
+            </ng-template>
         </div>
-    </div>
-</div>
-<div class="pro-head d-flex">
-    <div class="title">
-        <h3><a href="/laptop-van-phong.html">HỌC TẬP - VĂN PHÒNG</a></h3>
-    </div>
-    <div class="filter-price d-flex align-items-center">
-         <span>Mức giá:</span><ul class="d-flex m-0 list-unstyled"><li><a href="/laptop-mong-nhe.html?max=10000000&amp;min=5000000">5 Triệu - 10 Triệu</a></li><li><a href="/laptop-mong-nhe.html?max=20000000&amp;min=10000000">10 Triệu - 20 Triệu</a></li><li><a href="/laptop-mong-nhe.html?max=30000000&amp;min=20000000">20 Triệu - 30 Triệu</a></li><li><a href="/laptop-mong-nhe.html?max=40000000&amp;min=30000000">30 Triệu - 40 Triệu</a></li><li><a href="/laptop-mong-nhe.html?max=400000000&amp;min=40000000">Trên 40 Triệu</a></li></ul> 
     </div>
 </div>

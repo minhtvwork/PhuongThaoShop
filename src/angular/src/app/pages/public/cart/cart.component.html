@@ -77,12 +77,11 @@
           <nz-form-item nzGutter="6">
             <nz-form-control>
               <label class="width-200">Mã giảm giá</label> <br>
-              <nz-select class="width-200" nzShowSearch nzAllowClear nzPlaceHolder="Chọn mã giảm giá"
-                [(ngModel)]="selectedValue" nzFor="discountCode">
-                <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
-                <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
-                <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
-              </nz-select>
+              <nz-select class="width-200" nzShowSearch nzAllowClear nzPlaceHolder="Chọn mã giảm giá" formControlName="codeVoucher"
+              nzName="codeVoucher">
+              <nz-option *ngFor="let voucher of loadVouchers" [nzLabel]="voucher.maVoucher" [nzValue]="voucher.maVoucher">
+              </nz-option>
+            </nz-select>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item nzGutter="6">

@@ -9,23 +9,30 @@ import { AccountService } from 'src/app/shared/services/account.service';
   providedIn: 'root'
 })
 export class AdminService {
-  private apiUrl = 'https://localhost:44370/api/';
+  private apiUrl = 'https://localhost:44302/api/';
   private token!: string;
   constructor(private http: HttpClient,private accountService: AccountService) { }
 
-  getVouchers(pageNumber: number, pageSize: number, sorting: string): Observable<PagedResultDto<any>> {
-    const url = `${this.apiUrl}Voucher/GetPaged`;
-    const token = this.accountService.getAccessToken();
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+  // getVouchers(pageNumber: number, pageSize: number, sorting: string): Observable<PagedResultDto<any>> {
+  //   const url = `${this.apiUrl}Voucher/GetPaged`;
+  //   const token = this.accountService.getAccessToken();
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'Authorization': `Bearer ${token}`
+  //   });
+  //   const body = {
+  //     maxResultCount: pageSize,
+  //     skipCount: (pageNumber - 1) * pageSize,
+  //     sorting: sorting
+  //   };
+  //   return this.http.post<PagedResultDto<any>>(url, body,{ headers: headers });
+  // }
+  getPageVouchers(page: number, pageSize: number, keywords: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}Voucher/GetPage`, {
+      page,
+      pageSize,
+      keywords
     });
-    const body = {
-      maxResultCount: pageSize,
-      skipCount: (pageNumber - 1) * pageSize,
-      sorting: sorting
-    };
-    return this.http.post<PagedResultDto<any>>(url, body,{ headers: headers });
   }
   
   getListRam(): Observable<any> {

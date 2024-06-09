@@ -11,7 +11,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AccountService {
-  private apiUrl = 'https://localhost:44370/api/';
+  private apiUrl = 'https://localhost:44302/api/';
   private token!: string;
   constructor(private http: HttpClient) { }
   login(username: string, password: string): Observable<any> {

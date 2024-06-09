@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PublicService } from '../../../shared/services/public.service';
 import { AccountService } from 'src/app/shared/services/account.service';
-import { CartItemDto, RequestBillDto, ResponseDto } from '../../../shared/models/model';
+import { CartItemDto, RequestBillDto, ResponseDto,VoucherDto, } from '../../../shared/models/model';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
@@ -11,13 +11,13 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent {
-  selectedValue = null;
   radioValue = 'A';
   cartItems: CartItemDto[] = [];
   createBillForm: FormGroup;
   username!: string;
   //@Input() request: RequestBillDto | undefined;
   request!: RequestBillDto;
+  loadVouchers: VoucherDto[] = [];
   constructor(
     private publicService: PublicService, private nzMessageService: NzMessageService, private fb: FormBuilder,
     private accountService: AccountService) {
@@ -26,7 +26,7 @@ export class CartComponent {
       address: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required]],
       email: ['', [Validators.required]],
-      codeVoucher: [null],
+      codeVoucher: [''],
       payment: [null, [Validators.required]]
     });
     this.request = {
@@ -41,6 +41,7 @@ export class CartComponent {
   }
   ngOnInit(): void {
     this.loadCart();
+    this.loadListVoucher();
     console.log(this.accountService.getUsername());
   }
 
@@ -123,6 +124,12 @@ export class CartComponent {
         }
       }
     }
+  }
+
+  loadListVoucher(): void {
+    this.publicService.getListVouchers().subscribe(data => {
+      this.loadVouchers = data.data;
+    });
   }
 
   createBill(): void {

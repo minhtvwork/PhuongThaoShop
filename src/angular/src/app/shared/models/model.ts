@@ -82,12 +82,11 @@ export interface CartItemDto {
 }
 export interface VoucherDto {
   id: number;
-  creationTime: Date | null;
-  isDeleted: boolean;
+  CrDateTime: Date | null;
   status: number | null;
   maVoucher: string | null;
   tenVoucher: string | null;
-  starDay: Date | null;
+  startDay: Date | null;
   endDay: Date | null;
   giaTri: number;
   soLuong: number;

@@ -67,6 +67,9 @@ export class PublicService {
     };
     return this.http.post<ServiceResponse>(`${this.apiUrl}Cart/UpdateQuantity`, params);
   }
+  getListVouchers(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}Voucher/PGetAll`);
+  }
   createBill(request: RequestBillDto): Observable<ResponseDto> {
     request.username = this.accountService.getUsername();
     const cartItemsString = localStorage.getItem('cartItems');
