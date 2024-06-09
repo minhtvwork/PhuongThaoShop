@@ -39,3 +39,9 @@
 /src/aspnet-core/PTS.Shared/obj/Debug/net8.0/PTS.Shared.dll
 /src/aspnet-core/PTS.Shared/obj/project.nuget.cache
 /src/aspnet-core/PTS.Shared/obj/Debug/net8.0/refint/PTS.Shared.dll
+/src/aspnet-core/PTS.Persistence/bin/Debug/net8.0
+/src/aspnet-core/PTS.WebAPI/bin/Debug/net8.0
+/src/aspnet-core/PTS.Persistence/obj/Debug/net8.0
+/src/aspnet-core/PTS.Persistence/obj
+/src/aspnet-core/PTS.WebAPI/obj/Debug/net8.0
+/src/aspnet-core/PTS.WebAPI/obj

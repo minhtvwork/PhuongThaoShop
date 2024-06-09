@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 
-namespace IC.Application.Extensions
+namespace PTS.Application.Extensions
 {
     public static class IServiceCollectionExtensions
     {

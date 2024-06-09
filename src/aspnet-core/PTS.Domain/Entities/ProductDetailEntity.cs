@@ -1,13 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PTS.Domain.Common;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PTS.Domain.Entities
 {
     [Table("ProductDetail")]
-    public class ProductDetailEntity : BaseEntity
+    public class ProductDetailEntity : BaseAuditableEntity
     {
-      
-        [Required]
+		public int Id { get; set; }
+		public DateTime? CreationTime { get; set; } = DateTime.Now;
+		public bool IsDeleted { get; set; } = false;
+		public int? Status { get; set; } = 1;
+		[Required]
         [MaxLength(50)]
         public string? Code { get; set; }
         public Decimal Price { get; set; }

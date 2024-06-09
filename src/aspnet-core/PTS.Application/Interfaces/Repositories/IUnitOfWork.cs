@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PTS.Application.Interfaces.Repositories;
+using PTS.Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,9 +25,13 @@ namespace PTS.Core.Repositories
         ISerialRepository _serialRepository { get; }
         IVoucherRepository _voucherRepository { get; }
         IRoleRepository _roleRepository { get; }
-        Task<int> SaveChangesAsync();
-        Task BeginTransactionAsync();
-        Task CommitAsync();
-        Task RollbackAsync();
-    }
+		//	IGenericRepository<T> Repository<T>() where T : BaseAuditableEntity;
+		IGenericRepository<T> Repository<T>() where T : BaseAuditableEntity;
+		Task<int> Save(CancellationToken cancellationToken);
+
+		Task<int> SaveAndRemoveCache(CancellationToken cancellationToken, params string[] cacheKeys);
+
+		Task Rollback();
+		Task ChangeTrackerClear();
+	}
 }
