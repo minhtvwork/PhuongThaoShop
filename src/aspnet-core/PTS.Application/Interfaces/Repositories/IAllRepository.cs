@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace PTS.Core.Repositories
+namespace PTS.Application.Interfaces.Repositories
 {
      public interface IAllRepository<TEntity> where TEntity : class
     {

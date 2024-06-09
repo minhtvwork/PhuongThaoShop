@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PTS.Data;
 using PTS.Data;
-using PTS.Core.Repositories;
+using PTS.Application.Interfaces.Repositories;
 using System;
 using System.Linq.Expressions;
 using PTS.Core.Enums;

@@ -5,7 +5,7 @@ using IC.Application.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PTS.Application.Features.ProductDetail.Queries;
-using PTS.Core.Repositories;
+using PTS.Application.Interfaces.Repositories;
 using PTS.Domain.Entities;
 using PTS.Shared;
 using System;

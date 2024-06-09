@@ -2,18 +2,18 @@
 using PTS.Application.Dto;
 using PTS.Core.Services;
 
-namespace PTS.Host.AppCore.Request
+namespace PTS.Application.Features.Cart.Queries
 {
     public class GetCartByUserQuery : IRequest<ResponseDto>
     {
-       public string? Username { get; set; }
+        public string? Username { get; set; }
     }
     public class GetCartByUserHandler : IRequestHandler<GetCartByUserQuery, ResponseDto>
     {
         private readonly ICartService _cartService;
-        public GetCartByUserHandler(ICartService  cartService)
+        public GetCartByUserHandler(ICartService cartService)
         {
-          _cartService = cartService;
+            _cartService = cartService;
         }
         public async Task<ResponseDto> Handle(GetCartByUserQuery request, CancellationToken cancellationToken)
         {

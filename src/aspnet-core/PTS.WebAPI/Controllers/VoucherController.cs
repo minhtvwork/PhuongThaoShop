@@ -1,63 +1,54 @@
 ﻿
-using AutoMapper;
-using IC.Application.Features.PhapDienDocs.Fields.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MS.Infrastructure.AppCore.Request.Voucher;
-using PTS.Application.Dto;
-using PTS.Domain.Entities;
-using PTS.Host.AppCore.Request.Voucher;
-using PTS.Host.Request.Voucher;
+using PTS.Application.Features.Voucher.Commands;
+using PTS.Application.Features.Voucher.Queries;
 
-namespace PTS.Host.Controllers
+namespace PTS.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class VoucherController : BaseController
-    {
-        private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
-
-        public VoucherController(IMediator mediator, IMapper mapper)
-        {
-            _mediator = mediator;
-            _mapper = mapper;
-        }
-
-		//[HttpPost("GetPaged")]
-		//public async Task<IActionResult> GetPaged(VoucherPagingListRequest request)
-		// {
-		//    var vouchers = await _mediator.Send(request);
-		//    return Ok(vouchers);
-		//}
-		[HttpPost("GetPaged")]
-		public async Task<IActionResult> GetPaged(VoucherGetPageQuery request)
+	[Route("api/[controller]")]
+	[ApiController]
+	public class VoucherController : BaseController
+	{
+		private readonly IMediator _mediator;
+		public VoucherController(IMediator mediator)
 		{
-			var vouchers = await _mediator.Send(request);
-			return Ok(vouchers);
+			_mediator = mediator;
 		}
-		[HttpPost("GetVoucherById")]
-        public async Task<IActionResult> GetVoucherById(int id)
-        {
-          //  GetVoucherByIdRequest request = new GetVoucherByIdRequest();
-          //  var vouchers = await _mediator.Send(request);
-            return Ok();
-        }
-        [HttpPost("CreateOrUpdateVoucher")]
-        public async Task<IActionResult> CreateOrUpdateVoucher(VoucherDto objDto)
-        {
-             var obj = _mapper.Map<VoucherEntity>(objDto);
-            CreateOrUpdateVoucherQuery query = new CreateOrUpdateVoucherQuery();
-            query.VoucherEntity = obj;
-            var vouchers = await _mediator.Send(query);
-            return Ok(vouchers);
-        }
-        [HttpPost("DeleteVoucher")]
-        public async Task<IActionResult> DeleteVoucher(int id)
-        {
-            DeleteVoucherQuery query = new DeleteVoucherQuery();
-            query.Id = id;
-            return Ok(await _mediator.Send(query));
-        }
-    }
+		[HttpGet("GetAll")]
+		public async Task<IActionResult> GetAll()
+		{
+			return Ok(await _mediator.Send(new VoucherGetAllQuery()));
+		}
+		[HttpGet("PGetAll")]
+		public async Task<IActionResult> PGetAll()
+		{
+			return Ok(await _mediator.Send(new PVoucherGetAllQuery()));
+		}
+		[HttpPost("GetPage")]
+		public async Task<IActionResult> GetPage(VoucherGetPageQuery query)
+		{
+			return Ok(await _mediator.Send(query));
+		}
+		[HttpPost("GetById")]
+		public async Task<IActionResult> GetById(VoucherGetByIdQuery query)
+		{
+			return Ok(await _mediator.Send(query));
+		}
+		[HttpPost("Create")]
+		public async Task<IActionResult> Create(VoucherCreateCommand command)
+		{
+			return Ok(await _mediator.Send(command));
+		}
+		[HttpPost("Update")]
+		public async Task<IActionResult> Update(VoucherEditCommand command)
+		{
+			return Ok(await _mediator.Send(command));
+		}
+		[HttpPost("Delete")]
+		public async Task<IActionResult> DeleteVoucher(VoucherDeleteCommand command)
+		{
+			return Ok(await _mediator.Send(command));
+		}
+	}
 }

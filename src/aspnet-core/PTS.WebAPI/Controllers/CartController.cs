@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PTS.Application.Dto;
-using PTS.Core.Repositories;
-using PTS.Host.AppCore.Request.Cart;
-using PTS.Host.AppCore.Request;
+using PTS.Application.Interfaces.Repositories;
 using PTS.Core.Services;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using MS.Infrastructure.AppCore.Request.Cart;
+using PTS.WebAPI.Controllers;
+using PTS.Application.Features.Cart.Commands;
+using PTS.Application.Features.Cart.Queries;
 
-namespace PTS.Host.Controllers
+namespace PTS.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

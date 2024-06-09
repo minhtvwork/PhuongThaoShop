@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PTS.Data;
-using PTS.Core.Repositories;
+using PTS.Application.Interfaces.Repositories;
 using PTS.Domain.Entities;
 
 namespace PTS.Persistence.Repositories

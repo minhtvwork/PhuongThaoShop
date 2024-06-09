@@ -1,15 +1,15 @@
-﻿using Abp.Application.Services.Dto;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PTS.Shared.Dto;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
-using PTS.Core.Repositories;
+using PTS.Application.Interfaces.Repositories;
 using System.Linq.Expressions;
+using PTS.WebAPI.Controllers;
 
-namespace PTS.Host.Controllers
+namespace PTS.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

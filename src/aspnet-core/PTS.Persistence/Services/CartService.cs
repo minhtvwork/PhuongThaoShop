@@ -1,4 +1,4 @@
-﻿using PTS.Core.Repositories;
+﻿using PTS.Application.Interfaces.Repositories;
 using PTS.Core.Services;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;

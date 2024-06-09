@@ -4,13 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PTS.Data;
 using PTS.Application.Dto;
-using PTS.Domain.Entities;
-using PTS.Core.Repositories;
-using PTS.Host.AppCore.Request.Bill;
-using PTS.Host.Request.Voucher;
-using PTS.Core.Services;
+using PTS.Application.Interfaces.Repositories;
+using PTS.Application.Features.Bill.Commands;
+using PTS.Application.Features.Bill.Queries;
 
-namespace PTS.Host.Controllers
+namespace PTS.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

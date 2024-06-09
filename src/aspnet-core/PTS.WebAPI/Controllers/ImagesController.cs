@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PTS.Data;
 using PTS.Domain.Entities;
-using PTS.Core.Repositories;
+using PTS.Application.Interfaces.Repositories;
 using PTS.Persistence.Services;
-namespace PTS.Host.Controllers
+using PTS.WebAPI.Controllers;
+namespace PTS.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

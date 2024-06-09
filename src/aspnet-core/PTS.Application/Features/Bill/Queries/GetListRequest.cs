@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using PTS.Application.Dto;
-using PTS.Core.Repositories;
+using PTS.Application.Interfaces.Repositories;
 using PTS.Core.Services;
 
-namespace PTS.Host.AppCore.Request.Bill
+namespace PTS.Application.Features.Bill.Queries
 {
     public class GetListBillQuery : IRequest<ResponseDto>
     {

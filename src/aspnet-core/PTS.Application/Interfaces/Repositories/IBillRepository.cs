@@ -2,7 +2,7 @@
 using PTS.Domain.Entities;
 using PTS.Shared.Dto;
 
-namespace PTS.Core.Repositories
+namespace PTS.Application.Interfaces.Repositories
 {
     public interface IBillRepository
     {

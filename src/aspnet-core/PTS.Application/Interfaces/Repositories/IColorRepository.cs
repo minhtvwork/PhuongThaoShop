@@ -4,7 +4,7 @@ using PTS.Application.Dto;
 using PTS.Domain.Entities;
 using System.Threading.Tasks;
 
-namespace PTS.Core.Repositories
+namespace PTS.Application.Interfaces.Repositories
 {
     public interface IColorRepository
     {

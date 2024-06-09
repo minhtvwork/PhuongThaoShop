@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
-using PTS.Core.Repositories;
+using PTS.Application.Interfaces.Repositories;
 using PTS.Core.Services;
 using System;
 using System.Collections.Generic;

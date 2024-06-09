@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PTS.Data;
-using PTS.Core.Repositories;
+using PTS.Application.Interfaces.Repositories;
 using PTS.Persistence.Repositories;
 using PTS.Host.Repository;
 using System;
@@ -129,22 +129,24 @@ namespace PTS.Persistence.Repository
 			return (IGenericRepository<T>)_repositories[type];
 		}
 
-		public Task<int> Save(CancellationToken cancellationToken)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task<int> SaveAndRemoveCache(CancellationToken cancellationToken, params string[] cacheKeys)
-		{
-			throw new NotImplementedException();
-		}
-
 		public Task Rollback()
 		{
-			throw new NotImplementedException();
+			_dbContext.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
+			return Task.CompletedTask;
 		}
 
 		public Task ChangeTrackerClear()
+		{
+			_dbContext.ChangeTracker.Clear();
+			return Task.CompletedTask;
+		}
+
+		public async Task<int> Save(CancellationToken cancellationToken)
+		{
+			return await _dbContext.SaveChangesAsync(cancellationToken);
+		}
+
+		public Task<int> SaveAndRemoveCache(CancellationToken cancellationToken, params string[] cacheKeys)
 		{
 			throw new NotImplementedException();
 		}

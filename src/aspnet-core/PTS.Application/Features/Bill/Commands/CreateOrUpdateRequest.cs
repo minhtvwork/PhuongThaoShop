@@ -2,11 +2,11 @@
 using PTS.Application.Dto;
 using PTS.Core.Services;
 
-namespace PTS.Host.AppCore.Request.Bill
+namespace PTS.Application.Features.Bill.Commands
 {
     public class CreateOrUpdateBillQuery : IRequest<ResponseDto>
     {
-       public RequestBillDto? RequestBillDto { get; set; }
+        public RequestBillDto? RequestBillDto { get; set; }
     }
     public class CreateOrUpdateBillHandler : IRequestHandler<CreateOrUpdateBillQuery, ResponseDto>
     {

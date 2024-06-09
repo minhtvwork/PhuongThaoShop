@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using PTS.Shared.Dto;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
-using PTS.Core.Repositories;
-namespace PTS.Host.Controllers
+using PTS.Application.Interfaces.Repositories;
+namespace PTS.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

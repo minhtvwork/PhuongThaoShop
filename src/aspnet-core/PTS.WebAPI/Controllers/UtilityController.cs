@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PTS.Application.Dto;
 using PTS.Core.Services;
 
-namespace PTS.Host.Controllers
+namespace PTS.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

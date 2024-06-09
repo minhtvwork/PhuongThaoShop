@@ -4,10 +4,12 @@ namespace PTS.Core.Enums
 {
 	public enum StatusEnum
 	{
-		[Display(Name = "Dừng Hoạt động")]
-		InActive = 1,
-
+		[Display(Name = "Đã xóa")]
+		Delete = 0,
 		[Display(Name = "Hoạt động")]
-		Active = 2
+		Active = 1,
+		[Display(Name = "Dừng Hoạt động")]
+		InActive = 2,
+
 	}
 }

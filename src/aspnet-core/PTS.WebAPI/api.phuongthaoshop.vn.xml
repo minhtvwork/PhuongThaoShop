@@ -4,7 +4,7 @@
 		<name>api.bongda24h.vn</name>
 	</assembly>
 	<members>
-		<member name="M:PTS.Host.Controllers.BillController.CreateBill">
+		<member name="M:PTS.WebAPI.Controllers.BillController.CreateBill">
 			<summary>
 				Tìm kiếm CLB theo từ khóa
 			</summary>

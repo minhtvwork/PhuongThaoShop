@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
-using PTS.Core.Repositories;
+using PTS.Application.Interfaces.Repositories;
 
-namespace PTS.Host.AppCore.Request.Voucher
+namespace PTS.Application.Features.ProductDetail.Commands
 {
     public class CreateOrUpdateProductDetailQuery : IRequest<ServiceResponse>
     {

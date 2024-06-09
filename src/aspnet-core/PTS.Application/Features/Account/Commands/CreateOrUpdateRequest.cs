@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
-using PTS.Core.Repositories;
+using PTS.Application.Interfaces.Repositories;
 using BCrypt.Net;
 
-namespace PTS.Host.AppCore.Request.Account
+namespace PTS.Application.Features.Account.Commands
 {
     public class CreateOrUpdateAccountQuery : IRequest<ServiceResponse>
     {
@@ -43,7 +43,7 @@ namespace PTS.Host.AppCore.Request.Account
             {
                 user.RoleEntityId = 2;
                 if (await _repository.Create(user))
-                      return new ServiceResponse(true, "Thêm thành công");
+                    return new ServiceResponse(true, "Thêm thành công");
                 return new ServiceResponse(false, "Thêm thất bại");
             }
 

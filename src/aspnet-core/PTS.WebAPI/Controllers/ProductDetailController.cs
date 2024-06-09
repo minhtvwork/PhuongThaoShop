@@ -5,12 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using PTS.Shared.Dto;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
-using PTS.Core.Repositories;
-using PTS.Host.AppCore.Request.Voucher;
-using PTS.Host.Controllers;
-using PTS.Host.Request.Voucher;
+using PTS.Application.Interfaces.Repositories;
 using IC.Application.Features.PhapDienDocs.Fields.Queries;
-namespace Shop_API.Controllers
+using PTS.WebAPI.Controllers;
+using PTS.Application.Features.ProductDetail.Commands;
+namespace PTS.WebAPI
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using PTS.Core.Repositories;
+using PTS.Application.Interfaces.Repositories;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
 using PTS.Data;
@@ -41,7 +41,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                voucher.IsDeleted = true;
+             //   voucher.IsDeleted = true;
                 _context.VoucherEntity.Update(voucher);
                 await _context.SaveChangesAsync();
                 return true;
@@ -54,7 +54,7 @@ namespace PTS.Persistence.Repositories
 
         public async Task<List<VoucherEntity>> GetAll()
         {
-            return await _context.VoucherEntity.Where(v => !v.IsDeleted).ToListAsync();
+            return await _context.VoucherEntity.ToListAsync();
         }
 
         public async Task<bool> Update(VoucherEntity obj)
@@ -64,14 +64,14 @@ namespace PTS.Persistence.Repositories
             {
                 return false;
             }
-            if (obj.EndDay <= obj.StarDay)
-            {
-                return false;
-            }
+            //if (obj.EndDay <= obj.StarDay)
+            //{
+            //    return false;
+            //}
             try
             {
                 vou.TenVoucher = obj.TenVoucher;
-                vou.StarDay = obj.StarDay;
+               // vou.StarDay = obj.StarDay;
                 vou.SoLuong = obj.SoLuong;
                 vou.EndDay = obj.EndDay;
                 vou.GiaTri = obj.GiaTri;

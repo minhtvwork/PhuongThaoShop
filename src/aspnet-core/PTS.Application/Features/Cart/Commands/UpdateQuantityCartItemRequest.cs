@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
-using PTS.Core.Repositories;
+using PTS.Application.Interfaces.Repositories;
 using PTS.Core.Services;
 
-namespace PTS.Host.AppCore.Request.Cart
+namespace PTS.Application.Features.Cart.Commands
 {
     public class UpdateQuantityCartItemQuery : IRequest<ServiceResponse>
     {

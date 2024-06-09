@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PTS.Core.Repositories;
+using PTS.Application.Interfaces.Repositories;
 using PTS.Core.Services;
 using PTS.Data;
-using PTS.Host.AppCore.Request;
 using PTS.Persistence.Repositories;
 using PTS.Persistence.Repository;
 using PTS.Persistence.Services;
@@ -12,6 +11,7 @@ using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 using PTS.Application.Extensions;
 using PTS.Persistence.Extensions;
+using PTS.Application.Features.Cart.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 

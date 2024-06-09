@@ -1,18 +1,18 @@
 ﻿using MediatR;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
-using PTS.Core.Repositories;
+using PTS.Application.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MS.Infrastructure.AppCore.Request.Cart
+namespace PTS.Application.Features.Cart.Commands
 {
     public class DeleteCartDetailQuery : IRequest<ServiceResponse>
     {
-        public int Id {  get; set; }
+        public int Id { get; set; }
     }
     public class DeleteCartDetailHandler : IRequestHandler<DeleteCartDetailQuery, ServiceResponse>
     {
@@ -23,11 +23,11 @@ namespace MS.Infrastructure.AppCore.Request.Cart
         }
         public async Task<ServiceResponse> Handle(DeleteCartDetailQuery request, CancellationToken cancellationToken)
         {
-           
-                if (await _repository.Delete(request.Id))
-                    return new ServiceResponse(true, "Xóa thành công");
-                return new ServiceResponse(false, "Xóa thất bại");
-         
+
+            if (await _repository.Delete(request.Id))
+                return new ServiceResponse(true, "Xóa thành công");
+            return new ServiceResponse(false, "Xóa thất bại");
+
         }
     }
 }

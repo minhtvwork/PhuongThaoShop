@@ -7,12 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
-using PTS.Core.Repositories;
-using PTS.Host.AppCore.Request.Account;
-using PTS.Host.AppCore.Request.Voucher;
+using PTS.Application.Interfaces.Repositories;
 using PTS.Core.Services;
+using PTS.Application.Features.Account.Commands;
 
-namespace PTS.Host.Controllers
+namespace PTS.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

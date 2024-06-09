@@ -3,7 +3,7 @@ using PTS.Shared.Dto;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
 
-namespace PTS.Core.Repositories
+namespace PTS.Application.Interfaces.Repositories
 {
     public interface IContactRepository
     {
