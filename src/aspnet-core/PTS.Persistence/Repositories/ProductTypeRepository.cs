@@ -18,7 +18,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<PagedResultDto<ProductTypeDto>> GetPagedAsync(PagedRequestDto request)
         {
-            var query = _dbContext.ProductTypeEntity.Where(x => !x.IsDeleted);
+            var query = _dbContext.ProductTypeEntity.Where(x => x.Status > 0);
 
             var totalCount = await query.CountAsync();
 
@@ -61,7 +61,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                productType.IsDeleted = true;
+                productType.Status = 0;
                 _dbContext.ProductTypeEntity.Update(productType);
                 await _dbContext.SaveChangesAsync();
                 return true;
@@ -73,7 +73,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<IEnumerable<ProductTypeEntity>> GetList()
         {
-        return await _dbContext.ProductTypeEntity.Where(a=>!a.IsDeleted).ToListAsync();
+        return await _dbContext.ProductTypeEntity.Where(a => a.Status > 0).ToListAsync();
         }
 
         public async Task<ProductTypeEntity> GetById(int id)

@@ -44,7 +44,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                role.IsDeleted = true;
+                role.Status = 0;
                 _dbContext.RoleEntity.Update(role);
                 await _dbContext.SaveChangesAsync();
                 return true;
@@ -56,7 +56,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<IEnumerable<RoleEntity>> GetList()
         {
-            return await _dbContext.RoleEntity.Where(a=>!a.IsDeleted).ToListAsync();
+            return await _dbContext.RoleEntity.Where(a => a.Status > 0).ToListAsync();
         }
 
         public async Task<RoleEntity> GetById(int id)

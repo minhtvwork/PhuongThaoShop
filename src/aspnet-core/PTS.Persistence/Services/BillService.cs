@@ -51,7 +51,7 @@ namespace PTS.Persistence.Services
 				{
 					Id = 0,
 					InvoiceCode = "Bill" + StringUtility.RandomString(7),
-					CreationTime = DateTime.Now,
+					CrDateTime = DateTime.Now,
 					Status = 2, // Trạng thái 2: Chờ xác nhận
 					FullName = user != null ? user.FullName : request.FullName,
 					PhoneNumber = user != null ? user.PhoneNumber : request.Address,
@@ -59,7 +59,6 @@ namespace PTS.Persistence.Services
 					UserEntityId = user != null ? user.Id : null,
 					Payment = request.Payment,
 					IsPayment = false,
-					IsDeleted = false,
 					VoucherEntityId = voucherX != null ? voucherX.Id : (int?)null
 				};
 				if (await _billRepository.Create(bill))

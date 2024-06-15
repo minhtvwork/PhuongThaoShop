@@ -20,11 +20,11 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<IEnumerable<ColorEntity>> GetList()
         {
-            return await _dbContext.ColorEntity.Where(x => !x.IsDeleted).ToListAsync();
+            return await _dbContext.ColorEntity.Where(x => x.Status > 0).ToListAsync();
         }
         public async Task<PagedResultDto<ColorDto>> GetPagedAsync(PagedRequestDto request)
         {
-            var query = _dbContext.ColorEntity.Where(x => !x.IsDeleted);
+            var query = _dbContext.ColorEntity.Where(x => x.Status > 0);
 
             var totalCount = await query.CountAsync();
 
@@ -92,7 +92,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                color.IsDeleted = true;
+                color.Status = 0;
                 _dbContext.ColorEntity.Update(color);
                 await _dbContext.SaveChangesAsync();
                 return new ServiceResponse(true, "Xóa thành công");

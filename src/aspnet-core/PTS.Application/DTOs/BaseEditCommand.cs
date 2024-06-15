@@ -1,4 +1,4 @@
-﻿namespace IC.Application.DTOs
+﻿namespace PTS.Application.DTOs
 {
 	public record BaseEditCommand
 	{

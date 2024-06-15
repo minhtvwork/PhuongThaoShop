@@ -27,8 +27,7 @@ namespace PTS.Application.Features.Account.Commands
             user.Email = request.UserDto.Email;
             user.Address = request.UserDto.Address;
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.UserDto.Password);
-            user.CreationTime = DateTime.Now;
-            user.IsDeleted = false;
+            user.CrDateTime = DateTime.Now;
             user.Status = 1;
             if (request.UserDto.Id > 0)
             {

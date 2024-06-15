@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using IC.Application.DTOs;
-using IC.Application.Extensions;
+using PTS.Application.DTOs;
+using PTS.Application.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PTS.Application.Features.ProductDetail.Queries;
@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IC.Application.Features.PhapDienDocs.Fields.Queries
+namespace PTS.Application.Features.PhapDienDocs.Fields.Queries
 {
     public record ProductDetailGetPageQuery : BaseGetPageQuery, IRequest<PaginatedResult<ProductDetailDto>>
     {

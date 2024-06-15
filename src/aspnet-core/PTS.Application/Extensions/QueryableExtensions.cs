@@ -2,7 +2,7 @@
 using System.Threading;
 using PTS.Shared;
 
-namespace IC.Application.Extensions
+namespace PTS.Application.Extensions
 {
     public static class QueryableExtensions
     {

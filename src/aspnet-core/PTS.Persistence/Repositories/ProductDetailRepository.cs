@@ -24,11 +24,11 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<IEnumerable<ProductDetailEntity>> GetListAsync()
         {
-            return await _context.ProductDetailEntity.Where(x => !x.IsDeleted).ToListAsync();
+            return await _context.ProductDetailEntity.ToListAsync();
         }
         public async Task<PagedResultDto<ProductDetailDto>> GetPagedAsync(PagedRequestDto request)
         {
-            var query = _context.ProductDetailEntity.Where(x => !x.IsDeleted);
+            var query = _context.ProductDetailEntity;
 
             var totalCount = await query.CountAsync();
 
@@ -46,7 +46,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<IEnumerable<ProductDetailDto>> PublicGetList(GetProductDetailRequest request)
         {
-            var query = _context.ProductDetailEntity.Where(a => !a.IsDeleted).AsNoTracking();
+            var query = _context.ProductDetailEntity.AsNoTracking();
             if (!string.IsNullOrEmpty(request.ProductType))
             {
                 query = query.Where(a => a.ProductEntity.ProductTypeEntity.Name == request.ProductType);
@@ -71,7 +71,7 @@ namespace PTS.Persistence.Repositories
                         break;
                 }
             }
-            var result = await query.Include(a => a.ImageEntities)
+            var result = await query
                              .Select(a => new ProductDetailDto
                              {
                                  Id = a.Id,
@@ -100,8 +100,6 @@ namespace PTS.Persistence.Repositories
                                  NameProduct = a.ProductEntity.Name,
                                  NameProductType = a.ProductEntity.ProductTypeEntity.Name,
                                  NameManufacturer = a.ProductEntity.ManufacturerEntity.Name,
-                                 LinkImage = (a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1") != null) ? a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1").LinkImage : null,
-                                 OtherImages = (a.ImageEntities.Where(image => image.Ma != "Anh1").Select(image => image.LinkImage).ToList()),
                              }).ToListAsync();
 
             foreach (var productDetail in result)
@@ -184,7 +182,6 @@ namespace PTS.Persistence.Repositories
         {
             var query = _context.ProductDetailEntity
                 .AsNoTracking()
-                .Include(a => a.ImageEntities)
                 .Where(a => (status == null || a.Status == status) && (codeProductDetail != null ? a.Code == codeProductDetail : true))
                 .Select(a => new ProductDetailDto
                 {
@@ -213,9 +210,7 @@ namespace PTS.Persistence.Repositories
                     ChatLieuManHinh = a.ScreenEntity.ChatLieu,
                     NameProduct = a.ProductEntity.Name,
                     NameProductType = a.ProductEntity.ProductTypeEntity.Name,
-                    NameManufacturer = a.ProductEntity.ManufacturerEntity.Name,
-                    LinkImage = (a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1") != null) ? a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1").LinkImage : null,
-                    OtherImages = (a.ImageEntities.Where(image => image.Ma != "Anh1").Select(image => image.LinkImage).ToList()),
+                    NameManufacturer = a.ProductEntity.ManufacturerEntity.Name
                 });
 
             if (getNumber > 0)
@@ -341,7 +336,6 @@ namespace PTS.Persistence.Repositories
         {
             var query = await _context.ProductDetailEntity
               .AsNoTracking()
-            .Include(a => a.ImageEntities)
             .Where(x=>x.Id == id)
             .Select(a => new ProductDetailDto
             {
@@ -371,8 +365,6 @@ namespace PTS.Persistence.Repositories
                   NameProduct = a.ProductEntity.Name,
                   NameProductType = a.ProductEntity.ProductTypeEntity.Name,
                   NameManufacturer = a.ProductEntity.ManufacturerEntity.Name,
-                  LinkImage = (a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1") != null) ? a.ImageEntities.FirstOrDefault(image => image.Ma == "Anh1").LinkImage : null,
-                  OtherImages = (a.ImageEntities.Where(image => image.Ma != "Anh1").Select(image => image.LinkImage).ToList()),
               }).FirstOrDefaultAsync();
             return query;
         }

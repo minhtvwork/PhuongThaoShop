@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PTS.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDatabase : Migration
+    public partial class InitDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,7 @@ namespace PTS.Persistence.Migrations
                     Ma = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Ten = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     ThongSo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -37,7 +37,7 @@ namespace PTS.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ma = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -57,7 +57,7 @@ namespace PTS.Persistence.Migrations
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CodeManagePost = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Website = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -74,7 +74,7 @@ namespace PTS.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ma = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Ten = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -91,7 +91,7 @@ namespace PTS.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ma = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     ThongSo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -109,7 +109,7 @@ namespace PTS.Persistence.Migrations
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LinkImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -125,7 +125,7 @@ namespace PTS.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -141,7 +141,7 @@ namespace PTS.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -158,7 +158,7 @@ namespace PTS.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ma = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ThongSo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -175,7 +175,7 @@ namespace PTS.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -194,7 +194,7 @@ namespace PTS.Persistence.Migrations
                     KichCo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     TanSo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     ChatLieu = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -209,15 +209,14 @@ namespace PTS.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MaVoucher = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    TenVoucher = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
-                    StarDay = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    MaVoucher = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    TenVoucher = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    StartDay = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EndDay = table.Column<DateTime>(type: "datetime2", nullable: true),
                     GiaTri = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -233,7 +232,7 @@ namespace PTS.Persistence.Migrations
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     ManufacturerEntityId = table.Column<int>(type: "int", nullable: true),
                     ProductTypeEntityId = table.Column<int>(type: "int", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -265,7 +264,7 @@ namespace PTS.Persistence.Migrations
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleEntityId = table.Column<int>(type: "int", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -288,6 +287,12 @@ namespace PTS.Persistence.Migrations
                     Code = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OldPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Image1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image5 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image6 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Upgrade = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProductEntityId = table.Column<int>(type: "int", nullable: false),
@@ -297,9 +302,8 @@ namespace PTS.Persistence.Migrations
                     HardDriveEntityId = table.Column<int>(type: "int", nullable: true),
                     ScreenEntityId = table.Column<int>(type: "int", nullable: true),
                     CardVGAEntityId = table.Column<int>(type: "int", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -357,7 +361,7 @@ namespace PTS.Persistence.Migrations
                     Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     VoucherEntityId = table.Column<int>(type: "int", nullable: true),
                     UserEntityId = table.Column<int>(type: "int", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -382,7 +386,7 @@ namespace PTS.Persistence.Migrations
                 {
                     UserEntityId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -406,7 +410,7 @@ namespace PTS.Persistence.Migrations
                     Ma = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LinkImage = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     ProductDetailEntityId = table.Column<int>(type: "int", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -431,7 +435,7 @@ namespace PTS.Persistence.Migrations
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     BillEntityId = table.Column<int>(type: "int", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -452,7 +456,7 @@ namespace PTS.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true),
                     CartEntityId = table.Column<int>(type: "int", nullable: false),
@@ -483,11 +487,10 @@ namespace PTS.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     ProductDetailEntityId = table.Column<int>(type: "int", nullable: true),
-                    BillDetailEntityId = table.Column<int>(type: "int", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    BillDetailEntityId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

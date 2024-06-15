@@ -544,26 +544,8 @@ namespace PTS.WebAPI.Controllers
         {
             try
             {
-                var productDetail = _context.ProductDetailEntity
-                    .Include(p => p.ImageEntities)
-                    .FirstOrDefault(p => p.Id == ProductId);
-
-                if (productDetail != null)
-                {
-                    var imageDetails = productDetail.ImageEntities.Select(image => new
-                    {
-                        ImageId = image.Id,
-                        ImageCode = image.Ma,
-                        ImageUrl = image.LinkImage,
-
-                    });
-
-                    return Ok(imageDetails);
-                }
-                else
-                {
-                    return NotFound("Không tìm thấy sản phẩm chi tiết");
-                }
+                    return Ok();
+              
             }
             catch (Exception ex)
             {
@@ -663,56 +645,5 @@ namespace PTS.WebAPI.Controllers
                 return StatusCode(500, $"Lỗi: {ex.Message}");
             }
         }
-        [HttpGet]
-        [Route("getProductDetailImages2")]
-        public IActionResult GetProductDetailImages2(int ProductId, [FromServices] IWebHostEnvironment hostingEnvironment)
-        {
-            try
-            {
-                var productDetail = _context.ProductDetailEntity
-                    .Include(p => p.ImageEntities)
-                    .FirstOrDefault(p => p.Id == ProductId);
-
-                if (productDetail != null)
-                {
-                    var wwwRootPath = hostingEnvironment.WebRootPath;
-                    var objectFolder = "product_images";
-                    var objectFolderPath = Path.Combine(wwwRootPath, objectFolder);
-
-                    var imageDetails = productDetail.ImageEntities.Select(image => new ImageEntity
-                    {
-                        Id = image.Id,
-                        Ma = image.Ma,
-                        LinkImage = Path.Combine(wwwRootPath, objectFolder, image.LinkImage),
-                        Status = image.Status,
-                        ProductDetailEntityId = image.ProductDetailEntityId,
-                        ProductDetailEntity = null  // Setting this to null to break the circular reference
-                    }).Where(x => x.Status == 1).ToList();
-
-                    return Ok(imageDetails);
-                }
-                else
-                {
-                    return NotFound("Không tìm thấy sản phẩm chi tiết");
-                }
-            }
-            catch (Exception ex)
-            {
-                // Ghi log lỗi ở đây
-                return StatusCode(500, $"Lỗi: {ex.Message}");
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

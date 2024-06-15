@@ -19,7 +19,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<PagedResultDto<ManagePostDto>> GetPagedAsync(PagedRequestDto request)
         {
-            var query = _context.ManagePostEntity.Where(x => !x.IsDeleted);
+            var query = _context.ManagePostEntity.Where(x => x.Status > 0);
 
             var totalCount = await query.CountAsync();
 
@@ -65,7 +65,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                ManagePost.IsDeleted = true;
+                ManagePost.Status = 0;
                 _context.ManagePostEntity.Update(ManagePost);
                 await _context.SaveChangesAsync();
                 return true;
@@ -77,7 +77,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<IEnumerable<ManagePostEntity>> GetList()
         {
-            return await _context.ManagePostEntity.Where(x => !x.IsDeleted).ToListAsync();
+            return await _context.ManagePostEntity.Where(x => x.Status > 0).ToListAsync();
         }
 
         public async Task<ManagePostEntity> GetById(int id)

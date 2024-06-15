@@ -17,11 +17,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{4D8E8E8B-6274-4081-9346-48CA11AD2A93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTS.WebAPI", "PTS.WebAPI\PTS.WebAPI.csproj", "{9237319A-DB36-4CF2-B4E1-E4F003B042DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTS.WebAPI", "PTS.WebAPI\PTS.WebAPI.csproj", "{9237319A-DB36-4CF2-B4E1-E4F003B042DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTS.Persistence", "PTS.Persistence\PTS.Persistence.csproj", "{5A6C6B99-3298-4FD4-BB73-3FD1FAC6C971}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTS.Persistence", "PTS.Persistence\PTS.Persistence.csproj", "{5A6C6B99-3298-4FD4-BB73-3FD1FAC6C971}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTS.Infrastructure", "PTS.Infrastructure\PTS.Infrastructure.csproj", "{5A44F8EC-DE93-440A-A501-DEA223BF642E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTS.Infrastructure", "PTS.Infrastructure\PTS.Infrastructure.csproj", "{5A44F8EC-DE93-440A-A501-DEA223BF642E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CE7212E6-5687-4FBE-80DC-EDE3B66C7666}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -23,7 +23,7 @@
 //        public async Task<ActionResult<IEnumerable<CardVGADto>>> GetAllAsync()
 //        {
 //            var listObj = await _repository.GetAllAsync();
-//            return Ok(listObj.Where(x => !x.IsDeleted));
+//            return Ok(listObj.Where(x => x.Status > 0));
 //        }
 //        [HttpGet("GetByIdAsync")]
 //        public async Task<ActionResult<CardVGADto>> GetByIdAsync(int id)

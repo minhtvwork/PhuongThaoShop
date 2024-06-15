@@ -30,17 +30,16 @@ namespace PTS.Data
         public virtual DbSet<ProductTypeEntity> ProductTypeEntity { get; set; }
         public virtual DbSet<ProductDetailEntity> ProductDetailEntity { get; set; }
         public virtual DbSet<RoleEntity> RoleEntity { get; set; }
-        // public virtual DbSet<SanPhamGiamGiaEntity> SanPhamGiamGiaEntity { get; set; }
-        // public virtual DbSet<GiamGiaEntity> GiamGiaEntity { get; set; }
         public virtual DbSet<UserEntity> UserEntity { get; set; }
         public virtual DbSet<VoucherEntity> VoucherEntity { get; set; }
-        public virtual DbSet<ManagePostEntity> ManagePostEntity { get; set; }
+		public virtual DbSet<SeoEntity> SeoEntity { get; set; }
+		public virtual DbSet<ManagePostEntity> ManagePostEntity { get; set; }
         public virtual DbSet<ContactEntity> ContactEntity { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BillDetailEntity>()
                 .Property(e => e.Price)
-                .HasColumnType("decimal(18,2)"); // Adjust precision and scale as needed
+                .HasColumnType("decimal(18,2)"); 
 
             modelBuilder.Entity<BillEntity>()
                 .Property(e => e.Discount)

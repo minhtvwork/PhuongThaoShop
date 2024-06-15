@@ -41,7 +41,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-             //   voucher.IsDeleted = true;
+             //   voucher.Status = 0;
                 _context.VoucherEntity.Update(voucher);
                 await _context.SaveChangesAsync();
                 return true;

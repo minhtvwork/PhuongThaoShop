@@ -33,4 +33,8 @@
 	  <ProjectReference Include="..\PTS.Shared\PTS.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\Images\ImagesProduct\" />
+	</ItemGroup>
+
 </Project>

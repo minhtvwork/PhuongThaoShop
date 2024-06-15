@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace IC.Application.DTOs
+namespace PTS.Application.DTOs
 {
 	public record BaseCreateCommand
 	{

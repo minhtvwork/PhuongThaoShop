@@ -39,7 +39,7 @@ namespace PTS.Persistence.Migrations
                     b.Property<string>("CodeProductDetail")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -73,7 +73,7 @@ namespace PTS.Persistence.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal?>("Discount")
@@ -127,7 +127,7 @@ namespace PTS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -164,7 +164,7 @@ namespace PTS.Persistence.Migrations
                     b.Property<int>("CartEntityId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -193,7 +193,7 @@ namespace PTS.Persistence.Migrations
                     b.Property<int>("UserEntityId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -219,7 +219,7 @@ namespace PTS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -251,7 +251,7 @@ namespace PTS.Persistence.Migrations
                     b.Property<string>("CodeManagePost")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -286,7 +286,7 @@ namespace PTS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -316,7 +316,7 @@ namespace PTS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -346,7 +346,7 @@ namespace PTS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -383,7 +383,7 @@ namespace PTS.Persistence.Migrations
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -411,7 +411,7 @@ namespace PTS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -452,7 +452,7 @@ namespace PTS.Persistence.Migrations
                     b.Property<int?>("CpuEntityId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -461,8 +461,23 @@ namespace PTS.Persistence.Migrations
                     b.Property<int?>("HardDriveEntityId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<string>("Image1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image5")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image6")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("OldPrice")
                         .HasColumnType("decimal(18,2)");
@@ -479,7 +494,7 @@ namespace PTS.Persistence.Migrations
                     b.Property<int?>("ScreenEntityId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Upgrade")
@@ -512,7 +527,7 @@ namespace PTS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -549,7 +564,7 @@ namespace PTS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -576,7 +591,7 @@ namespace PTS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -605,7 +620,7 @@ namespace PTS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -637,7 +652,7 @@ namespace PTS.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -673,11 +688,8 @@ namespace PTS.Persistence.Migrations
                     b.Property<int?>("BillDetailEntityId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime>("CrDateTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<int?>("ProductDetailEntityId")
                         .HasColumnType("int");
@@ -686,7 +698,7 @@ namespace PTS.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -709,7 +721,7 @@ namespace PTS.Persistence.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -842,7 +854,7 @@ namespace PTS.Persistence.Migrations
             modelBuilder.Entity("PTS.Domain.Entities.ImageEntity", b =>
                 {
                     b.HasOne("PTS.Domain.Entities.ProductDetailEntity", "ProductDetailEntity")
-                        .WithMany("ImageEntities")
+                        .WithMany()
                         .HasForeignKey("ProductDetailEntityId");
 
                     b.Navigation("ProductDetailEntity");
@@ -977,8 +989,6 @@ namespace PTS.Persistence.Migrations
             modelBuilder.Entity("PTS.Domain.Entities.ProductDetailEntity", b =>
                 {
                     b.Navigation("CartDetailEntities");
-
-                    b.Navigation("ImageEntities");
 
                     b.Navigation("SerialEntities");
                 });

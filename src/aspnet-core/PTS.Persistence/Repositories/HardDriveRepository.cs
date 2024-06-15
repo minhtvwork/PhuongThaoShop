@@ -18,7 +18,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<PagedResultDto<HardDriveDto>> GetPagedAsync(PagedRequestDto request)
         {
-            var query = _context.HardDriveEntity.Where(x => !x.IsDeleted);
+            var query = _context.HardDriveEntity.Where(x => x.Status > 0);
 
             var totalCount = await query.CountAsync();
 
@@ -63,7 +63,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                hardDrive.IsDeleted = true;
+                hardDrive.Status = 0;
                 _context.HardDriveEntity.Update(hardDrive);
                 await _context.SaveChangesAsync();
                 return true;
@@ -75,7 +75,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<IEnumerable<HardDriveEntity>> GetList()
         {
-             return await _context.HardDriveEntity.Where(x => !x.IsDeleted).ToListAsync();
+             return await _context.HardDriveEntity.Where(x => x.Status > 0).ToListAsync();
         }
 
         public async Task<HardDriveEntity> GetById(int id)

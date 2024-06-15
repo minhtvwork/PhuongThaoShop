@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using IC.Application.DTOs;
-using IC.Application.Extensions;
+using PTS.Application.DTOs;
+using PTS.Application.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PTS.Application.Features.ProductDetail.Queries;
@@ -32,12 +32,12 @@ namespace PTS.Application.Features.Voucher.Queries
         }
         public async Task<PaginatedResult<VoucherDto>> Handle(VoucherGetPageQuery queryInput, CancellationToken cancellationToken)
         {
-            var query = from listObj in _unitOfWork.Repository<VoucherEntity>().Entities.AsNoTracking() select listObj;
+            var query = from listObj in _unitOfWork.Repository<VoucherEntity>().Entities.Where(x => x.Status > 0).AsNoTracking() select listObj;
             if (!string.IsNullOrEmpty(queryInput.Keywords))
             {
                 query = query.Where(x => x.MaVoucher.Contains(queryInput.Keywords) || x.TenVoucher.Contains(queryInput.Keywords));
             }
-            //query = query.OrderBy(x => x.DisplayOrder);
+            query = query.OrderBy(x => x.CrDateTime);
             var pQuery = query.ProjectTo<VoucherDto>(_mapper.ConfigurationProvider);
             var result = await pQuery.ToPaginatedListAsync(queryInput.Page, queryInput.PageSize, cancellationToken);
             return result;

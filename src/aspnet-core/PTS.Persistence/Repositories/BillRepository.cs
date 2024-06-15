@@ -38,7 +38,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                bill.IsDeleted = true;
+                bill.Status = 0;
                 _context.BillEntity.Update(bill);
                 await _context.SaveChangesAsync();
                 return true;
@@ -51,12 +51,12 @@ namespace PTS.Persistence.Repositories
 
         public async Task<IEnumerable<BillEntity>> GetAll()
         {
-            return await _context.BillEntity.Where(a=>!a.IsDeleted).AsNoTracking().ToListAsync();
+            return await _context.BillEntity.Where(a => a.Status > 0).AsNoTracking().ToListAsync();
         }
         public async Task<PagedResult<BillEntity>> GetPage(GetPageBillDto request)
         {
             var query = _context.BillEntity
-                                .Where(a => !a.IsDeleted);
+                                .Where(a => a.Status > 0);
 
             if (!string.IsNullOrEmpty(request.Code))
             {
@@ -93,7 +93,7 @@ namespace PTS.Persistence.Repositories
                             FullName = bill.FullName,
                             Address = bill.Address,
                             Status = bill.Status,
-                            CreateDate = bill.CreationTime,
+                            CreateDate = bill.CrDateTime,
                             GiamGia = voucher != null ? voucher.GiaTri : 0,
                             CodeVoucher = voucher != null ? voucher.MaVoucher : null,
                             UserId = bill.UserEntityId

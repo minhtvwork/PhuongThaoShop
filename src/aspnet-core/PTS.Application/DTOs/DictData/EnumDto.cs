@@ -1,4 +1,4 @@
-﻿namespace IC.Application.DTOs.DictData
+﻿namespace PTS.Application.DTOs.DictData
 {
     public class EnumDto<T>
     {

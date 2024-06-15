@@ -18,7 +18,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<PagedResultDto<CpuDto>> GetPagedAsync(PagedRequestDto request)
         {
-            var query = _dbContext.CpuEntity.Where(x => !x.IsDeleted);
+            var query = _dbContext.CpuEntity.Where(x => x.Status > 0);
 
             var totalCount = await query.CountAsync();
 
@@ -62,7 +62,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                obj.IsDeleted = true;
+                obj.Status = 0;
                 _dbContext.CpuEntity.Update(obj);
                 await _dbContext.SaveChangesAsync();
                 return true;
@@ -74,7 +74,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<IEnumerable<CpuEntity>> GetList()
         {
-            return await _dbContext.CpuEntity.Where(x => !x.IsDeleted).ToListAsync();
+            return await _dbContext.CpuEntity.Where(x => x.Status > 0).ToListAsync();
         }
 
         public async Task<CpuEntity> GetById(int id)

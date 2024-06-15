@@ -20,11 +20,7 @@ namespace PTS.WebAPI.Controllers
 		{
 			return Ok(await _mediator.Send(new VoucherGetAllQuery()));
 		}
-		[HttpGet("PGetAll")]
-		public async Task<IActionResult> PGetAll()
-		{
-			return Ok(await _mediator.Send(new PVoucherGetAllQuery()));
-		}
+		
 		[HttpPost("GetPage")]
 		public async Task<IActionResult> GetPage(VoucherGetPageQuery query)
 		{

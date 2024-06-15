@@ -7,16 +7,20 @@ namespace PTS.Domain.Entities
     [Table("ProductDetail")]
     public class ProductDetailEntity : BaseAuditableEntity
     {
+        [Key]
 		public int Id { get; set; }
-		public DateTime? CreationTime { get; set; } = DateTime.Now;
-		public bool IsDeleted { get; set; } = false;
-		public int? Status { get; set; } = 1;
 		[Required]
         [MaxLength(50)]
-        public string? Code { get; set; }
+        public string Code { get; set; }
         public Decimal Price { get; set; }
         public Decimal OldPrice { get; set; }
-        public string? Upgrade { get; set; }
+		public string? Image1 { get; set; }
+		public string? Image2 { get; set; }
+		public string? Image3 { get; set; }
+		public string? Image4 { get; set; }
+		public string? Image5 { get; set; }
+		public string? Image6 { get; set; }
+		public string? Upgrade { get; set; }
         public string? Description { get; set; }
         public int ProductEntityId { get; set; }
         public int? ColorEntityId { get; set; }
@@ -25,15 +29,26 @@ namespace PTS.Domain.Entities
         public int? HardDriveEntityId { get; set; }
         public int? ScreenEntityId { get; set; }
         public int? CardVGAEntityId { get; set; }
-        public virtual ColorEntity? ColorEntity { get; set; }
+		public int? CrUserId { get; set; }
+		public DateTime? CrDateTime { get; set; }
+		public int Status { get; set; }
+        [NotMapped]
+		public virtual ColorEntity? ColorEntity { get; set; }
+        [NotMapped]
         public virtual RamEntity? RamEntity { get; set; }
+        [NotMapped]
         public virtual CpuEntity? CpuEntity { get; set; }
+        [NotMapped]
         public virtual ScreenEntity? ScreenEntity { get; set; }
+        [NotMapped]
         public virtual CardVGAEntity? CardVGAEntity { get; set; }
+        [NotMapped]
         public virtual HardDriveEntity? HardDriveEntity { get; set; }
+        [NotMapped]
         public virtual ProductEntity? ProductEntity { get; set; }
-        public ICollection<ImageEntity>? ImageEntities { get; set; }
+        [NotMapped]
         public ICollection<CartDetailEntity>? CartDetailEntities { get; set; }
+        [NotMapped]
         public ICollection<SerialEntity>? SerialEntities { get; set; }
     }
 }

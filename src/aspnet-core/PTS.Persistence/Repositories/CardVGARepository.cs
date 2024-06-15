@@ -43,7 +43,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                cardVGA.IsDeleted = true;
+                cardVGA.Status = 0;
                 _context.CardVGAEntity.Update(cardVGA);
                 await _context.SaveChangesAsync();
                 return true;
@@ -56,7 +56,7 @@ namespace PTS.Persistence.Repositories
         public async Task<List<CardVGAEntity>> GetAllCardVGA()
         {
             var list = await _context.CardVGAEntity.ToListAsync();
-            var listCardVGA = list.Where(x => x.IsDeleted == false).ToList();
+            var listCardVGA = list.Where(x => x.Status > 0).ToList();
             return listCardVGA;
         }
 

@@ -14,7 +14,7 @@ namespace PTS.Application.Features.ProductDetail.Queries
 	public class ProductDetailDto : IMapFrom<ProductDetailEntity>
 	{
 		public int Id { get; set; }
-		public DateTime? CreationTime { get; set; } = DateTime.Now;
+		public DateTime? CrDateTime { get; set; } = DateTime.Now;
 		public bool IsDeleted { get; set; } = false;
 		public int? Status { get; set; } = 1;
 		[Required]
@@ -31,16 +31,7 @@ namespace PTS.Application.Features.ProductDetail.Queries
 		public int? HardDriveEntityId { get; set; }
 		public int? ScreenEntityId { get; set; }
 		public int? CardVGAEntityId { get; set; }
-		public virtual ColorEntity? ColorEntity { get; set; }
-		public virtual RamEntity? RamEntity { get; set; }
-		public virtual CpuEntity? CpuEntity { get; set; }
-		public virtual ScreenEntity? ScreenEntity { get; set; }
-		public virtual CardVGAEntity? CardVGAEntity { get; set; }
-		public virtual HardDriveEntity? HardDriveEntity { get; set; }
-		public virtual ProductEntity? ProductEntity { get; set; }
-		public ICollection<ImageEntity>? ImageEntities { get; set; }
-		public ICollection<CartDetailEntity>? CartDetailEntities { get; set; }
-		public ICollection<SerialEntity>? SerialEntities { get; set; }
+		
 	
 }
 }

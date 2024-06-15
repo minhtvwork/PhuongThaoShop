@@ -19,7 +19,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<PagedResultDto<ContactDto>> GetPagedAsync(PagedRequestDto request)
         {
-            var query = _dbContext.ContactEntity.Where(x => !x.IsDeleted);
+            var query = _dbContext.ContactEntity.Where(x => x.Status > 0);
 
             var totalCount = await query.CountAsync();
 
@@ -72,7 +72,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                obj.IsDeleted = true;
+                obj.Status = 0;
                 _dbContext.ContactEntity.Update(obj);
                 await _dbContext.SaveChangesAsync();
                 return new ServiceResponse(true, "Xóa thành công");
@@ -85,7 +85,7 @@ namespace PTS.Persistence.Repositories
 
         public async Task<IEnumerable<ContactEntity>> GetList()
         {
-            return await _dbContext.ContactEntity.Where(a=>!a.IsDeleted).ToListAsync();
+            return await _dbContext.ContactEntity.Where(a=>a.Status > 0).ToListAsync();
         }
 
         public async Task<ServiceResponse> Update(ContactEntity contact)
@@ -100,7 +100,7 @@ namespace PTS.Persistence.Repositories
                 obj.Email = contact.Email;
                 obj.Name = contact.Name;
                 obj.Message = contact.Message;
-                obj.CreationTime = contact.CreationTime;
+                obj.CrDateTime = contact.CrDateTime;
                 obj.CodeManagePost = contact.CodeManagePost;
                 obj.Status = contact.Status;
                 obj.Website = contact.Website;

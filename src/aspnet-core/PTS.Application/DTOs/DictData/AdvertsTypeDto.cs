@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IC.Application.DTOs.DictData
+namespace PTS.Application.DTOs.DictData
 {
     public class AdvertsTypeDto
     {

@@ -1,4 +1,4 @@
-﻿namespace IC.Application.DTOs.Email
+﻿namespace PTS.Application.DTOs.Email
 {
     public class EmailRequestDto
     {

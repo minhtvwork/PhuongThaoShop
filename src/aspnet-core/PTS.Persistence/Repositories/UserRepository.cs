@@ -59,7 +59,7 @@ namespace PTS.Persistence.Repositories
 
         public async Task<List<UserEntity>> GetAllUsers()
         {
-             return await _context.UserEntity.Where(x=>!x.IsDeleted).ToListAsync();
+             return await _context.UserEntity.Where(x=>x.Status > 0).ToListAsync();
         }
 
         public async Task<bool> Update(UserEntity obj)
@@ -95,7 +95,7 @@ namespace PTS.Persistence.Repositories
         } 
         public async Task<UserEntity> GetUserByUsername(string username)
         {
-            return await _context.UserEntity.Where(u=>!u.IsDeleted).Include(u => u.RoleEntities).FirstOrDefaultAsync(x => x.Username == username);
+            return await _context.UserEntity.Where(x => x.Status > 0).Include(u => u.RoleEntities).FirstOrDefaultAsync(x => x.Username == username);
         }
 
     }

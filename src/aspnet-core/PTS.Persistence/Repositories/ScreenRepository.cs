@@ -17,7 +17,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<PagedResultDto<ScreenDto>> GetPagedAsync(PagedRequestDto request)
         {
-            var query = _context.ScreenEntity.Where(x => !x.IsDeleted);
+            var query = _context.ScreenEntity.Where(x => x.Status > 0);
 
             var totalCount = await query.CountAsync();
 
@@ -62,7 +62,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                screen.IsDeleted = true;
+                screen.Status = 0;
                 _context.ScreenEntity.Update(screen);
                 await _context.SaveChangesAsync();
                 return true;
@@ -74,7 +74,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<IEnumerable<ScreenEntity>> GetList()
         {
-         return await _context.ScreenEntity.Where(x => !x.IsDeleted).ToListAsync();
+         return await _context.ScreenEntity.Where(x => x.Status > 0).ToListAsync();
         }
 
         public async Task<ScreenEntity> GetById(int id)

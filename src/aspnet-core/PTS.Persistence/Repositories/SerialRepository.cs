@@ -18,7 +18,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<PagedResultDto<SerialDto>> GetPagedAsync(PagedRequestDto request)
         {
-            var query = _context.SerialEntity.Where(x => !x.IsDeleted);
+            var query = _context.SerialEntity;
 
             var totalCount = await query.CountAsync();
 
@@ -84,7 +84,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                obj.IsDeleted = true;
+           //    obj.Status = 0
                 _context.SerialEntity.Update(obj);
                 await _context.SaveChangesAsync();
                 return true;
@@ -96,7 +96,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<IEnumerable<SerialEntity>> GetList()
         {
-         return await _context.SerialEntity.Where(x => !x.IsDeleted).ToListAsync();
+         return await _context.SerialEntity.ToListAsync();
         }
 
         public async Task<bool> Update(SerialEntity obj)

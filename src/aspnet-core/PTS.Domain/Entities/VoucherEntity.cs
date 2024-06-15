@@ -17,8 +17,9 @@ namespace PTS.Domain.Entities
         public DateTime? EndDay { get; set; }
         public decimal GiaTri { get; set; }
         public int SoLuong { get; set; }
+		public int? CrUserId { get; set; }
+		public DateTime? CrDateTime { get; set; }
 		public int Status { get; set; }
-		public DateTime CrDateTime { get; set; }
 		[NotMapped]
         public virtual ICollection<BillEntity>? BillEntities { get; set; }
     }

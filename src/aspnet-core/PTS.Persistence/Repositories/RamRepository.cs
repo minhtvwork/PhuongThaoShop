@@ -18,7 +18,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<PagedResultDto<RamDto>> GetPagedAsync(PagedRequestDto request)
         {
-            var query = _dbContext.RamEntity.Where(x => !x.IsDeleted);
+            var query = _dbContext.RamEntity.Where(x => x.Status > 0);
 
             var totalCount = await query.CountAsync();
 
@@ -62,7 +62,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                  ram.IsDeleted = true;
+                  ram.Status = 0;
                 _dbContext.RamEntity.Update(ram);
                 await _dbContext.SaveChangesAsync();
                 return true;
@@ -74,7 +74,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<IEnumerable<RamEntity>> GetList()
         {
-           return await _dbContext.RamEntity.Where(a=>!a.IsDeleted).ToListAsync();
+           return await _dbContext.RamEntity.Where(a => a.Status > 0).ToListAsync();
         }
 
         public async Task<RamEntity> GetById(int id)
