@@ -20,12 +20,12 @@ namespace PTS.Persistence.Services
         {
             _userRepository = userRepository;
         }
-        public async Task<LoginResponse> Login(string username, string password)
+        public async Task<LoginResponse> Login(string UserName, string password)
         {
             try
             {
-                var user = await _userRepository.GetUserByUsername(username);
-                if (user.Username != username)
+                var user = await _userRepository.GetUserByUserName(UserName);
+                if (user.UserName != UserName)
                 {
                     return new LoginResponse(false,null,null,null,null,null,null, false,null);
                 }
@@ -36,11 +36,11 @@ namespace PTS.Persistence.Services
                 }
 
                 string token = CreateToken(user);
-                if (user.RoleEntities.RoleName == "admin")
+                if (user.RoleEntities.Name == "admin")
                 {
-                    return new LoginResponse(true, user.Username, user.FullName, user.PhoneNumber, user.Address, user.Email, user.RoleEntities.RoleName, true, token);
+                    return new LoginResponse(true, user.UserName, user.FullName, user.PhoneNumber, user.Address, user.Email, user.RoleEntities.Name, true, token);
                 }
-                return new LoginResponse(true, user.Username, user.FullName, user.PhoneNumber, user.Address, user.Email, user.RoleEntities.RoleName, false, token);
+                return new LoginResponse(true, user.UserName, user.FullName, user.PhoneNumber, user.Address, user.Email, user.RoleEntities.Name, false, token);
             }
             catch (Exception)
             {
@@ -51,7 +51,7 @@ namespace PTS.Persistence.Services
         {
             List<Claim> claims = new List<Claim> {
                 new Claim(ClaimTypes.Name, user.FullName),
-                new Claim(ClaimTypes.Role, user.RoleEntities.RoleName),
+              //  new Claim(ClaimTypes.Role, user.RoleEntities.Name),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("PTS KMM BMK 1038 MPTM PTS KMM BMK 1038 MPTM"));

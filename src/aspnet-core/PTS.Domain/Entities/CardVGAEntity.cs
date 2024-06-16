@@ -18,7 +18,7 @@ namespace PTS.Domain.Entities
 		public int? CrUserId { get; set; }
 		public DateTime? CrDateTime { get; set; }
 		public int Status { get; set; }
-        [NotMapped]
+       
 		public virtual ICollection<ProductDetailEntity>? ProductDetailEntities { get; set; }
     }
 }

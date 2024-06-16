@@ -40,7 +40,7 @@ namespace PTS.WebAPI.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login(UserLoginDto obj)
         {
-            var result = await _accountService.Login(obj.Username, obj.Password);
+            var result = await _accountService.Login(obj.UserName, obj.Password);
             if (result.IsSuccess)
             {
               return Ok(result);
@@ -52,8 +52,8 @@ namespace PTS.WebAPI.Controllers
         public async Task<IActionResult> GetMyInfor()
         {
          //   var x = AppSettings.RootPath;
-            var username = User.Identity.Name;
-            return Ok(username);
+            var UserName = User.Identity.Name;
+            return Ok(UserName);
         }
     }
 }

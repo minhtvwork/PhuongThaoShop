@@ -10,7 +10,7 @@ namespace PTS.Application.Interfaces.Repositories
         Task<bool> Delete(int id);
         Task<IEnumerable<CartEntity>> GetAll();
         Task<CartEntity> GetCartById(int id);
-        Task<IEnumerable<CartItemDto>> GetCartItem(string username);
+        Task<IEnumerable<CartItemDto>> GetCartItem(string UserName);
         //  Task<IEnumerable<CartItemDto>> GetAllCarts();
     }
 }

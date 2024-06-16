@@ -17,9 +17,9 @@ namespace PTS.Persistence.Repositories
 
         public async Task<bool> Create(RoleEntity obj)
         {
-        var checkRoleName = await _dbContext.RoleEntity.AnyAsync(x => x.RoleName == obj.RoleName);
+        var checkName = await _dbContext.RoleEntity.AnyAsync(x => x.Name == obj.Name);
 
-            if (obj == null || checkRoleName == true)
+            if (obj == null || checkName == true)
             {
                 return false;
             }
@@ -44,7 +44,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                role.Status = 0;
+            //    role.Status = 0;
                 _dbContext.RoleEntity.Update(role);
                 await _dbContext.SaveChangesAsync();
                 return true;
@@ -56,7 +56,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<IEnumerable<RoleEntity>> GetList()
         {
-            return await _dbContext.RoleEntity.Where(a => a.Status > 0).ToListAsync();
+            return await _dbContext.RoleEntity.ToListAsync();
         }
 
         public async Task<RoleEntity> GetById(int id)
@@ -73,7 +73,7 @@ namespace PTS.Persistence.Repositories
             }
             try
             {
-                role.RoleName = obj.RoleName;
+                role.Name = obj.Name;
                 _dbContext.RoleEntity.Update(role);
                 await _dbContext.SaveChangesAsync();
                 return true;

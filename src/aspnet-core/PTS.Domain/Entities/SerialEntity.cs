@@ -16,9 +16,9 @@ namespace PTS.Domain.Entities
 		public int Status { get; set; }
 		public int? ProductDetailEntityId {  get; set; }
         public int? BillDetailEntityId { get; set; }
-        [NotMapped]
+       
         public virtual ProductDetailEntity? ProductDetailEntities { get; set; }
-        [NotMapped]
+       
         public virtual BillDetailEntity? BillDetailEntities { get; set; }
     }
 }

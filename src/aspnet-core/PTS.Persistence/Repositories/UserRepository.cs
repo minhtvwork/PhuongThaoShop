@@ -16,7 +16,7 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<bool> Create(UserEntity obj)
         {
-            var _user = await _context.UserEntity.AnyAsync(user =>user.Username == obj.Username); //x => x.UserName == obj.UserName tìm đối tượng có cùng tên đăng nhập
+            var _user = await _context.UserEntity.AnyAsync(user =>user.UserName == obj.UserName); //x => x.UserName == obj.UserName tìm đối tượng có cùng tên đăng nhập
             if (obj == null || _user == true) // nếu đối tượng tồn tại hoặc giá trị truyền vào rỗng thì trả về false.
             {
                 return false;
@@ -93,9 +93,9 @@ namespace PTS.Persistence.Repositories
             var result = await _context.UserEntity.FindAsync(id);
             return result;
         } 
-        public async Task<UserEntity> GetUserByUsername(string username)
+        public async Task<UserEntity> GetUserByUserName(string UserName)
         {
-            return await _context.UserEntity.Where(x => x.Status > 0).Include(u => u.RoleEntities).FirstOrDefaultAsync(x => x.Username == username);
+            return await _context.UserEntity.Where(x => x.Status > 0).Include(u => u.RoleEntities).FirstOrDefaultAsync(x => x.UserName == UserName);
         }
 
     }

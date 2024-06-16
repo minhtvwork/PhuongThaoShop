@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using App.Shared.Core.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using NAudio.CoreAudioApi;
 using PTS.Domain.Entities;
 
 namespace PTS.Data
 {
-    public class ApplicationDbContext : DbContext
-    {
+    public class ApplicationDbContext :IdentityDbContext<UserEntity, RoleEntity, int>
+	{
         public ApplicationDbContext()
         {
 
@@ -12,6 +16,7 @@ namespace PTS.Data
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
+
 
         public virtual DbSet<RamEntity> RamEntity { get; set; }
         public virtual DbSet<CpuEntity> CpuEntity { get; set; }
@@ -35,9 +40,20 @@ namespace PTS.Data
 		public virtual DbSet<SeoEntity> SeoEntity { get; set; }
 		public virtual DbSet<ManagePostEntity> ManagePostEntity { get; set; }
         public virtual DbSet<ContactEntity> ContactEntity { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+	
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BillDetailEntity>()
+            base.OnModelCreating(modelBuilder);
+			foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+			{
+				var tableName = entityType.GetTableName();
+				if (tableName.StartsWith("AspNet"))
+				{
+					entityType.SetTableName(tableName.Substring(6));
+				}
+			}
+			modelBuilder.Entity<BillDetailEntity>()
                 .Property(e => e.Price)
                 .HasColumnType("decimal(18,2)"); 
 
@@ -56,7 +72,47 @@ namespace PTS.Data
             modelBuilder.Entity<VoucherEntity>()
                 .Property(e => e.GiaTri)
                 .HasColumnType("decimal(18,2)");
-        }
 
-    }
+			SeedUsers(modelBuilder);
+			SeedRoles(modelBuilder);
+			SeedUserRoles(modelBuilder);
+
+		}
+		private void SeedUsers(ModelBuilder builder)
+		{
+			UserEntity user = new UserEntity()
+			{
+				Id = 1,
+				UserName = "admin",
+				Email = "admin@phuongthaoshop.vn",
+				FullName = "Administrator",
+				NormalizedUserName = "ADMIN",
+				NormalizedEmail = "ADMIN@PHUONGTHAOSHOP.VN",
+				SecurityStamp = "phuongthaoshop.vn",
+				ConcurrencyStamp = "phuongthaoshop.vn"
+			};
+
+			PasswordHasher<UserEntity> passwordHasher = new PasswordHasher<UserEntity>();
+			user.PasswordHash = passwordHasher.HashPassword(user, "Admin*123");
+
+			builder.Entity<UserEntity>().HasData(user);
+		}
+
+		private void SeedRoles(ModelBuilder builder)
+		{
+			builder.Entity<RoleEntity>().HasData(
+				new RoleEntity() { Id = 1, Name = "Admin", NormalizedName = "ADMIN", Description = "Administrator", ConcurrencyStamp = "1" },
+				new RoleEntity() { Id = 2, Name = "Employee", NormalizedName = "EMPLOYEE", Description = "Employee", ConcurrencyStamp = "1" },
+				new RoleEntity() { Id = 3, Name = "Customer", NormalizedName = "CUSTOMER", Description = "Customer", ConcurrencyStamp = "1" }
+			);
+		}
+
+		private void SeedUserRoles(ModelBuilder builder)
+		{
+			builder.Entity<IdentityUserRole<int>>().HasData(
+				new IdentityUserRole<int>() { RoleId = 1, UserId = 1 }
+			);
+		}
+
+	}
 }

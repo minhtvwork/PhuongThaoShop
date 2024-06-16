@@ -21,14 +21,14 @@ namespace PTS.Application.Features.Account.Commands
         {
             UserEntity user = new UserEntity();
             user.Id = request.UserDto.Id;
-            user.Username = request.UserDto.Username;
+            user.UserName = request.UserDto.UserName;
             user.PhoneNumber = request.UserDto.PhoneNumber;
             user.FullName = request.UserDto.FullName;
             user.Email = request.UserDto.Email;
             user.Address = request.UserDto.Address;
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.UserDto.Password);
             user.CrDateTime = DateTime.Now;
-            user.Status = 1;
+            //user.Status = 1;
             if (request.UserDto.Id > 0)
             {
                 if (await _repository.Update(user))
@@ -40,7 +40,7 @@ namespace PTS.Application.Features.Account.Commands
             }
             else
             {
-                user.RoleEntityId = 2;
+               // user.RoleEntityId = 2;
                 if (await _repository.Create(user))
                     return new ServiceResponse(true, "Thêm thành công");
                 return new ServiceResponse(false, "Thêm thất bại");

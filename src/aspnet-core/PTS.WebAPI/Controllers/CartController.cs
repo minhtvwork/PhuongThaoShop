@@ -27,10 +27,10 @@ namespace PTS.WebAPI.Controllers
         }
         [AllowAnonymous]// For client
         [HttpPost("GetCartByUser")]
-        public async Task<IActionResult> GetCartByUser(string username)
+        public async Task<IActionResult> GetCartByUser(string UserName)
         {
             GetCartByUserQuery query = new GetCartByUserQuery();
-            query.Username = username;
+            query.UserName = UserName;
             return Ok(await _mediator.Send(query));
         }
         [AllowAnonymous]// For client

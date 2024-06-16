@@ -36,10 +36,10 @@ namespace PTS.Persistence.Services
 		{
 			try
 			{
-				var user = _userRepository.GetAllUsers().Result.Where(x => x.Username == request.Username).FirstOrDefault();
-				if (!string.IsNullOrEmpty(request.Username))
+				var user = _userRepository.GetAllUsers().Result.Where(x => x.UserName == request.UserName).FirstOrDefault();
+				if (!string.IsNullOrEmpty(request.UserName))
 				{
-					cartItem = await _cartRepository.GetCartItem(request.Username);
+					cartItem = await _cartRepository.GetCartItem(request.UserName);
 					if (cartItem == null)
 					{
 						return NotFoundResponse("Không có sản phẩm trong giỏ hàng");
@@ -63,16 +63,16 @@ namespace PTS.Persistence.Services
 				};
 				if (await _billRepository.Create(bill))
 				{
-					IEnumerable<CartItemDto> itemsToAdd = request.Username == null ? request.CartItem : cartItem;
+					IEnumerable<CartItemDto> itemsToAdd = request.UserName == null ? request.CartItem : cartItem;
 					foreach (var item in itemsToAdd)
 					{
 						var billDetail = new BillDetailEntity
 						{
 							Id = 0,
 							Code = bill.InvoiceCode + StringUtility.RandomString(7),
-							CodeProductDetail = request.Username == null ? item.MaProductDetail : item.MaProductDetail,
-							Price = request.Username == null ? item.Price : item.Price,
-							Quantity = request.Username == null ? item.Quantity : item.Quantity,
+							CodeProductDetail = request.UserName == null ? item.MaProductDetail : item.MaProductDetail,
+							Price = request.UserName == null ? item.Price : item.Price,
+							Quantity = request.UserName == null ? item.Quantity : item.Quantity,
 							BillEntityId = bill.Id
 						};
 						await _billDetailRepository.CreateBillDetail(billDetail);

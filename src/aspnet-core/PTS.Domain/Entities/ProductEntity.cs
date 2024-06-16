@@ -17,11 +17,11 @@ namespace PTS.Domain.Entities
 		public int Status { get; set; }
 		public int? ManufacturerEntityId { get; set; }
         public int? ProductTypeEntityId { get; set; }
-        [NotMapped]
+       
         public virtual ManufacturerEntity? ManufacturerEntity { get; set; }
-        [NotMapped]
+       
         public virtual ProductTypeEntity? ProductTypeEntity { get; set; }
-        [NotMapped]
+       
         public virtual ICollection<ProductDetailEntity>? ProductDetailEntities { get; set; }
     }
 }

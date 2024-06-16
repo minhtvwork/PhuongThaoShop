@@ -32,23 +32,23 @@ namespace PTS.Domain.Entities
 		public int? CrUserId { get; set; }
 		public DateTime? CrDateTime { get; set; }
 		public int Status { get; set; }
-        [NotMapped]
+       
 		public virtual ColorEntity? ColorEntity { get; set; }
-        [NotMapped]
+       
         public virtual RamEntity? RamEntity { get; set; }
-        [NotMapped]
+       
         public virtual CpuEntity? CpuEntity { get; set; }
-        [NotMapped]
+       
         public virtual ScreenEntity? ScreenEntity { get; set; }
-        [NotMapped]
+       
         public virtual CardVGAEntity? CardVGAEntity { get; set; }
-        [NotMapped]
+       
         public virtual HardDriveEntity? HardDriveEntity { get; set; }
-        [NotMapped]
+       
         public virtual ProductEntity? ProductEntity { get; set; }
-        [NotMapped]
+       
         public ICollection<CartDetailEntity>? CartDetailEntities { get; set; }
-        [NotMapped]
+       
         public ICollection<SerialEntity>? SerialEntities { get; set; }
     }
 }

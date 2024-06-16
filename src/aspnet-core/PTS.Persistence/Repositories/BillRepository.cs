@@ -129,7 +129,7 @@ namespace PTS.Persistence.Repositories
         }
 
 
-        public Task<IEnumerable<BillDetailDto>> GetBillDetail(string username)
+        public Task<IEnumerable<BillDetailDto>> GetBillDetail(string UserName)
         {
             throw new NotImplementedException();
         }

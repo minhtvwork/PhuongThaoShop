@@ -8,7 +8,7 @@ namespace PTS.Application.Features.Cart.Commands
 {
     public class CreateOrUpdateCartQuery : IRequest<ServiceResponse>
     {
-        public string? Username { get; set; }
+        public string? UserName { get; set; }
         public int IdProductDetail { get; set; }
     }
     public class CreateOrUpdateCartHandler : IRequestHandler<CreateOrUpdateCartQuery, ServiceResponse>
@@ -20,13 +20,13 @@ namespace PTS.Application.Features.Cart.Commands
         }
         public async Task<ServiceResponse> Handle(CreateOrUpdateCartQuery request, CancellationToken cancellationToken)
         {
-            if (request.Username != null)
+            if (request.UserName != null)
             {
-                return await _service.AddCart(request.Username, request.IdProductDetail);
+                return await _service.AddCart(request.UserName, request.IdProductDetail);
             }
             else
             {
-                return await _service.AddCart(request.Username, request.IdProductDetail);
+                return await _service.AddCart(request.UserName, request.IdProductDetail);
             }
 
 

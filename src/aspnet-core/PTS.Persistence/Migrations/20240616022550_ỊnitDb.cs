@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PTS.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDb : Migration
+    public partial class ỊnitDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,9 +20,9 @@ namespace PTS.Persistence.Migrations
                     Ma = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Ten = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     ThongSo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -35,11 +35,11 @@ namespace PTS.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Ma = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Ma = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,9 +57,9 @@ namespace PTS.Persistence.Migrations
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CodeManagePost = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Website = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,9 +74,9 @@ namespace PTS.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ma = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Ten = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,13 +91,31 @@ namespace PTS.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ma = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     ThongSo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HardDrive", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Image",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Ma = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LinkImage = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ProductDetailEntityId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Image", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -109,9 +127,9 @@ namespace PTS.Persistence.Migrations
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LinkImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -125,9 +143,9 @@ namespace PTS.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -141,9 +159,9 @@ namespace PTS.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -156,11 +174,11 @@ namespace PTS.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Ma = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ThongSo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Ma = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ThongSo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -168,20 +186,19 @@ namespace PTS.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Role",
+                name: "Roles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role", x => x.Id);
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -190,17 +207,39 @@ namespace PTS.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Ma = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Ma = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     KichCo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     TanSo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     ChatLieu = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Screen", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SeoEntity",
+                columns: table => new
+                {
+                    SeoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SeoName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MetaTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MetaDesc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MetaKeyword = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CanonicalTag = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    H1Tag = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SeoFooter = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SeoEntity", x => x.SeoId);
                 });
 
             migrationBuilder.CreateTable(
@@ -215,8 +254,9 @@ namespace PTS.Persistence.Migrations
                     EndDay = table.Column<DateTime>(type: "datetime2", nullable: true),
                     GiaTri = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -230,11 +270,11 @@ namespace PTS.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    ManufacturerEntityId = table.Column<int>(type: "int", nullable: true),
-                    ProductTypeEntityId = table.Column<int>(type: "int", nullable: true),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ManufacturerEntityId = table.Column<int>(type: "int", nullable: true),
+                    ProductTypeEntityId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -252,29 +292,66 @@ namespace PTS.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "RoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RoleEntityId = table.Column<int>(type: "int", nullable: true),
-                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_RoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_User_Role_RoleEntityId",
-                        column: x => x.RoleEntityId,
-                        principalTable: "Role",
+                        name: "FK_RoleClaims_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BirthDay = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DefaultActionId = table.Column<int>(type: "int", nullable: true),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AvatarPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsEnabled = table.Column<bool>(type: "bit", nullable: true),
+                    LastTimeChangePass = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastTimeLogin = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    RoleEntitiesId = table.Column<int>(type: "int", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Roles_RoleEntitiesId",
+                        column: x => x.RoleEntitiesId,
+                        principalTable: "Roles",
                         principalColumn: "Id");
                 });
 
@@ -302,7 +379,8 @@ namespace PTS.Persistence.Migrations
                     HardDriveEntityId = table.Column<int>(type: "int", nullable: true),
                     ScreenEntityId = table.Column<int>(type: "int", nullable: true),
                     CardVGAEntityId = table.Column<int>(type: "int", nullable: true),
-                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -361,17 +439,17 @@ namespace PTS.Persistence.Migrations
                     Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     VoucherEntityId = table.Column<int>(type: "int", nullable: true),
                     UserEntityId = table.Column<int>(type: "int", nullable: true),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bill", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Bill_User_UserEntityId",
+                        name: "FK_Bill_Users_UserEntityId",
                         column: x => x.UserEntityId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Bill_Voucher_VoucherEntityId",
@@ -386,42 +464,104 @@ namespace PTS.Persistence.Migrations
                 {
                     UserEntityId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cart", x => x.UserEntityId);
                     table.ForeignKey(
-                        name: "FK_Cart_User_UserEntityId",
+                        name: "FK_Cart_Users_UserEntityId",
                         column: x => x.UserEntityId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Image",
+                name: "UserClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Ma = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LinkImage = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
-                    ProductDetailEntityId = table.Column<int>(type: "int", nullable: true),
-                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Image", x => x.Id);
+                    table.PrimaryKey("PK_UserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Image_ProductDetail_ProductDetailEntityId",
-                        column: x => x.ProductDetailEntityId,
-                        principalTable: "ProductDetail",
-                        principalColumn: "Id");
+                        name: "FK_UserClaims_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_UserLogins_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_UserTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -430,14 +570,14 @@ namespace PTS.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CodeProductDetail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     BillEntityId = table.Column<int>(type: "int", nullable: false),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -456,12 +596,12 @@ namespace PTS.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true),
                     CartEntityId = table.Column<int>(type: "int", nullable: false),
                     ProductDetailEntityId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -487,7 +627,8 @@ namespace PTS.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     ProductDetailEntityId = table.Column<int>(type: "int", nullable: true),
                     BillDetailEntityId = table.Column<int>(type: "int", nullable: true)
@@ -506,6 +647,21 @@ namespace PTS.Persistence.Migrations
                         principalTable: "ProductDetail",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
+                values: new object[] { 1, "1", "Administrator", "Admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "AccessFailedCount", "Address", "AvatarPath", "BirthDay", "ConcurrencyStamp", "CrDateTime", "DefaultActionId", "Email", "EmailConfirmed", "FullName", "IsEnabled", "LastTimeChangePass", "LastTimeLogin", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "Notes", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleEntitiesId", "SecurityStamp", "Status", "TwoFactorEnabled", "UserName" },
+                values: new object[] { 1, 0, null, null, null, "phuongthaoshop.vn", null, null, "admin@phuongthaoshop.vn", false, "Administrator", null, null, null, false, null, "ADMIN@PHUONGTHAOSHOP.VN", "ADMIN", null, "AQAAAAIAAYagAAAAEPA/gfBpBH5iVRDFi9VshMy/CTj9NmO+Eljfpt+WLo1iyqKy5RDiYf9zVOPc89Gwhw==", null, false, null, "phuongthaoshop.vn", 0, false, "admin" });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bill_UserEntityId",
@@ -530,11 +686,6 @@ namespace PTS.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_CartDetail_ProductDetailEntityId",
                 table: "CartDetail",
-                column: "ProductDetailEntityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Image_ProductDetailEntityId",
-                table: "Image",
                 column: "ProductDetailEntityId");
 
             migrationBuilder.CreateIndex(
@@ -583,6 +734,18 @@ namespace PTS.Persistence.Migrations
                 column: "ScreenEntityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RoleClaims_RoleId",
+                table: "RoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "Roles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Serial_BillDetailEntityId",
                 table: "Serial",
                 column: "BillDetailEntityId");
@@ -593,9 +756,36 @@ namespace PTS.Persistence.Migrations
                 column: "ProductDetailEntityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_RoleEntityId",
-                table: "User",
-                column: "RoleEntityId");
+                name: "IX_UserClaims_UserId",
+                table: "UserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLogins_UserId",
+                table: "UserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_RoleId",
+                table: "UserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "Users",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_RoleEntitiesId",
+                table: "Users",
+                column: "RoleEntitiesId");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "Users",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
         }
 
         /// <inheritdoc />
@@ -614,7 +804,25 @@ namespace PTS.Persistence.Migrations
                 name: "ManagePost");
 
             migrationBuilder.DropTable(
+                name: "RoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "SeoEntity");
+
+            migrationBuilder.DropTable(
                 name: "Serial");
+
+            migrationBuilder.DropTable(
+                name: "UserClaims");
+
+            migrationBuilder.DropTable(
+                name: "UserLogins");
+
+            migrationBuilder.DropTable(
+                name: "UserRoles");
+
+            migrationBuilder.DropTable(
+                name: "UserTokens");
 
             migrationBuilder.DropTable(
                 name: "Cart");
@@ -650,7 +858,7 @@ namespace PTS.Persistence.Migrations
                 name: "Screen");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Voucher");
@@ -662,7 +870,7 @@ namespace PTS.Persistence.Migrations
                 name: "ProductType");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "Roles");
         }
     }
 }

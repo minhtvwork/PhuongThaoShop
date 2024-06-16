@@ -1,4 +1,5 @@
-﻿using PTS.Domain.Common;
+﻿using Microsoft.AspNetCore.Identity;
+using PTS.Domain.Common;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
@@ -6,20 +7,19 @@ using System.Data;
 namespace PTS.Domain.Entities
 {
     [Table("User")]
-    public class UserEntity : BaseAuditableEntity
+    public class UserEntity : IdentityUser<int>
 	{
-        [Key]
-		public int Id { get; set; }
-		public string? Username { get; set; }
-        public string? PasswordHash { get; set; }
-        public string? FullName { get; set; }
-        public string? PhoneNumber { get; set; }
-        public string? Address { get; set; }
-        public string? Email { get; set; }
-        public int? RoleEntityId{ get; set; }
-		public int? CrUserId { get; set; }
+		public string? FullName { get; set; }
+		public string? Address { get; set; }
+		public DateTime? BirthDay { get; set; }
+		public int? DefaultActionId { get; set; }
+		public string? Notes { get; set; }
+		public string? AvatarPath { get; set; }
+		public bool? IsEnabled { get; set; }
+		public DateTime? LastTimeChangePass { get; set; }
+		public DateTime? LastTimeLogin { get; set; }
 		public DateTime? CrDateTime { get; set; }
-		public int Status { get; set; }
+		public int? Status {  get; set; }
 		public virtual CartEntity? Cart { get; set; }
         public virtual RoleEntity? RoleEntities { get; set; }
     }

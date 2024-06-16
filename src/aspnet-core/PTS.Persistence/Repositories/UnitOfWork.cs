@@ -6,11 +6,8 @@ using PTS.Host.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PTS.Application.Interfaces.Repositories;
+
 using PTS.Domain.Common;
-using PTS.Persistence.Repositories;
 using System.Collections;
 
 namespace PTS.Persistence.Repository
@@ -59,10 +56,6 @@ namespace PTS.Persistence.Repository
             _roleRepository = roleRepository;
 
         }
-        //public IAllRepository<T> AllRepository<T>() where T : class
-        //{
-        //    return new AllRepository<T>(_dbContext);
-        //}
         
         public Task BeginTransactionAsync()
         {

@@ -14,17 +14,17 @@ namespace PTS.Domain.Common
 
         public async Task DispatchAndClearEvents(IEnumerable<BaseEntity> entitiesWithEvents)
         {
-            foreach (var entity in entitiesWithEvents)
-            {
-                var events = entity.DomainEvents.ToArray();
+            //foreach (var entity in entitiesWithEvents)
+            //{
+            //    var events = entity.DomainEvents.ToArray();
 
-                entity.ClearDomainEvents();
+            //    entity.ClearDomainEvents();
 
-                foreach (var domainEvent in events)
-                {
-                    await _mediator.Publish(domainEvent).ConfigureAwait(false);
-                }
-            }
+            //    foreach (var domainEvent in events)
+            //    {
+            //        await _mediator.Publish(domainEvent).ConfigureAwait(false);
+            //    }
+            //}
         }
     }
 }

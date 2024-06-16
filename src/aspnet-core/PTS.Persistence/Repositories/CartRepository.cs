@@ -71,14 +71,14 @@ namespace PTS.Persistence.Repositories
 
         }
 
-        public async Task<IEnumerable<CartItemDto>> GetCartItem(string username)
+        public async Task<IEnumerable<CartItemDto>> GetCartItem(string UserName)
         {
             try
             {
-                var user = await _context.UserEntity.FirstOrDefaultAsync(x => x.Username == username);// lấy danh sách người dùng trong database
+                var user = await _context.UserEntity.FirstOrDefaultAsync(x => x.UserName == UserName);// lấy danh sách người dùng trong database
                 // Chú ý lấy trước rồi mới tìm để phân biệt được chữ hoa, chữ thường
                 // Nếu tìm trực tiếp sẽ không phân biệt được chữ hoa, chữ thường
-                // Lấy ra ìd người dùng//x => x.UserName == username
+                // Lấy ra ìd người dùng//x => x.UserName == UserName
                 // Dùng CartItemDto để hiển thị kết quả
                 List<CartItemDto> cartItem = new List<CartItemDto>();
                 cartItem = (

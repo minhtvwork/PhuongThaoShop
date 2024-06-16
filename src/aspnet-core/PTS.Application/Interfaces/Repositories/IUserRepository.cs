@@ -9,6 +9,6 @@ namespace PTS.Application.Interfaces.Repositories
         Task<bool> Delete(int Id);
         Task<List<UserEntity>> GetAllUsers();
         Task<UserEntity> GetUserById(int id);
-        Task<UserEntity> GetUserByUsername(string username);
+        Task<UserEntity> GetUserByUserName(string UserName);
     }
 }

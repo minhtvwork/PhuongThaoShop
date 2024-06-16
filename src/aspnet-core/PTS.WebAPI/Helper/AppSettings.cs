@@ -36,7 +36,7 @@ namespace App.Helper
         public static string ApiRootPath = !string.Equals(AppSetting("API_ROOT_PATH"), null, StringComparison.Ordinal) ? AppSetting("API_ROOT_PATH") : "";
         public static string Domain = !string.Equals(AppSetting("Domain"), null, StringComparison.Ordinal) ? AppSetting("Domain") : "";
         public static string EmailHost = !string.Equals(AppSetting("EmailHost"), null, StringComparison.Ordinal) ? AppSetting("EmailHost") : "smtp.gmail.com";
-        public static string EmailUsername = !string.Equals(AppSetting("EmailUsername"), null, StringComparison.Ordinal) ? AppSetting("EmailUsername") : "theuniverse500.company@gmail.com";
+        public static string EmailUserName = !string.Equals(AppSetting("EmailUserName"), null, StringComparison.Ordinal) ? AppSetting("EmailUserName") : "theuniverse500.company@gmail.com";
         public static string EmailPassword = !string.Equals(AppSetting("EmailPassword"), null, StringComparison.Ordinal) ? AppSetting("EmailPassword") : "nlfclqbagoqsqosn";
     }
 }

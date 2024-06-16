@@ -28,13 +28,13 @@ namespace PTS.Persistence.Services
             _userRepository = userRepository;
             _reponse = new ResponseDto();
         }
-        public async Task<ServiceResponse> AddCart(string username, int idProductDetail)
+        public async Task<ServiceResponse> AddCart(string UserName, int idProductDetail)
         {
             try
             {
                 var productDetailToCart = _productDetailRepository.GetById(idProductDetail).Result;
                 var userToCart = await _userRepository.GetAllUsers();
-                var user = userToCart.FirstOrDefault(x => x.Username == username);
+                var user = userToCart.FirstOrDefault(x => x.UserName == UserName);
 
                 if (user == null)
                 {
@@ -95,7 +95,7 @@ namespace PTS.Persistence.Services
                     var newCart = new CartEntity
                     {
                         UserEntityId = getUserId,
-                        Description = $"Giỏ hàng của {username}"
+                        Description = $"Giỏ hàng của {UserName}"
                     };
 
                     if (await _cartRepository.Create(newCart))
@@ -183,9 +183,9 @@ namespace PTS.Persistence.Services
             }
 
         }
-        public async Task<ResponseDto> GetCartByUser(string username)
+        public async Task<ResponseDto> GetCartByUser(string UserName)
         {
-            var cartItem = await _cartRepository.GetCartItem(username);
+            var cartItem = await _cartRepository.GetCartItem(UserName);
             if (cartItem == null)
             {
                 _reponse.Result = null;

@@ -12,8 +12,8 @@ using PTS.Data;
 namespace PTS.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240615152219_InitDb")]
-    partial class InitDb
+    [Migration("20240616022550_ỊnitDb")]
+    partial class ỊnitDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,116 @@ namespace PTS.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 1
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("UserTokens", (string)null);
+                });
 
             modelBuilder.Entity("PTS.Domain.Entities.BillDetailEntity", b =>
                 {
@@ -37,6 +147,7 @@ namespace PTS.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CodeProductDetail")
@@ -45,8 +156,8 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -54,7 +165,7 @@ namespace PTS.Persistence.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -79,6 +190,9 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
+
                     b.Property<decimal?>("Discount")
                         .HasColumnType("decimal(18,2)");
 
@@ -91,9 +205,6 @@ namespace PTS.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsPayment")
                         .HasColumnType("bit");
 
@@ -104,7 +215,7 @@ namespace PTS.Persistence.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<int?>("UserEntityId")
@@ -133,14 +244,14 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Ma")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Ten")
@@ -170,8 +281,8 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProductDetailEntityId")
                         .HasColumnType("int");
@@ -179,7 +290,7 @@ namespace PTS.Persistence.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -199,14 +310,14 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("UserEntityId");
@@ -225,17 +336,19 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Ma")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -257,12 +370,12 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
@@ -270,7 +383,7 @@ namespace PTS.Persistence.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Website")
@@ -292,14 +405,14 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Ma")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Ten")
@@ -322,14 +435,14 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Ma")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("ThongSo")
@@ -352,8 +465,8 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("LinkImage")
                         .HasMaxLength(150)
@@ -365,12 +478,10 @@ namespace PTS.Persistence.Migrations
                     b.Property<int?>("ProductDetailEntityId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductDetailEntityId");
 
                     b.ToTable("Image");
                 });
@@ -389,16 +500,16 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("LinkImage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -417,15 +528,15 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -455,8 +566,11 @@ namespace PTS.Persistence.Migrations
                     b.Property<int?>("CpuEntityId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CrDateTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -533,8 +647,8 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ManufacturerEntityId")
                         .HasColumnType("int");
@@ -547,7 +661,7 @@ namespace PTS.Persistence.Migrations
                     b.Property<int?>("ProductTypeEntityId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -570,15 +684,15 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -597,16 +711,18 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Ma")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("ThongSo")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -623,24 +739,40 @@ namespace PTS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CrDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("RoleCode")
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleName")
+                    b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("Roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ConcurrencyStamp = "1",
+                            Description = "Administrator",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("PTS.Domain.Entities.ScreenEntity", b =>
@@ -658,17 +790,18 @@ namespace PTS.Persistence.Migrations
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("KichCo")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Ma")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("TanSo")
@@ -678,6 +811,57 @@ namespace PTS.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Screen");
+                });
+
+            modelBuilder.Entity("PTS.Domain.Entities.SeoEntity", b =>
+                {
+                    b.Property<int>("SeoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SeoId"));
+
+                    b.Property<string>("CanonicalTag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CrDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("H1Tag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MetaDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MetaKeyword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MetaTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SeoFooter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SeoName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SeoId");
+
+                    b.ToTable("SeoEntity");
                 });
 
             modelBuilder.Entity("PTS.Domain.Entities.SerialEntity", b =>
@@ -691,8 +875,11 @@ namespace PTS.Persistence.Migrations
                     b.Property<int?>("BillDetailEntityId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CrDateTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ProductDetailEntityId")
                         .HasColumnType("int");
@@ -721,20 +908,63 @@ namespace PTS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AvatarPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("BirthDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("DefaultActionId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
 
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool?>("IsEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastTimeChangePass")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastTimeLogin")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -742,20 +972,58 @@ namespace PTS.Persistence.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RoleEntityId")
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("RoleEntitiesId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Username")
+                    b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleEntityId");
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
 
-                    b.ToTable("User");
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("RoleEntitiesId");
+
+                    b.ToTable("Users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "phuongthaoshop.vn",
+                            Email = "admin@phuongthaoshop.vn",
+                            EmailConfirmed = false,
+                            FullName = "Administrator",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@PHUONGTHAOSHOP.VN",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPA/gfBpBH5iVRDFi9VshMy/CTj9NmO+Eljfpt+WLo1iyqKy5RDiYf9zVOPc89Gwhw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "phuongthaoshop.vn",
+                            Status = 0,
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("PTS.Domain.Entities.VoucherEntity", b =>
@@ -766,8 +1034,11 @@ namespace PTS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CrDateTime")
+                    b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("EndDay")
                         .HasColumnType("datetime2");
@@ -796,6 +1067,57 @@ namespace PTS.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Voucher");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+                {
+                    b.HasOne("PTS.Domain.Entities.RoleEntity", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+                {
+                    b.HasOne("PTS.Domain.Entities.UserEntity", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+                {
+                    b.HasOne("PTS.Domain.Entities.UserEntity", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+                {
+                    b.HasOne("PTS.Domain.Entities.RoleEntity", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PTS.Domain.Entities.UserEntity", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+                {
+                    b.HasOne("PTS.Domain.Entities.UserEntity", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PTS.Domain.Entities.BillDetailEntity", b =>
@@ -854,15 +1176,6 @@ namespace PTS.Persistence.Migrations
                     b.Navigation("UserEntity");
                 });
 
-            modelBuilder.Entity("PTS.Domain.Entities.ImageEntity", b =>
-                {
-                    b.HasOne("PTS.Domain.Entities.ProductDetailEntity", "ProductDetailEntity")
-                        .WithMany()
-                        .HasForeignKey("ProductDetailEntityId");
-
-                    b.Navigation("ProductDetailEntity");
-                });
-
             modelBuilder.Entity("PTS.Domain.Entities.ProductDetailEntity", b =>
                 {
                     b.HasOne("PTS.Domain.Entities.CardVGAEntity", "CardVGAEntity")
@@ -870,15 +1183,15 @@ namespace PTS.Persistence.Migrations
                         .HasForeignKey("CardVGAEntityId");
 
                     b.HasOne("PTS.Domain.Entities.ColorEntity", "ColorEntity")
-                        .WithMany("ProductDetailEntities")
+                        .WithMany()
                         .HasForeignKey("ColorEntityId");
 
                     b.HasOne("PTS.Domain.Entities.CpuEntity", "CpuEntity")
-                        .WithMany("ProductDetailEntities")
+                        .WithMany()
                         .HasForeignKey("CpuEntityId");
 
                     b.HasOne("PTS.Domain.Entities.HardDriveEntity", "HardDriveEntity")
-                        .WithMany("ProductDetailEntities")
+                        .WithMany()
                         .HasForeignKey("HardDriveEntityId");
 
                     b.HasOne("PTS.Domain.Entities.ProductEntity", "ProductEntity")
@@ -888,7 +1201,7 @@ namespace PTS.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("PTS.Domain.Entities.RamEntity", "RamEntity")
-                        .WithMany("ProductDetailEntities")
+                        .WithMany()
                         .HasForeignKey("RamEntityId");
 
                     b.HasOne("PTS.Domain.Entities.ScreenEntity", "ScreenEntity")
@@ -913,11 +1226,11 @@ namespace PTS.Persistence.Migrations
             modelBuilder.Entity("PTS.Domain.Entities.ProductEntity", b =>
                 {
                     b.HasOne("PTS.Domain.Entities.ManufacturerEntity", "ManufacturerEntity")
-                        .WithMany("ProductEntities")
+                        .WithMany()
                         .HasForeignKey("ManufacturerEntityId");
 
                     b.HasOne("PTS.Domain.Entities.ProductTypeEntity", "ProductTypeEntity")
-                        .WithMany("ProductEntities")
+                        .WithMany()
                         .HasForeignKey("ProductTypeEntityId");
 
                     b.Navigation("ManufacturerEntity");
@@ -943,8 +1256,8 @@ namespace PTS.Persistence.Migrations
             modelBuilder.Entity("PTS.Domain.Entities.UserEntity", b =>
                 {
                     b.HasOne("PTS.Domain.Entities.RoleEntity", "RoleEntities")
-                        .WithMany("UserEntities")
-                        .HasForeignKey("RoleEntityId");
+                        .WithMany()
+                        .HasForeignKey("RoleEntitiesId");
 
                     b.Navigation("RoleEntities");
                 });
@@ -969,26 +1282,6 @@ namespace PTS.Persistence.Migrations
                     b.Navigation("CartDetailEntities");
                 });
 
-            modelBuilder.Entity("PTS.Domain.Entities.ColorEntity", b =>
-                {
-                    b.Navigation("ProductDetailEntities");
-                });
-
-            modelBuilder.Entity("PTS.Domain.Entities.CpuEntity", b =>
-                {
-                    b.Navigation("ProductDetailEntities");
-                });
-
-            modelBuilder.Entity("PTS.Domain.Entities.HardDriveEntity", b =>
-                {
-                    b.Navigation("ProductDetailEntities");
-                });
-
-            modelBuilder.Entity("PTS.Domain.Entities.ManufacturerEntity", b =>
-                {
-                    b.Navigation("ProductEntities");
-                });
-
             modelBuilder.Entity("PTS.Domain.Entities.ProductDetailEntity", b =>
                 {
                     b.Navigation("CartDetailEntities");
@@ -999,21 +1292,6 @@ namespace PTS.Persistence.Migrations
             modelBuilder.Entity("PTS.Domain.Entities.ProductEntity", b =>
                 {
                     b.Navigation("ProductDetailEntities");
-                });
-
-            modelBuilder.Entity("PTS.Domain.Entities.ProductTypeEntity", b =>
-                {
-                    b.Navigation("ProductEntities");
-                });
-
-            modelBuilder.Entity("PTS.Domain.Entities.RamEntity", b =>
-                {
-                    b.Navigation("ProductDetailEntities");
-                });
-
-            modelBuilder.Entity("PTS.Domain.Entities.RoleEntity", b =>
-                {
-                    b.Navigation("UserEntities");
                 });
 
             modelBuilder.Entity("PTS.Domain.Entities.ScreenEntity", b =>

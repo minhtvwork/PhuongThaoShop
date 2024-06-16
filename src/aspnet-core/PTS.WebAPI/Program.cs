@@ -12,14 +12,40 @@ using System.Text;
 using PTS.Application.Extensions;
 using PTS.Persistence.Extensions;
 using PTS.Application.Features.Cart.Queries;
+using Microsoft.AspNetCore.Identity;
+using PTS.Domain.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
 	option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+//builder.Services.AddIdentity<UserEntity, RoleEntity>()
+//	.AddEntityFrameworkStores<ApplicationDbContext>()
+//	.AddDefaultTokenProviders();
+
+builder.Services.AddIdentityApiEndpoints<UserEntity>().AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.AddAuthentication(options =>
+//{
+//	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//}).AddJwtBearer(options =>
+//{
+//	options.TokenValidationParameters = new TokenValidationParameters
+//	{
+//		ValidateIssuer = true,
+//		ValidateAudience = true,
+//		ValidateLifetime = true,
+//		ValidateIssuerSigningKey = true,
+//		ValidIssuer = builder.Configuration["Jwt:Issuer"],
+//		ValidAudience = builder.Configuration["Jwt:Issuer"],
+//		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+//	};
+//});
+
 //IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddApplicationLayer(builder.Configuration);
 //builder.Services.AddInfrastructureLayer();
@@ -38,27 +64,27 @@ builder.Services.AddSwaggerGen(c =>
 	var filePath = Path.Combine(Directory.GetCurrentDirectory(), "api.phuongthaoshop.vn.xml");
 	c.IncludeXmlComments(filePath);
 });
-builder.Services.AddSwaggerGen(options =>
-{
-	options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-	{
-		In = ParameterLocation.Header,
-		Name = "Authorization",
-		Type = SecuritySchemeType.ApiKey
-	});
+//builder.Services.AddSwaggerGen(options =>
+//{
+//	options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+//	{
+//		In = ParameterLocation.Header,
+//		Name = "Authorization",
+//		Type = SecuritySchemeType.ApiKey
+//	});
 
-	options.OperationFilter<SecurityRequirementsOperationFilter>();
-});
-builder.Services.AddAuthentication().AddJwtBearer(options =>
-{
-	options.TokenValidationParameters = new TokenValidationParameters
-	{
-		ValidateIssuerSigningKey = true,
-		ValidateAudience = false,
-		ValidateIssuer = false,
-		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("PTS KMM BMK 1038 MPTM PTS KMM BMK 1038 MPTM"))
-	};
-});
+//	options.OperationFilter<SecurityRequirementsOperationFilter>();
+//});
+//builder.Services.AddAuthentication().AddJwtBearer(options =>
+//{
+//	options.TokenValidationParameters = new TokenValidationParameters
+//	{
+//		ValidateIssuerSigningKey = true,
+//		ValidateAudience = false,
+//		ValidateIssuer = false,
+//		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("PTS KMM BMK 1038 MPTM PTS KMM BMK 1038 MPTM"))
+//	};
+//});
 
 var app = builder.Build();
 
@@ -69,18 +95,14 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api.phuongthaoshop.vn v1"));
 }
 
+app.MapIdentityApi<UserEntity>();
 app.UseHttpsRedirection();
 
 app.UseCors(t => t.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
-app.UseAuthorization();
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.MapControllers();
-app.UseEndpoints(endpoints =>
-{
-	endpoints.MapControllers();
-});
 app.Run();
 
 // Configure the HTTP request pipeline.
