@@ -24,7 +24,7 @@
 
           <li nz-menu-item><a [routerLink]="'/'">Tin Tức, Khuyến Mại</a></li>
           <li nz-menu-item><a [routerLink]="'/'">Tra Cứu Đơn Hàng</a></li>
-          <li nz-menu-item><a [routerLink]="'/cart'"><nz-badge [nzCount]="1" [nzStyle]="{ backgroundColor: '#52c41a' }">
+          <li nz-menu-item><a [routerLink]="'/cart'"><nz-badge [nzCount]="totalCartItem" [nzStyle]="{ backgroundColor: '#52c41a' }">
             <i nz-icon nzType="shopping-cart" style="font-size: 40px;" nzTheme="outline"></i>
           </nz-badge></a></li>
           <ng-container *ngIf="username; else loginLink">

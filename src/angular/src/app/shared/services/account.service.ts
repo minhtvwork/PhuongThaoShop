@@ -21,7 +21,7 @@ export class AccountService {
       map(response => {
         if (response && response.accessToken) {
           localStorage.setItem('currentUser', JSON.stringify({
-            username: response.username,
+            username: response.userName,
             role: response.roleName,
             accessToken: response.accessToken,
             isAdmin: response.isAdmin

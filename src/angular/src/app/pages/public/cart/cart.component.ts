@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PublicService } from '../../../shared/services/public.service';
 import { AccountService } from 'src/app/shared/services/account.service';
-import { CartItemDto, RequestBillDto, ResponseDto,VoucherDto, } from '../../../shared/models/model';
+import { CartItemDto, RequestBillDto, ResponseDto, VoucherDto, } from '../../../shared/models/model';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-cart',
@@ -20,7 +21,7 @@ export class CartComponent {
   loadVouchers: VoucherDto[] = [];
   constructor(
     private publicService: PublicService, private nzMessageService: NzMessageService, private fb: FormBuilder,
-    private accountService: AccountService) {
+    private accountService: AccountService, private router: Router) {
     this.createBillForm = this.fb.group({
       fullName: ['', [Validators.required]],
       address: ['', [Validators.required]],
@@ -80,7 +81,6 @@ export class CartComponent {
       this.publicService.deleteCartDetai(id).subscribe(response => {
         this.loadCart();
         this.nzMessageService.success('Xóa thành công');
-        console.log('Phản hồi từ server:', response);
       }, error => {
         this.nzMessageService.info('Xóa thất bại');
       });
@@ -133,18 +133,31 @@ export class CartComponent {
   }
 
   createBill(): void {
-    if (this.createBillForm.valid) {
-      this.request.fullName = this.createBillForm.get('fullName')?.value;
-      this.publicService.createBill(this.createBillForm.value).subscribe(
-        (response: ResponseDto) => {
+    console.log(this.cartItems)
+    if (this.cartItems.length > 0 && this.cartItems != null) {
+      if (this.createBillForm.valid) {
+        this.request.fullName = this.createBillForm.get('fullName')?.value;
+        this.publicService.createBill(this.createBillForm.value).subscribe(
+          (response: ResponseDto) => {
 
-        },
-        (error) => {
+          },
+          (error) => {
 
-        }
-      );
-    } else {
-      this.nzMessageService.error('Vui lòng điền đầy đủ thông tin!');
+          }
+        );
+      } else {
+        this.nzMessageService.error('Vui lòng điền đầy đủ thông tin!');
+      }
     }
+    else {
+      this.nzMessageService.error('Bạn hãy thêm sản phẩm vào giỏ hàng trước khi đặt hàng');
+    }
+
+  }
+
+  refreshNavbar() {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/cart']); // Thay đổi với route hiện tại của bạn
+    });
   }
 }

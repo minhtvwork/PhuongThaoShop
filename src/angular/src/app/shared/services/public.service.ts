@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { ResponseDto, ProductDetailDto, CartItemDto, ServiceResponse, RequestBillDto } from '../models/model';
 import { AccountService } from 'src/app/shared/services/account.service';
@@ -11,7 +11,22 @@ export class PublicService {
   private apiUrl = AppConstants.API_URL;
 
   constructor(private http: HttpClient, private accountService: AccountService) { }
+  // getListProducts(page: number, pageSize: number, filters: any): Observable<any> {
+  //   const body = {
+  //     page: page,
+  //     pageSize: pageSize,
+  //     filters
+  //   };
 
+  //   return this.http.post<any>(this.apiUrl+'Public/GetListProduct', body);
+  // }
+  getListProducts(page: number, pageSize: number, keywords: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}Public/GetListProduct`, {
+      page,
+      pageSize,
+      keywords
+    });
+  }
   getProducts(): Observable<ProductDetailDto[]> {
     const params = {
 
@@ -68,7 +83,7 @@ export class PublicService {
     return this.http.post<ServiceResponse>(`${this.apiUrl}Cart/UpdateQuantity`, params);
   }
   getListVouchers(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}Voucher/PGetAll`);
+    return this.http.get<any>(`${this.apiUrl}Public/GetListVoucher`);
   }
   createBill(request: RequestBillDto): Observable<ResponseDto> {
     request.username = this.accountService.getUsername();

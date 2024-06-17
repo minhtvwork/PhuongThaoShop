@@ -44,6 +44,7 @@ export interface ProductDetailDto {
   thongSoCardVGA?: string;
   linkImage?: string;
   otherImages?: string[];
+  phanTramGiamGia: number;
 }
 export interface ResponseDto {
   result: any;
