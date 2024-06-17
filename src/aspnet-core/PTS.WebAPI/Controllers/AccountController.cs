@@ -10,6 +10,7 @@ using PTS.Domain.Entities;
 using PTS.Application.Interfaces.Repositories;
 using PTS.Core.Services;
 using PTS.Application.Features.Account.Commands;
+using PTS.Application.Features.Account.Queries;
 
 namespace PTS.WebAPI.Controllers
 {
@@ -17,16 +18,16 @@ namespace PTS.WebAPI.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-        private readonly IAccountService _accountService;
-        private readonly IUserRepository _userRepository;
+		private readonly UserManager<UserEntity> _userManager;
+		private readonly SignInManager<UserEntity> _signInManager;
+		private readonly IConfiguration _configuration;
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
-        public AccountController(IConfiguration configuration, IAccountService accountService, IUserRepository userRepository, IMediator mediator, IMapper mapper)
+        public AccountController(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager,IConfiguration configuration, IMediator mediator, IMapper mapper)
         {
-            _configuration = configuration;
-           _accountService = accountService;
-            _userRepository = userRepository;
+			_userManager = userManager;
+			_signInManager = signInManager;
+			_configuration = configuration;
             _mediator = mediator;
             _mapper = mapper;
         }
@@ -36,18 +37,19 @@ namespace PTS.WebAPI.Controllers
         {
             return Ok(await _mediator.Send(query));
         }
-        [AllowAnonymous]
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login(UserLoginDto obj)
-        {
-            var result = await _accountService.Login(obj.UserName, obj.Password);
-            if (result.IsSuccess)
-            {
-              return Ok(result);
-            }
-            return BadRequest(result);
-        }
-        [AllowAnonymous]
+		[AllowAnonymous]
+		[HttpPost("Login")]
+		public async Task<IActionResult> Login(LoginQuery query)
+		{
+			return Ok(await _mediator.Send(query));
+		}
+		[HttpPost("Logout")]
+		public async Task<IActionResult> Logout()
+		{
+			await _signInManager.SignOutAsync();
+			return Ok(new { message = "Đã đăng xuất thành công" });
+		}
+		[AllowAnonymous]
         [HttpGet("GetMyInfor")]
         public async Task<IActionResult> GetMyInfor()
         {

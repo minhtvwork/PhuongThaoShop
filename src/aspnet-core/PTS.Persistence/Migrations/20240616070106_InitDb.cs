@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace PTS.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class ỊnitDb : Migration
+    public partial class InitDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -328,7 +330,7 @@ namespace PTS.Persistence.Migrations
                     LastTimeChangePass = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastTimeLogin = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: true),
                     RoleEntitiesId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -651,12 +653,17 @@ namespace PTS.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
-                values: new object[] { 1, "1", "Administrator", "Admin", "ADMIN" });
+                values: new object[,]
+                {
+                    { 1, "1", "Administrator", "Admin", "ADMIN" },
+                    { 2, "1", "Employee", "Employee", "EMPLOYEE" },
+                    { 3, "1", "Customer", "Customer", "CUSTOMER" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "AvatarPath", "BirthDay", "ConcurrencyStamp", "CrDateTime", "DefaultActionId", "Email", "EmailConfirmed", "FullName", "IsEnabled", "LastTimeChangePass", "LastTimeLogin", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "Notes", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleEntitiesId", "SecurityStamp", "Status", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, null, null, null, "phuongthaoshop.vn", null, null, "admin@phuongthaoshop.vn", false, "Administrator", null, null, null, false, null, "ADMIN@PHUONGTHAOSHOP.VN", "ADMIN", null, "AQAAAAIAAYagAAAAEPA/gfBpBH5iVRDFi9VshMy/CTj9NmO+Eljfpt+WLo1iyqKy5RDiYf9zVOPc89Gwhw==", null, false, null, "phuongthaoshop.vn", 0, false, "admin" });
+                values: new object[] { 1, 0, null, null, null, "phuongthaoshop.vn", null, null, "admin@phuongthaoshop.vn", false, "Administrator", null, null, null, false, null, "ADMIN@PHUONGTHAOSHOP.VN", "ADMIN", null, "AQAAAAIAAYagAAAAEOMsjFecv9A9qyXLxhMZRqKjQ7z3bDfsqQZ5itJYNDr7qLjTcp+8SCQZXdB4t3wOJA==", null, false, null, "phuongthaoshop.vn", null, false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",

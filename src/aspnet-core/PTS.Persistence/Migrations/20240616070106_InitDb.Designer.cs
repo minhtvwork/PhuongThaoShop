@@ -12,8 +12,8 @@ using PTS.Data;
 namespace PTS.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240616022550_ỊnitDb")]
-    partial class ỊnitDb
+    [Migration("20240616070106_InitDb")]
+    partial class InitDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -772,6 +772,22 @@ namespace PTS.Persistence.Migrations
                             Description = "Administrator",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ConcurrencyStamp = "1",
+                            Description = "Employee",
+                            Name = "Employee",
+                            NormalizedName = "EMPLOYEE"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ConcurrencyStamp = "1",
+                            Description = "Customer",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
                         });
                 });
 
@@ -981,7 +997,7 @@ namespace PTS.Persistence.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -1017,10 +1033,9 @@ namespace PTS.Persistence.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@PHUONGTHAOSHOP.VN",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPA/gfBpBH5iVRDFi9VshMy/CTj9NmO+Eljfpt+WLo1iyqKy5RDiYf9zVOPc89Gwhw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOMsjFecv9A9qyXLxhMZRqKjQ7z3bDfsqQZ5itJYNDr7qLjTcp+8SCQZXdB4t3wOJA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "phuongthaoshop.vn",
-                            Status = 0,
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

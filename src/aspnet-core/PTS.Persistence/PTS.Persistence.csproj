@@ -22,4 +22,7 @@
 	  <ProjectReference Include="..\PTS.Domain\PTS.Domain.csproj" />
 	  <ProjectReference Include="..\PTS.Shared\PTS.Shared.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Configurations\" />
+	</ItemGroup>
 </Project>

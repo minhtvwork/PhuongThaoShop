@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
 using PTS.Application.Interfaces.Repositories;
@@ -10,63 +11,74 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace PTS.Persistence.Services
 {
-    public class AccountService : IAccountService
-    {
-        private readonly IUserRepository _userRepository;
-        public AccountService(IUserRepository userRepository)
-        {
-            _userRepository = userRepository;
-        }
-        public async Task<LoginResponse> Login(string UserName, string password)
-        {
-            try
-            {
-                var user = await _userRepository.GetUserByUserName(UserName);
-                if (user.UserName != UserName)
-                {
-                    return new LoginResponse(false,null,null,null,null,null,null, false,null);
-                }
+	public class AccountService : IAccountService
+	{
+		private readonly UserManager<UserEntity> _userManager;
+		private readonly SignInManager<UserEntity> _signInManager;
+		private readonly IConfiguration _configuration;
 
-                if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
-                {
-                    return new LoginResponse(false, null, null, null, null, null, null, false, null);
-                }
+		public AccountService(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, IConfiguration configuration)
+		{
+			_userManager = userManager;
+			_signInManager = signInManager;
+			_configuration = configuration;
+		}
 
-                string token = CreateToken(user);
-                if (user.RoleEntities.Name == "admin")
-                {
-                    return new LoginResponse(true, user.UserName, user.FullName, user.PhoneNumber, user.Address, user.Email, user.RoleEntities.Name, true, token);
-                }
-                return new LoginResponse(true, user.UserName, user.FullName, user.PhoneNumber, user.Address, user.Email, user.RoleEntities.Name, false, token);
-            }
-            catch (Exception)
-            {
-                return new LoginResponse(false, null, null, null, null, null, null, false, null);
-            }
-        }
-        private string CreateToken(UserEntity user)
-        {
-            List<Claim> claims = new List<Claim> {
-                new Claim(ClaimTypes.Name, user.FullName),
-              //  new Claim(ClaimTypes.Role, user.RoleEntities.Name),
-            };
+		public async Task<LoginResponse> Login(string userName, string password)
+		{
+			var user = await _userManager.FindByNameAsync(userName);
+			if (user == null)
+			{
+				return new LoginResponse(false, null, null, null, null, null, null, false, null);
+			}
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("PTS KMM BMK 1038 MPTM PTS KMM BMK 1038 MPTM"));
+			var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
+			if (!result.Succeeded)
+			{
+				return new LoginResponse(false, null, null, null, null, null, null, false, null);
+			}
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+			string token = GenerateJwtToken(user);
+			IList<string> roles = new List<string>();
+			bool isAdmin = false;
 
-            var token = new JwtSecurityToken(
-                    claims: claims,
-                    expires: DateTime.Now.AddDays(1),
-                    signingCredentials: creds
-                );
+			try
+			{
+				roles = await _userManager.GetRolesAsync(user);
+				isAdmin = roles.Contains("admin");
+			}
+			catch (Exception ex)
+			{
+				//_logger.LogError(ex, "An error occurred while getting roles for user {UserName}", userName);
+				return new LoginResponse(true, user.UserName, user.FullName, user.PhoneNumber, user.Address, user.Email, null, false, token);
+			}
+			return new LoginResponse(true, user.UserName, user.FullName, user.PhoneNumber, user.Address, user.Email, roles.FirstOrDefault(), isAdmin, token);
+		}
 
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+		private string GenerateJwtToken(UserEntity user)
+		{
+			var claims = new List<Claim>
+			{
+				new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+			//	new Claim(ClaimTypes.NameIdentifier, user.Id)
+			};
 
-            return jwt;
-        }
-    }
+			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+			var token = new JwtSecurityToken(
+				issuer: _configuration["Jwt:Issuer"],
+				audience: _configuration["Jwt:Issuer"],
+				claims: claims,
+				expires: DateTime.Now.AddDays(30),
+				signingCredentials: creds);
+
+			return new JwtSecurityTokenHandler().WriteToken(token);
+		}
+	}
 }

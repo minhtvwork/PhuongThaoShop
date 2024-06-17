@@ -1,10 +1,12 @@
 ﻿
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PTS.Application.Interfaces.Repositories;
 using PTS.Core.Services;
 using PTS.Data;
+using PTS.Domain.Entities;
 using PTS.Persistence.Repositories;
 using PTS.Persistence.Repository;
 using PTS.Persistence.Services;
@@ -15,27 +17,10 @@ namespace PTS.Persistence.Extensions
 	{
 		public static void AddPersistenceLayer(this IServiceCollection services, IConfiguration configuration)
 		{
-        //    services.AddIdentityDbContext(configuration);
-			services.AddPhapDienDocItemsDbContext(configuration);
+			services.AddAppDbContext(configuration);
 		}
-        //public static void AddIdentityDbContext(this IServiceCollection services, IConfiguration configuration)
-        //{
-        //    var connectionString = configuration.GetConnectionString("IdentityConnection");
 
-        //    services.AddDbContext<ICIdentityDbContext>(options =>
-        //       options.UseSqlServer(connectionString,
-        //           builder => builder.MigrationsAssembly("IC.WebCMS")));
-
-        //    services
-        //        .AddTransient<IIdentityUnitOfWork, IdentityUnitOfWork>()
-        //        .AddTransient<IUserRepo, UserRepo>()
-        //        .AddTransient<IRoleRepo, RoleRepo>()
-        //        .AddTransient<IUserRoleRepo, UserRoleRepo>()
-        //        .AddTransient<ISysFunctionRepo, SysFunctionRepo>()
-        //        .AddTransient<IFieldRepo, FieldRepo>();
-        //}
-
-		public static void AddPhapDienDocItemsDbContext(this IServiceCollection services, IConfiguration configuration)
+		public static void AddAppDbContext(this IServiceCollection services, IConfiguration configuration)
 		{
 			var connectionString = configuration.GetConnectionString("DefaultConnection");
 
@@ -43,9 +28,21 @@ namespace PTS.Persistence.Extensions
 			   options.UseSqlServer(connectionString,
 				   builder =>
 				   {
-					   builder.MigrationsAssembly("PTS.WebAPI");
+					   builder.MigrationsAssembly("PTS.Persistence");
 				   }));
-			//services.AddTransient<IAllRepository<CpuEntity>, AllRepository<CpuEntity>>();
+			services.AddIdentity<UserEntity, RoleEntity>(options =>
+			{
+				options.Password.RequireDigit = true;
+				options.Password.RequireLowercase = true;
+				options.Password.RequireNonAlphanumeric = true;
+				options.Password.RequireUppercase = true;
+				options.Password.RequiredLength = 6;
+				options.User.RequireUniqueEmail = true;
+			})
+	.AddEntityFrameworkStores<ApplicationDbContext>()
+	.AddDefaultTokenProviders();
+		//	services.AddIdentityApiEndpoints<UserEntity>().AddEntityFrameworkStores<ApplicationDbContext>();
+		
 			services.AddTransient<IRamRepository, RamRepository>();
 			services.AddTransient<ICpuRepository, CpuRepository>();
 			services.AddTransient<IVoucherRepository, VoucherRepository>();
