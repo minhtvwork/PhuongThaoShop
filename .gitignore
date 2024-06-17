@@ -45,3 +45,10 @@
 /src/aspnet-core/PTS.Persistence/obj
 /src/aspnet-core/PTS.WebAPI/obj/Debug/net8.0
 /src/aspnet-core/PTS.WebAPI/obj
+/src/aspnet-core/PTS.Shared/obj/Debug/net8.0/PTS.Shared.csproj.FileListAbsolute.txt
+/src/aspnet-core/PTS.Shared/obj/Debug/net8.0/PTS.Shared.csproj.AssemblyReference.cache
+/src/aspnet-core/PTS.Shared/obj/Debug/net8.0/PTS.Shared.GeneratedMSBuildEditorConfig.editorconfig
+/src/aspnet-core/PTS.Shared/obj/PTS.Shared.csproj.nuget.dgspec.json
+/src/aspnet-core/PTS.Shared/obj/Debug/net8.0/PTS.Shared.assets.cache
+/src/aspnet-core/PTS.Shared/obj/PTS.Shared.csproj.nuget.g.props
+/src/aspnet-core/PTS.Shared/obj/project.assets.json
