@@ -36,16 +36,16 @@ namespace PTS.WebAPI.Controllers
             _mapper = mapper;
             _billRepository = billRepository;
         }
-        [HttpPost("CreateBill")]
-        public async Task<IActionResult> CreateBill(CreateOrUpdateBillQuery request)
-        {
-            return Ok(await _mediator.Send(request));
-        }
-        [HttpPost("PGetBill")]
-        public async Task<IActionResult> PGetBill(CreateOrUpdateBillQuery request)
-        {
-            return Ok(await _mediator.Send(request));
-        }
+        //[HttpPost("CreateBill")]
+        //public async Task<IActionResult> CreateBill(CreateOrUpdateBillQuery request)
+        //{
+        //    return Ok(await _mediator.Send(request));
+        //}
+        //[HttpPost("PGetBill")]
+        //public async Task<IActionResult> PGetBill(CreateOrUpdateBillQuery request)
+        //{
+        //    return Ok(await _mediator.Send(request));
+        //}
         [HttpPost("GetListBill")]
         public async Task<IActionResult> GetListBill()
         {

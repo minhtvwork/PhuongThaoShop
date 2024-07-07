@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using PTS.Application.Common.Mappings;
 using PTS.Application.Interfaces.Repositories;
 using PTS.Domain.Entities;
@@ -7,6 +8,7 @@ using PTS.Shared;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace PTS.Application.Features.Voucher.Commands
 {
@@ -38,12 +40,23 @@ namespace PTS.Application.Features.Voucher.Commands
 			try
 			{
 				var entity = await _unitOfWork.Repository<VoucherEntity>().GetByIdAsync(command.Id);
-				if (entity == null)
-				{
-					return await Result<int>.FailureAsync($"Id <b>{command.Id}</b> không tồn tại ");
-				}
+                if (entity == null)
+                {
+                    return await Result<int>.FailureAsync($"Id <b>{command.Id}</b> không tồn tại ");
+                }
+                if (command.MaVoucher != entity.MaVoucher)
+                {
+                    var existing = await _unitOfWork.Repository<VoucherEntity>().Entities.AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.MaVoucher == command.MaVoucher, cancellationToken);
+                    if (existing != null)
+                    {
+                        return await Result<int>.FailureAsync("Mã đã tồn tại. Vui lòng chọn tên khác.");
+                    }
+                }
+               
 				entity = _mapper.Map<VoucherEntity>(command);
 				await _unitOfWork.Repository<VoucherEntity>().UpdateFieldsAsync(entity,
+					x => x.MaVoucher,
 					x => x.TenVoucher,
 					x => x.StartDay,
 					x => x.EndDay,

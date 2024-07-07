@@ -8,6 +8,7 @@ using PTS.Shared;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace PTS.Application.Features.Voucher.Commands
 {
@@ -37,9 +38,12 @@ namespace PTS.Application.Features.Voucher.Commands
         {
             try
             {
-				bool isAny =await _unitOfWork.Repository<VoucherEntity>().Entities.AnyAsync(a=> a.MaVoucher == command.MaVoucher);
-				if(!isAny)
-				{
+                var existing = await _unitOfWork.Repository<VoucherEntity>().Entities.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.MaVoucher == command.MaVoucher, cancellationToken);
+                if (existing != null)
+                {
+                    return await Result<int>.FailureAsync("Mã đã tồn tại. Vui lòng chọn tên khác.");
+                }
                 var entity = _mapper.Map<VoucherEntity>(command);
                 entity.CrDateTime = DateTime.Now;
                 await _unitOfWork.Repository<VoucherEntity>().AddAsync(entity); 
@@ -47,12 +51,6 @@ namespace PTS.Application.Features.Voucher.Commands
                 return result > 0
                     ? await Result<int>.SuccessAsync(entity.Id, "Thêm dữ liệu thành công.")
                     : await Result<int>.FailureAsync("Thêm dữ liệu không thành công.");
-				}
-				else
-				{
-					return await Result<int>.FailureAsync($"Thêm dữ liệu không thành công: Mã đã tồn tại");
-				}
-			
             }
             catch (Exception ex)
             {

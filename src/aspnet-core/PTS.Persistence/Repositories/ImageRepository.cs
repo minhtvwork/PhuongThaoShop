@@ -15,11 +15,11 @@ namespace PTS.Persistence.Repositories
         }
         public async Task<bool> Create(ImageEntity obj)
         {
-            var checkMa = await _context.ImageEntity.AnyAsync(x => x.Ma == obj.Ma);// tìm mã, trả về true nếu đã có, false nếu chưa có
-            if (obj == null || checkMa == true)
-            {
-                return false;
-            }
+            //var checkMa = await _context.ImageEntity.AnyAsync(x => x.Ma == obj.Ma);// tìm mã, trả về true nếu đã có, false nếu chưa có
+            //if (obj == null || checkMa == true)
+            //{
+            //    return false;
+            //}
             try
             {
                 await _context.ImageEntity.AddAsync(obj);
@@ -70,7 +70,7 @@ namespace PTS.Persistence.Repositories
 
               
                 img.Status = obj.Status;
-                img.LinkImage = obj.LinkImage;
+              //  img.LinkImage = obj.LinkImage;
                 _context.ImageEntity.Update(img);
                 await _context.SaveChangesAsync();
                 return true;

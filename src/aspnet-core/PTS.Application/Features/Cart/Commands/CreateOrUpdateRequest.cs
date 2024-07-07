@@ -10,6 +10,7 @@ namespace PTS.Application.Features.Cart.Commands
     {
         public string? UserName { get; set; }
         public int IdProductDetail { get; set; }
+        public int Quantity { get; set; }   
     }
     public class CreateOrUpdateCartHandler : IRequestHandler<CreateOrUpdateCartQuery, ServiceResponse>
     {
@@ -22,11 +23,11 @@ namespace PTS.Application.Features.Cart.Commands
         {
             if (request.UserName != null)
             {
-                return await _service.AddCart(request.UserName, request.IdProductDetail);
+                return await _service.AddCart(request.UserName, request.IdProductDetail,request.Quantity);
             }
             else
             {
-                return await _service.AddCart(request.UserName, request.IdProductDetail);
+                return await _service.AddCart(request.UserName, request.IdProductDetail,request.Quantity);
             }
 
 

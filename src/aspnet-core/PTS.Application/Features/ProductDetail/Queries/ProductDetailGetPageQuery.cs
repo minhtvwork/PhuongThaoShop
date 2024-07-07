@@ -4,7 +4,6 @@ using PTS.Application.DTOs;
 using PTS.Application.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using PTS.Application.Features.ProductDetail.Queries;
 using PTS.Application.Interfaces.Repositories;
 using PTS.Domain.Entities;
 using PTS.Shared;
@@ -14,6 +13,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PTS.Application.Features.ProductDetail.DTOs;
 
 namespace PTS.Application.Features.PhapDienDocs.Fields.Queries
 {

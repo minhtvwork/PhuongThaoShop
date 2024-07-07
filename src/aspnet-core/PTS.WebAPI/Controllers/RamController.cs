@@ -6,7 +6,7 @@ using PTS.Application.Dto;
 using PTS.Domain.Entities;
 using PTS.Application.Interfaces.Repositories;
 using PTS.WebAPI.Controllers;
-using PTS.Host.Model.Base;
+using PTS.Domain.Model.Base;
 
 namespace PTS.WebAPI
 {

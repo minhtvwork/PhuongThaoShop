@@ -37,12 +37,13 @@ namespace PTS.Data
         public virtual DbSet<RoleEntity> RoleEntity { get; set; }
         public virtual DbSet<UserEntity> UserEntity { get; set; }
         public virtual DbSet<VoucherEntity> VoucherEntity { get; set; }
-		public virtual DbSet<SeoEntity> SeoEntity { get; set; }
 		public virtual DbSet<ManagePostEntity> ManagePostEntity { get; set; }
         public virtual DbSet<ContactEntity> ContactEntity { get; set; }
+        public virtual DbSet<DiscountEntity> DiscountEntityy { get; set; }
+        public virtual DbSet<ProductDetailImage> ProductDetailImage { get; set; }
 
-	
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 			foreach (var entityType in modelBuilder.Model.GetEntityTypes())
@@ -83,7 +84,7 @@ namespace PTS.Data
 			UserEntity user = new UserEntity()
 			{
 				Id = 1,
-				UserName = "admin",
+				UserName = "adminphuongthao",
 				Email = "admin@phuongthaoshop.vn",
 				FullName = "Administrator",
 				NormalizedUserName = "ADMIN",
@@ -93,7 +94,7 @@ namespace PTS.Data
 			};
 
 			PasswordHasher<UserEntity> passwordHasher = new PasswordHasher<UserEntity>();
-			user.PasswordHash = passwordHasher.HashPassword(user, "Admin*123");
+			user.PasswordHash = passwordHasher.HashPassword(user, "adminphuongthao");
 
 			builder.Entity<UserEntity>().HasData(user);
 		}

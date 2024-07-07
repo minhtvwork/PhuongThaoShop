@@ -18,6 +18,6 @@ namespace PTS.Domain.Entities
 		public DateTime? CrDateTime { get; set; }
 		public int Status { get; set; }
 		public virtual BillEntity? BillEntity { get; set; }
-        public ICollection<SerialEntity>? SerialEntities { get; set; }
+        public virtual SerialEntity? SerialEntity { get; set; }
     }
 }

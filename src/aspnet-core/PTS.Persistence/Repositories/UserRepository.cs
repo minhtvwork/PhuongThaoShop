@@ -95,7 +95,7 @@ namespace PTS.Persistence.Repositories
         } 
         public async Task<UserEntity> GetUserByUserName(string UserName)
         {
-            return await _context.UserEntity.Where(x => x.Status > 0).Include(u => u.RoleEntities).FirstOrDefaultAsync(x => x.UserName == UserName);
+            return await _context.UserEntity.Where(x => x.Status > 0).FirstOrDefaultAsync(x => x.UserName == UserName);
         }
 
     }

@@ -2,33 +2,24 @@
 
 namespace PTS.Core.Enums
 {
-	public enum BillStatusEnum
+	public enum PaymentEnum
 	{
-		[Display(Name = "Đã xóa")]
-		Delete = 1,
+        [Display(Name = "Thanh toán tiền mặt khi nhận hàng")]
+        CashOnDelivery = 1,
 
-		[Display(Name = "Hoạt động")]
-		Active = 2,
+        [Display(Name = "Chuyển khoản ngân hàng")]
+        BankTransfer = 2,
 
-        [Display(Name = "Đang chờ xử lý")]
-        Pending = 3,  
-        
-        [Display(Name = "Chưa thanh toán")]
-        Unpaid = 4,     
-        
-        [Display(Name = "Đã thanh toán")]
-        Paid = 5,   
+        [Display(Name = "Thẻ tín dụng/thẻ ghi nợ")]
+        CreditDebitCard = 3,
 
-        [Display(Name = "Đang giao hàng")]
-        Shipping = 6,    
-        
-        [Display(Name = "Bị hủy")]
-        Cancelled = 7,  
-        
-        [Display(Name = "Quá hạn")]
-        Overdue = 8,   
-        
-        [Display(Name = "Hoàn thành")]
-        Completed = 9,    
+        [Display(Name = "Ví điện tử")]
+        EWallet = 4,
+
+        [Display(Name = "Thanh toán qua PayPal")]
+        PayPal = 5,
+
+        [Display(Name = "Trả góp")]
+        Installment = 6,
     }
 }

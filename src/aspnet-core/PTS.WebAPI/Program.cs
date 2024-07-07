@@ -15,6 +15,8 @@ using PTS.Application.Features.Cart.Queries;
 using Microsoft.AspNetCore.Identity;
 using PTS.Domain.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text.Json.Serialization;
+using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication(options =>
@@ -42,6 +44,11 @@ builder.Services.AddPersistenceLayer(builder.Configuration);
 //builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+//builder.Services.AddControllers().AddJsonOptions(options =>
+//{
+//    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+//}); ;
 #region Đăng ký MediatR
 //builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(PagingListVoucherRequestHandler).Assembly));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetCartByUserHandler).Assembly));

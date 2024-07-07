@@ -5,6 +5,7 @@ using PTS.Shared.Dto;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
 using PTS.Application.Interfaces.Repositories;
+using OfficeOpenXml;
 
 namespace PTS.WebAPI.Controllers
 {
@@ -33,6 +34,51 @@ namespace PTS.WebAPI.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             return Ok(await _unitOfWork._serialRepository.GetById(id));
+        }
+        [HttpPost]
+        [Route("upload")]
+        public async Task<IActionResult> Upload(IFormFile file)
+        {
+            List<SerialEntity> list = new List<SerialEntity>();
+            if (file == null || file.Length == 0)
+                return BadRequest("Tệp không hợp lệ");
+            try
+            {
+             using (var stream = new MemoryStream())
+            {
+                await file.CopyToAsync(stream);
+                using (var package = new ExcelPackage(stream))
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                    int rowCount = worksheet.Dimension.Rows;
+                    int colCount = worksheet.Dimension.Columns;
+
+                    for (int row = 2; row < rowCount; row++)
+                    {
+                            var serialNumberCell = worksheet.Cells[row, 1].Value;
+                            if (serialNumberCell == null)
+                            {
+                                continue; 
+                            }
+
+                            var serial = new SerialEntity
+                            {
+                                SerialNumber = serialNumberCell.ToString().Trim(),
+                                Status = 1
+                                // ProductDetailEntityId = 1
+                            };
+                            list.Add(serial);
+                    }
+                        await _unitOfWork._serialRepository.CreateMany(list);
+                }
+            }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return Ok("Tệp đã được tải lên và xử lý thành công");
         }
         [HttpPost("CreateOrUpdateAsync")]
         public async Task<IActionResult> CreateOrUpdateAsync(SerialDto objDto)

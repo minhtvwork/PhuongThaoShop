@@ -80,13 +80,13 @@ namespace PTS.Persistence.Repositories
             };
         }
 
-        public async Task<BillDto> GetBillByInvoiceCode(string invoiceCode)
+        public async Task<PBillDto> GetBillByInvoiceCode(string invoiceCode)
         {
             var query = from bill in _context.BillEntity
                         where bill.InvoiceCode == invoiceCode
                         join v in _context.VoucherEntity on bill.VoucherEntityId equals v.Id into voucherGroup
                         from voucher in voucherGroup.DefaultIfEmpty()
-                        select new BillDto
+                        select new PBillDto
                         {
                             InvoiceCode = bill.InvoiceCode,
                             PhoneNumber = bill.PhoneNumber,

@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using PTS.Application.Features.Voucher.DTOs;
 using PTS.Application.Interfaces.Repositories;
 using PTS.Core.Enums;
 using PTS.Domain.Entities;
@@ -9,7 +10,7 @@ using PTS.Shared;
 
 namespace PTS.Application.Features.Voucher.Queries
 {
-	public record VoucherGetByIdQuery : IRequest<Result<VoucherDto>>
+    public record VoucherGetByIdQuery : IRequest<Result<VoucherDto>>
 	{
 		public int Id { get; set; }
 	}

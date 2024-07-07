@@ -2,6 +2,7 @@
 using PTS.Core.Services;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace PTS.Persistence.Services
 {
@@ -13,6 +14,7 @@ namespace PTS.Persistence.Services
         private readonly IUserRepository _userRepository;
         private readonly ResponseDto _reponse;
         private static int getUserId;  // Tạo 1 biết static phạm vi private dùng trong controller
+        private readonly UserManager<UserEntity> _userManager;
         /*
           Các trạng thái của cart detail
          1: Trạng thái mặc định khi thêm sản phẩm vào giỏ hàng
@@ -20,21 +22,23 @@ namespace PTS.Persistence.Services
          0: Trạng thái ẩn sản phẩm trong giỏ hàng
          */
         public CartService(ICartRepository cartRepository, ICartDetailRepository cartDetailRepository,
-            IProductDetailRepository productDetailRepository, IUserRepository userRepository)
+            IProductDetailRepository productDetailRepository, IUserRepository userRepository,
+            UserManager<UserEntity> userManager
+            )
         {
             _cartRepository = cartRepository;
             _cartDetailRepository = cartDetailRepository;
             _productDetailRepository = productDetailRepository;
             _userRepository = userRepository;
             _reponse = new ResponseDto();
+            _userManager = userManager;
         }
-        public async Task<ServiceResponse> AddCart(string UserName, int idProductDetail)
+        public async Task<ServiceResponse> AddCart(string UserName, int idProductDetail, int quantity)
         {
             try
             {
                 var productDetailToCart = _productDetailRepository.GetById(idProductDetail).Result;
-                var userToCart = await _userRepository.GetAllUsers();
-                var user = userToCart.FirstOrDefault(x => x.UserName == UserName);
+                var user = await _userManager.FindByNameAsync(UserName);
 
                 if (user == null)
                 {
@@ -62,7 +66,7 @@ namespace PTS.Persistence.Services
 
                     if (cartDetail != null)
                     {
-                        cartDetail.Quantity += 1;
+                        cartDetail.Quantity += quantity;
 
                         if (await _cartDetailRepository.UpdateQuantity(cartDetail))
                         {
@@ -78,7 +82,7 @@ namespace PTS.Persistence.Services
                             Id = 0,
                             ProductDetailEntityId = productDetailToCart.Id,
                             CartEntityId = getUserId,
-                            Quantity = 1,
+                            Quantity = quantity,
                             Status = 1
                         };
 
@@ -105,7 +109,7 @@ namespace PTS.Persistence.Services
                             Id = 0,
                             ProductDetailEntityId = productDetailToCart.Id,
                             CartEntityId = getUserId,
-                            Quantity = 1,
+                            Quantity = quantity,
                             Status = 1
                         };
 

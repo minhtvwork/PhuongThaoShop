@@ -12,7 +12,7 @@ namespace PTS.Application.Interfaces.Repositories
         Task<IEnumerable<BillEntity>> GetAll();
         Task<PagedResult<BillEntity>> GetPage(GetPageBillDto request);
         Task<IEnumerable<BillDetailDto>> GetBillDetailByInvoiceCode(string invoiceCode);
-        Task<BillDto> GetBillByInvoiceCode(string invoiceCode);
+        Task<PBillDto> GetBillByInvoiceCode(string invoiceCode);
         Task<IEnumerable<BillDetailDto>> GetBillDetail(string UserName);
     }
 }

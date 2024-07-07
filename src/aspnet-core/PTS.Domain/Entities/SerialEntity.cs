@@ -15,10 +15,9 @@ namespace PTS.Domain.Entities
 		public DateTime? CrDateTime { get; set; }
 		public int Status { get; set; }
 		public int? ProductDetailEntityId {  get; set; }
+        [ForeignKey("BillDetailEntity")]
         public int? BillDetailEntityId { get; set; }
-       
         public virtual ProductDetailEntity? ProductDetailEntities { get; set; }
-       
-        public virtual BillDetailEntity? BillDetailEntities { get; set; }
+        public virtual BillDetailEntity? BillDetailEntity { get; set; }
     }
 }

@@ -21,6 +21,5 @@ namespace PTS.Domain.Entities
 		public DateTime? CrDateTime { get; set; }
 		public int? Status {  get; set; }
 		public virtual CartEntity? Cart { get; set; }
-        public virtual RoleEntity? RoleEntities { get; set; }
     }
 }

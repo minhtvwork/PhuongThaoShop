@@ -14,6 +14,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PTS.Application.Features.Voucher.DTOs;
 
 namespace PTS.Application.Features.Voucher.Queries
 {
