@@ -12,6 +12,8 @@ import { MainComponent } from './main/main.component';
 import { LoginComponent } from './login/login.component';
 import { RamComponent } from './ram/ram.component';
 import { RoleComponent } from './role/role.component';
+import { ImageComponent } from './image/image.component';
+import { SerialComponent } from './serial/serial.component';
 
 
 
@@ -25,7 +27,9 @@ import { RoleComponent } from './role/role.component';
     MainComponent,
     LoginComponent,
     RamComponent,
-    RoleComponent
+    RoleComponent,
+    ImageComponent,
+    SerialComponent
   ],
   imports: [
     CommonModule,

@@ -5,6 +5,7 @@ import { PublicService } from '../../../shared/services/public.service';
 import { ProductDetailDto, CartItemDto } from '../../../shared/models/model';
 import { Observable } from 'rxjs';
 import { AccountService } from 'src/app/shared/services/account.service';
+import { VndFormatPipe } from '../../../shared/pipes/vnd-format.pipe'
 
 @Component({
   selector: 'app-detail',
@@ -12,12 +13,14 @@ import { AccountService } from 'src/app/shared/services/account.service';
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit {
+  quantity: number = 1; 
+
   product!: ProductDetailDto;
   productId!: string;
-  username!: string;
+  userName!: string;
   private cartItems: CartItemDto[] = [];
   constructor(private route: ActivatedRoute, private publicService: PublicService, private router: Router,
- private accountService: AccountService,private location: Location) { }
+ private accountService: AccountService,private location: Location, private vndFormatPipe: VndFormatPipe) { }
 
   ngOnInit(): void {
     this.location.onUrlChange(() => {
@@ -36,10 +39,10 @@ export class DetailComponent implements OnInit {
       );
     }
   }
-  addToCart(productId: string): void {
-    this.username = this.accountService.getUsername()
-    if (this.username) {
-      this.publicService.addProductToCart(this.username, productId)
+  addToCart(productId: string, quantity: number): void {
+    this.userName = this.accountService.getuserName()
+    if (this.userName) {
+      this.publicService.addProductToCart(this.userName, productId,quantity)
         .subscribe(
           (response) => {
             this.router.navigate(['/cart']);
@@ -56,7 +59,7 @@ export class DetailComponent implements OnInit {
       let newItem: CartItemDto = {
         id: getRandomId(1, 1000),
         userId: getRandomId(1, 1000),
-        quantity: 1,
+        quantity: quantity,
         maProductDetail: this.product.code,
         idProductDetails: Number(this.product.id),
         price: this.product.price,
@@ -81,5 +84,20 @@ export class DetailComponent implements OnInit {
         this.router.navigate(['/cart']);
       }
     }
+  }
+
+  images: string[] = [
+    'https://laptopaz.vn/media/product/3013_slim_5_2023.jpg',
+    'https://laptopaz.vn/media/product/3013_slim_5_2023.jpg',
+    'https://laptopaz.vn/media/product/3013_slim_5_2023.jpg',
+    'https://laptopaz.vn/media/product/3013_slim_5_2023.jpg',
+    'https://laptopaz.vn/media/product/3013_slim_5_2023.jpg',
+    'https://laptopaz.vn/media/product/3013_slim_5_2023.jpg'
+  ];
+
+  selectedImage: string = this.images[0];
+
+  onSelectImage(image: string): void {
+    this.selectedImage = image;
   }
 }

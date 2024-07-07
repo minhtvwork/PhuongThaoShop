@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { PublicService } from '../../../shared/services/public.service';
-import { CartItemDto, RequestBillDto, ResponseDto, VoucherDto, } from '../../../shared/models/model';
+import { CartItemDto, PBillCreateCommand, ResponseDto, VoucherDto, } from '../../../shared/models/model';
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { AccountService } from 'src/app/shared/services/account.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -12,13 +12,13 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class NavbarComponent {
   isVisible = false;
   isOkLoading = false;
-  username: string | null = null;
+  userName: string | null = null;
   totalCartItem !: number ;
   constructor( private publicService: PublicService,private accountService: AccountService,private fb: NonNullableFormBuilder, private nzMessageService: NzMessageService) {
     const currentUserString = localStorage.getItem('currentUser');
     if (currentUserString) {
       const currentUser = JSON.parse(currentUserString);
-      this.username = currentUser.username;
+      this.userName = currentUser.userName;
     }
   }
   @Output() refreshNavbar = new EventEmitter<void>();
@@ -38,11 +38,11 @@ export class NavbarComponent {
     this.isVisible = false;
   }
   loginForm: FormGroup<{
-    username: FormControl<string>;
+    userName: FormControl<string>;
     password: FormControl<string>;
     remember: FormControl<boolean>;
   }> = this.fb.group({
-    username: ['', [Validators.required]],
+    userName: ['', [Validators.required]],
     password: ['', [Validators.required]],
     remember: [true]
   });
@@ -50,10 +50,10 @@ export class NavbarComponent {
   submitForm(): void {
     if (this.loginForm.valid) {
       console.log('submit', this.loginForm.value);
-      const username = this.loginForm.get('username')!.value;
+      const userName = this.loginForm.get('userName')!.value;
       const password = this.loginForm.get('password')!.value;
       
-      this.accountService.login(username, password).subscribe(
+      this.accountService.login(userName, password).subscribe(
         response => {
           if(response.isSuccess){
             window.location.reload();
@@ -80,8 +80,8 @@ export class NavbarComponent {
    window.location.reload();
   }
   loadTotalCart(): void {
-    this.username = this.accountService.getUsername();
-    if (this.username) {
+    this.userName = this.accountService.getuserName();
+    if (this.userName) {
       this.publicService.getCartByUser().subscribe(
         (data: CartItemDto[]) => {
           this.totalCartItem = data.length;

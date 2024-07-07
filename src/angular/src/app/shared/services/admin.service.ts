@@ -106,4 +106,16 @@ export class AdminService {
     });
     return this.http.post(`${this.apiUrl}Role/Delete?id=${id}`,null,{ headers: headers });
   }
+  uploadImage(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.apiUrl}image/upload`, formData);
+  }
+  getPageImage(page: number, pageSize: number, keywords: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}Images/GetPage`, {
+      page,
+      pageSize,
+      keywords
+    });
+  }
 }

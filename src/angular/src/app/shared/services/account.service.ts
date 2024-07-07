@@ -14,14 +14,14 @@ export class AccountService {
   private apiUrl = 'https://localhost:44302/api/';
   private token!: string;
   constructor(private http: HttpClient) { }
-  login(username: string, password: string): Observable<any> {
+  login(userName: string, password: string): Observable<any> {
     const url = `${this.apiUrl}Account/Login`;
-    const body = { Username: username, Password: password };
+    const body = { userName: userName, Password: password };
     return this.http.post<any>(url, body).pipe(
       map(response => {
         if (response && response.accessToken) {
           localStorage.setItem('currentUser', JSON.stringify({
-            username: response.userName,
+            userName: response.userName,
             role: response.roleName,
             accessToken: response.accessToken,
             isAdmin: response.isAdmin
@@ -38,9 +38,9 @@ export class AccountService {
     const currentUser = localStorage.getItem('currentUser');
     return currentUser ? JSON.parse(currentUser) : null;
   }
-  getUsername(): string {
+  getuserName(): string {
     const currentUser = localStorage.getItem('currentUser');
-    return currentUser ? JSON.parse(currentUser).username : null;
+    return currentUser ? JSON.parse(currentUser).userName : null;
   }
   getAccessToken(): string {
     const currentUser = localStorage.getItem('currentUser');

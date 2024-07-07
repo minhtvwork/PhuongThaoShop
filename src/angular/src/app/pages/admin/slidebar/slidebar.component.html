@@ -24,47 +24,45 @@
         <li nz-submenu nzOpen nzTitle="Quản Lý Sản Phẩm" nzIcon="form">
           <ul>
             <li nz-menu-item nzMatchRouter>
-              <a [routerLink]="'/voucher'">Quản Lý Sản Phẩm Chi Tiết</a>
+              <a [routerLink]="'/product-detail'">Quản Lý Sản Phẩm Chi Tiết</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a [routerLink]="'/'">Quản Lý Số Serial</a>
+              <a [routerLink]="'/serial'">Quản Lý Số Serial</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a [routerLink]="'/ram'">Quản Lý Sản Phẩm</a>
+              <a [routerLink]="'/product'">Quản Lý Sản Phẩm</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a [routerLink]="'/ram'">Quản Lý Loại Sản Phẩm</a>
+              <a [routerLink]="'/sm'">Quản Lý Loại Sản Phẩm</a>
             </li>
             <li nz-menu-item nzMatchRouter>
               <a [routerLink]="'/ram'">Quản Lý Nhà Sản Xuất</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a [routerLink]="'/ram'">Quản Lý Màu Sắc</a>
+              <a [routerLink]="'/color'">Quản Lý Màu Sắc</a>
             </li>
             <li nz-menu-item nzMatchRouter>
               <a [routerLink]="'/ram'">Quản Lý Ram</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a [routerLink]="'/ram'">Quản Lý CPU</a>
+              <a [routerLink]="'/cpu'">Quản Lý CPU</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a [routerLink]="'/ram'">Quản Lý SSD</a>
+              <a [routerLink]="'/hard-drive'">Quản Lý SSD</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a [routerLink]="'/ram'">Quản Lý Màn Hình</a>
+              <a [routerLink]="'/screen'">Quản Lý Màn Hình</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a [routerLink]="'/ram'">Quản Lý CardVGA</a>
+              <a [routerLink]="'/cardvga'">Quản Lý CardVGA</a>
             </li>
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="Quản Lý Khách Hàng" nzIcon="form">
-          <ul>
-            <li nz-menu-item nzMatchRouter>
-              <a>Basic Form</a>
-            </li>
-          </ul>
-        </li>
+        <ul>
+          <li [routerLink]="'/voucher'"nzTitle="Quản Lý Voucher" nzIcon="form" nz-menu-item nzMatchRouter>
+            <a>Basic Form</a>
+          </li>
+        </ul>
         <li nz-submenu nzOpen nzTitle="Quản Lý Tài Khoản" nzIcon="form">
           <ul>
             <li nz-menu-item nzMatchRouter>

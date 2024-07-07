@@ -6,15 +6,15 @@ import { AccountService } from '../services/account.service';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  username!: boolean;
+  userName!: boolean;
   constructor(private accountService: AccountService, private router: Router) { }
   async canActivate(): Promise<boolean> {
     const currentUserString = localStorage.getItem('currentUser');
     if (currentUserString) {
       const currentUser = JSON.parse(currentUserString);
-      this.username = currentUser.isAdmin;
+      this.userName = currentUser.isAdmin;
     }
-    if (this.username) {
+    if (this.userName) {
       return true;
     } 
     await this.router.navigateByUrl('/login', { skipLocationChange: true });

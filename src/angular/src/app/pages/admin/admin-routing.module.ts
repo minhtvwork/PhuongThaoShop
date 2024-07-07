@@ -10,6 +10,8 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from 'src/app/shared/services/auth-guard.service';
 import { RamComponent } from './ram/ram.component';
 import { RoleComponent } from './role/role.component';
+import { ImageComponent } from './image/image.component';
+import { SerialComponent } from './serial/serial.component';
 const routes: Routes = [
   {
     //canActivate: [AuthGuard],
@@ -21,7 +23,9 @@ const routes: Routes = [
      { path: 'product', component: ProductComponent},
      { path: 'product-detail', component: ProductDetailComponent},
      { path: 'ram', component: RamComponent},
-     {path: 'role',component: RoleComponent},
+     { path: 'image', component: ImageComponent},
+     { path: 'role',component: RoleComponent},
+     { path: 'serial',component: SerialComponent},
     ], 
   }
 ];

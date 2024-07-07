@@ -27,8 +27,8 @@
           <li nz-menu-item><a [routerLink]="'/cart'"><nz-badge [nzCount]="totalCartItem" [nzStyle]="{ backgroundColor: '#52c41a' }">
             <i nz-icon nzType="shopping-cart" style="font-size: 40px;" nzTheme="outline"></i>
           </nz-badge></a></li>
-          <ng-container *ngIf="username; else loginLink">
-            <li nz-submenu nzTitle="{{username}}" nzIcon="user">
+          <ng-container *ngIf="userName; else loginLink">
+            <li nz-submenu nzTitle="{{userName}}" nzIcon="user">
               <ul>
                 <li nz-menu-item>Thông tin cá nhân</li>
                 <li nz-menu-item>Đơn hàng của tôi</li>
@@ -59,9 +59,9 @@
   <nz-layout class="login-layout" *nzModalContent>
     <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()">
       <nz-form-item>
-        <nz-form-control nzErrorTip="Please input your username!">
+        <nz-form-control nzErrorTip="Please input your userName!">
           <nz-input-group nzPrefixIcon="user">
-            <input type="text" nz-input formControlName="username" placeholder="Username" />
+            <input type="text" nz-input formControlName="userName" placeholder="userName" />
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>

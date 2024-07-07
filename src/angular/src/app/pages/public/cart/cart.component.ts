@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PublicService } from '../../../shared/services/public.service';
 import { AccountService } from 'src/app/shared/services/account.service';
-import { CartItemDto, RequestBillDto, ResponseDto, VoucherDto, } from '../../../shared/models/model';
+import { CartItemDto, PBillCreateCommand, ResponseDto, VoucherDto, ApiResult, PBillGetByCodeQueryDto } from '../../../shared/models/model';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -15,40 +15,42 @@ export class CartComponent {
   radioValue = 'A';
   cartItems: CartItemDto[] = [];
   createBillForm: FormGroup;
-  username!: string;
-  //@Input() request: RequestBillDto | undefined;
-  request!: RequestBillDto;
+  userName!: string;
+  //@Input() request: PBillCreateCommand | undefined;
+  request!: PBillCreateCommand;
   loadVouchers: VoucherDto[] = [];
+  selectedPaymentMethod!: number;
   constructor(
     private publicService: PublicService, private nzMessageService: NzMessageService, private fb: FormBuilder,
     private accountService: AccountService, private router: Router) {
     this.createBillForm = this.fb.group({
-      fullName: ['', [Validators.required]],
+      fullName: ['Vũ Phương Thảo', [Validators.required]],
       address: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required]],
       email: ['', [Validators.required]],
       codeVoucher: [''],
-      payment: [null, [Validators.required]]
+      payment: [1, [Validators.required]]
     });
     this.request = {
-      fullName: 'sấ', // Cần khởi tạo giá trị mặc định cho các trường
-      address: 'Hà Nội',
+      fullName: '',
+      address: '',
       phoneNumber: '',
       //email: '',
       codeVoucher: '',
       payment: 1,
-      cartItem: [] // Cần khởi tạo giá trị mặc định cho các trường
+      cartItem: []
     };
   }
   ngOnInit(): void {
     this.loadCart();
     this.loadListVoucher();
-    console.log(this.accountService.getUsername());
+    console.log(this.accountService.getuserName());
+
   }
 
   loadCart(): void {
-    this.username = this.accountService.getUsername();
-    if (this.username) {
+    this.userName = this.accountService.getuserName();
+    if (this.userName) {
       this.publicService.getCartByUser().subscribe(
         (data: CartItemDto[]) => {
           this.cartItems = data;
@@ -66,18 +68,26 @@ export class CartComponent {
       }
     }
   }
-  calculateTotalPrice(): number {
+  totalPrice(): number {
     let totalPrice = 0;
     this.cartItems.forEach(item => {
       totalPrice += item.price * item.quantity;
     });
     return totalPrice;
   }
+  totalQuantity(): number {
+    let quantity = 0;
+    this.cartItems.forEach(item => {
+      quantity += item.quantity;
+    });
+    return quantity;
+  }
+
   cancel(): void {
     this.nzMessageService.info('Bạn đã hủy thao tác');
   }
   deleteCartDetail(id: number): void {
-    if (this.username) {
+    if (this.userName) {
       this.publicService.deleteCartDetai(id).subscribe(response => {
         this.loadCart();
         this.nzMessageService.success('Xóa thành công');
@@ -102,7 +112,7 @@ export class CartComponent {
   }
 
   quantityChange(idCartDetail: number, event: number): void {
-    if (this.username) {
+    if (this.userName) {
       this.publicService.updateQuantityCartItem(event, idCartDetail).subscribe(response => {
         this.loadCart();
         this.nzMessageService.success('Thay đổi số lượng thành công');
@@ -136,13 +146,32 @@ export class CartComponent {
     console.log(this.cartItems)
     if (this.cartItems.length > 0 && this.cartItems != null) {
       if (this.createBillForm.valid) {
-        this.request.fullName = this.createBillForm.get('fullName')?.value;
+        //this.request.fullName = this.createBillForm.get('fullName')?.value;
         this.publicService.createBill(this.createBillForm.value).subscribe(
-          (response: ResponseDto) => {
-
+          (response: ApiResult<PBillGetByCodeQueryDto>) => {
+            if (response.isSuccessed) {
+              const invoiceCode = response.resultObj.invoiceCode;
+              this.publicService.getBillByInvoiceCode(invoiceCode).subscribe(
+                (billResponse: any) => {
+                  if (billResponse.isSuccessed) {
+                    this.router.navigate(['/hoa-don.html'], { state: { billData: billResponse.resultObj } });
+                    if (!this.userName) {
+                      localStorage.removeItem('cartItems');
+                    }
+                  } else {
+                    console.error('Erorr:', billResponse.message);
+                  }
+                },
+                (error) => {
+                  console.error('Error:', error);
+                }
+              );
+            } else {
+              console.error('API error:', response.message);
+            }
           },
           (error) => {
-
+            console.error('HTTP error:', error);
           }
         );
       } else {

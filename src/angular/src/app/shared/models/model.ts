@@ -42,7 +42,7 @@ export interface ProductDetailDto {
   maCardVGA?: string;
   tenCardVGA?: string;
   thongSoCardVGA?: string;
-  linkImage?: string;
+  imageMain?: string;
   otherImages?: string[];
   phanTramGiamGia: number;
 }
@@ -111,12 +111,44 @@ export interface RoleDto {
   code?: string;
   name?: string;
 }
-export interface RequestBillDto {
+export interface PBillCreateCommand {
   phoneNumber?: string;
   fullName?: string;
   address?: string;
-  username?: string;
+  userName?: string;
   codeVoucher?: string;
   payment: number;
   cartItem?: CartItemDto[];
 }
+// Example: api-result.model.ts
+
+export interface ApiResult<T> {
+  isSuccessed: boolean;
+  message: string;
+  resultObj: T;
+}
+export interface PBillGetByCodeQueryDto {
+  invoiceCode: string;
+  createDate?: Date | null;
+  phoneNumber?: string; 
+  fullName?: string; 
+  address?: string; 
+  codeVoucher?: string; 
+  giamGia?: number | null; 
+  payment?: number;
+  isPayment?: boolean;
+  userId?: number | null; 
+  status?: number | null; 
+  billDetail?: any; 
+  count: number;
+}
+export interface ImageDto {
+  id: number;
+  name: string;
+  url: string;
+  description?: string; // dấu ? để chỉ rằng thuộc tính này là tùy chọn
+  crUserId?: number; // dấu ? để chỉ rằng thuộc tính này là tùy chọn
+  crDateTime?: Date; // dấu ? để chỉ rằng thuộc tính này là tùy chọn
+  status: number;
+}
+

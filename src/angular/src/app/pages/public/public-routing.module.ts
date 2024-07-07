@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { DetailComponent } from './detail/detail.component';
 import { CartComponent } from './cart/cart.component';
 import { ProductComponent } from './product/product.component';
+import { BillComponent } from './bill/bill.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,7 @@ const routes: Routes = [
       { path: '', component: HomeComponent },
       { path: 'laptop-moi.html', component: ProductComponent },
       { path: 'product/:id', component: DetailComponent }, 
+      { path: 'hoa-don.html', component: BillComponent },
      // { path: '**', component:  CartComponent },
       { path: 'cart', component: CartComponent },
       // { path: 'list-product', component: ListProductsComponent },

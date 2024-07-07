@@ -14,17 +14,17 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
+      userName: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
 
   submitForm(): void {
     if (this.loginForm.valid) {
-      const username = this.loginForm.get('username')!.value;
+      const userName = this.loginForm.get('userName')!.value;
       const password = this.loginForm.get('password')!.value;
       
-      this.accountService.login(username, password).subscribe(
+      this.accountService.login(userName, password).subscribe(
         response => {
           // Xử lý phản hồi từ AuthService nếu cần
           if(response.isAdmin){
