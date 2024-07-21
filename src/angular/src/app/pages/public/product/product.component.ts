@@ -11,19 +11,20 @@ export class ProductComponent {
   //products: ProductDetailDto[] = [];
   products: ProductDetailDto[] = [];
   currentPage = 1;
-  pageSize = 10;
+  pageSize = 28;
   totalCount = 0;
 
   filters: any = {
     manufacturer: '',
     productType: '',
-    ram: '',
+    ram: 0,
     cpu: '',
     cardVGA: '',
     hardDrive: '',
     screen: '',
     search: '',
-    sortBy: ''
+    price: 0,
+    sortBy: 0
   };
   constructor(private publicService: PublicService,  private vndFormatPipe: VndFormatPipe) { }
 
@@ -31,7 +32,21 @@ export class ProductComponent {
     this.loadProducts();
   }
   loadProducts(): void {
-    this.publicService.getListProducts(this.currentPage, this.pageSize, this.filters.ram).subscribe({
+    this.publicService.getListProducts(
+      this.currentPage,
+      this.pageSize, 
+      this.filters.search,
+      this.filters.manufacturer,
+      this.filters.productType,
+      this.filters.ram,
+      this.filters.cpu,
+      this.filters.cardVGA,
+      this.filters.hardDrive,
+      this.filters.screen,
+     
+      this.filters.price,
+      this.filters.sortBy
+    ).subscribe({
       next: data => {
         this.products = data.data;
         console.log(this.products)

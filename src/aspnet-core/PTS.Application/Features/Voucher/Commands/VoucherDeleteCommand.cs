@@ -48,7 +48,6 @@ namespace PTS.Application.Features.Voucher.Commands
 			}
 			catch (Exception e)
 			{
-
 				throw;
 			}
 		}

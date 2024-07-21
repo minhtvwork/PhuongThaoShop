@@ -3,22 +3,32 @@
     <nz-breadcrumb-item>LapTop Mới</nz-breadcrumb-item>
 </nz-breadcrumb>
 <div class="card mb-3">
+    <!-- <ng-image-slider [images]="imageObject"></ng-image-slider>
+
+    <owl-carousel-o [options]="{ items: 1, dots: true, nav: true }">
+        <ng-container *ngFor="let slide of images">
+          <ng-template carouselSlide>
+            <img [src]="slide" [alt]="slide">
+            <div class="carousel-caption">
+              <h3>{{ slide }}</h3>
+            </div>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o> -->
+      
     <div *ngIf="product" class="card-body">
         <div class="row">
             <div class="col-lg-6 mb-4 mb-lg-0">
-                <div nz-image-group>
-                    <img *ngFor="let image of images" nz-image width="200px" [nzSrc]="image"
-                        (click)="onSelectImage(image)" alt="image" />
-                </div>
-                <!-- <div>
-                    <h2>Selected Image:</h2>
-                    <img nz-image width="400px" [nzSrc]="selectedImage" alt="selected image" />
-                  </div> -->
-
-                <!-- <nz-image-group>
-                    <img nz-image width="200px" nzSrc="https://laptopaz.vn/media/product/3013_slim_5_2023.jpg"
-                        alt="" />
-                </nz-image-group> -->
+                <!-- <owl-carousel-o [options]="{ items: 1, dots: true, nav: true }">
+                    <ng-container *ngFor="let slide of images">
+                      <ng-template carouselSlide>
+                        <img [src]="slide" [alt]="slide">
+                        <div class="carousel-caption">
+                          <h3>{{ slide }}</h3>
+                        </div>
+                      </ng-template>
+                    </ng-container>
+                  </owl-carousel-o> -->
             </div>
             <div class="col-lg-6">
                 <h5> {{ product.nameProduct }} {{ product.code }} ( {{ product.tenCpu }}, {{
@@ -31,6 +41,7 @@
                         class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span
                         class="fa fa-star-half-alt text-warning star-icon"></span><span class="ms-1 text-600">(8)</span>
                 </div>
+                <p>Số lượng còn lại: {{product.availableQuantity}}</p>
                 <div class="promotion"
                     style="border: 1px solid #16c60c;border-radius: 5px;position: relative;margin-bottom: 11px;    margin-top: 20px;">
                     <p class="box_promotion" style="  position: absolute;margin-top: -19px;margin-left: 20px;padding: 6px 15px;color: white;background: #16c60c;
@@ -47,11 +58,7 @@ text-transform: uppercase;border-radius: 30px;"><i class="fa fa-gift" style="fon
                                 Balo thời trang</span><br /><span>✅ Chuột kh&ocirc;ng d&acirc;y + B&agrave;n di
                                 cao
                                 cấp</span><br /><span>✅ Tặng g&oacute;i c&agrave;i đặt, bảo dưỡng, vệ sinh
-                                m&aacute;y trọn đời</span><br /><span>✅ Tặng Voucher giảm gi&aacute; cho lần mua
-                                tiếp theo</span></p>
-
-
-
+                                m&aacute;y trọn đời</span>
                     </ul>
                 </div>
                 <div class="row">

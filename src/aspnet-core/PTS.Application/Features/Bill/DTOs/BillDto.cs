@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PTS.Application.Features.Bill.Commands
+namespace PTS.Application.Features.Bill.DTOs
 {
     public class BillDto : IMapFrom<BillEntity>
     {

@@ -57,5 +57,20 @@ namespace PTS.WebAPI.Controllers
             var UserName = User.Identity.Name;
             return Ok(UserName);
         }
+        [HttpPost("isAdmin")]
+       // [Authorize]
+        public async Task<IActionResult> IsAdmin()
+        {
+            //var user = await _userManager.GetUserAsync(User);
+            //if (user == null)
+            //{
+            //    return Unauthorized();
+            //}
+
+            //var roles = await _userManager.GetRolesAsync(user);
+            //var isAdmin = roles.Contains("Admin");
+            //return Ok(isAdmin);
+            return Ok(true);
+        }
     }
 }

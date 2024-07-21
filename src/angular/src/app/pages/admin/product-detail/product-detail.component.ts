@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { HttpClient } from '@angular/common/http';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
-
+ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
@@ -12,7 +12,10 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
 export class ProductDetailComponent implements OnInit{
   productDetailForm!: FormGroup;
   fileList: NzUploadFile[] = [];
-
+  public Editor = ClassicEditor;
+  public model = {
+    editorData: '<p>Hello, world!</p>'
+  };
   constructor(
     private fb: FormBuilder,
     private message: NzMessageService,

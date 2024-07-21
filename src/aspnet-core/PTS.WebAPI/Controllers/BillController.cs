@@ -12,7 +12,7 @@ namespace PTS.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BillController : ControllerBase
+    public class BillController : BaseController
     {
         //private readonly IBillService _billService;
         //private readonly IBillRepository _billRepository;
@@ -55,6 +55,11 @@ namespace PTS.WebAPI.Controllers
         public async Task<IActionResult> GetBill(GetPageBillDto request)
         {
             return Ok( await _billRepository.GetPage(request));
+        }
+        [HttpPost("GetPage")]
+        public async Task<IActionResult> GetPage(BillGetPageQuery query)
+        {
+            return Ok(await Mediator.Send(query));
         }
         //[AllowAnonymous]
         //[HttpGet("PGetBillByInvoiceCode")]

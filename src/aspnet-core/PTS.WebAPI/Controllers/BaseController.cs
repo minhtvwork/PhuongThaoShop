@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,8 +13,9 @@ namespace PTS.WebAPI.Controllers
     public class BaseController : ControllerBase
     {
         private ISender _mediator = null;
-        private IConfiguration _configuration = null;
-        protected IConfiguration configuration => _configuration ??= HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-        protected ISender mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<ISender>();
+        protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<ISender>();
+
+        private IMapper _mapper = null;
+        protected IMapper Mapper => _mapper ??= HttpContext.RequestServices.GetRequiredService<IMapper>();
     }
 }

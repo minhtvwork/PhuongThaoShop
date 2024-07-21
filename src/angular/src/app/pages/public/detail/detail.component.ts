@@ -14,7 +14,7 @@ import { VndFormatPipe } from '../../../shared/pipes/vnd-format.pipe'
 })
 export class DetailComponent implements OnInit {
   quantity: number = 1; 
-
+  imageObject!: Array<object>;
   product!: ProductDetailDto;
   productId!: string;
   userName!: string;
@@ -23,14 +23,15 @@ export class DetailComponent implements OnInit {
  private accountService: AccountService,private location: Location, private vndFormatPipe: VndFormatPipe) { }
 
   ngOnInit(): void {
+   
     this.location.onUrlChange(() => {
       window.scrollTo(0, 0);
     });
     this.productId = this.route.snapshot.params['id']; // Lấy từ route
     if (this.productId) {
       this.publicService.getProductById(this.productId).subscribe(
-        (data: ProductDetailDto) => {
-          this.product = data;
+        (data: any) => {
+          this.product = data.data;
           console.log(this.product)
         },
         (error) => {

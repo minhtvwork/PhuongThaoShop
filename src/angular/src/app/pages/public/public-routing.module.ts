@@ -6,6 +6,8 @@ import { DetailComponent } from './detail/detail.component';
 import { CartComponent } from './cart/cart.component';
 import { ProductComponent } from './product/product.component';
 import { BillComponent } from './bill/bill.component';
+import { PaymentResultComponent } from './payment-result/payment-result.component';
+import { FindBillComponent } from './find-bill/find-bill.component';
 
 const routes: Routes = [
   {
@@ -17,6 +19,8 @@ const routes: Routes = [
       { path: 'hoa-don.html', component: BillComponent },
      // { path: '**', component:  CartComponent },
       { path: 'cart', component: CartComponent },
+      { path: 'hoa-don', component: FindBillComponent },
+      { path: 'thanh-toan-that-bai', component: PaymentResultComponent },
       // { path: 'list-product', component: ListProductsComponent },
     ],
   },

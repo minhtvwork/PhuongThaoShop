@@ -26,12 +26,10 @@ export class LoginComponent implements OnInit {
       
       this.accountService.login(userName, password).subscribe(
         response => {
-          // Xử lý phản hồi từ AuthService nếu cần
           if(response.isAdmin){
             this.router.navigateByUrl('/main');
           }
           console.log(response);
-          // Chuyển hướng hoặc thực hiện các hành động khác sau khi đăng nhập thành công
         },
         error => {
           // Xử lý lỗi nếu có

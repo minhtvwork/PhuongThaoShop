@@ -7,6 +7,8 @@ using PTS.Domain.Entities;
 using PTS.Application.Interfaces.Repositories;
 using PTS.WebAPI.Controllers;
 using PTS.Domain.Model.Base;
+using PTS.Application.Features.Ram.Commands;
+using PTS.Application.Features.Ram.Queries;
 
 namespace PTS.WebAPI
 {
@@ -14,64 +16,37 @@ namespace PTS.WebAPI
     [ApiController]
     public class RamController : BaseController
     {
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-        public RamController(IMapper mapper, IUnitOfWork unitOfWork)
-        {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-        }
-        [HttpGet("GetList")]
-        public async Task<IActionResult> GetList()
-        {
-            return Ok(await _unitOfWork._ramRepository.GetList());
-        }
-        [HttpPost("GetPaged")]
-        public async Task<IActionResult> GetPaged(PagedRequestDto request)
-        {
-            return Ok(await _unitOfWork._ramRepository.GetPagedAsync(request));
-        }
-        [HttpGet("GetById")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            return Ok(await _unitOfWork._ramRepository.GetById(id));
-        }
-        [HttpPost("CreateOrUpdateAsync")]
-        public async Task<IActionResult> CreateOrUpdateAsync(RamDto objDto)
-        {
-            var obj = _mapper.Map<RamEntity>(objDto);
-            bool isSuccess;
 
-            if (objDto.Id > 0)
-            {
-                isSuccess = await _unitOfWork._ramRepository.Update(obj);
-            }
-            else
-            {
-                isSuccess = await _unitOfWork._ramRepository.Create(obj);
-            }
-
-            if (isSuccess)
-            {
-                return Ok(new ApiSuccessResult<RamEntity>(obj));
-            }
-            else
-            {
-                return Ok(new ApiErrorResult<RamEntity>("Error"));
-            }
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await Mediator.Send(new RamGetAllQuery()));
         }
 
+        [HttpPost("GetPage")]
+        public async Task<IActionResult> GetPage(RamGetPageQuery query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
+        [HttpPost("GetById")]
+        public async Task<IActionResult> GetById(RamGetByIdQuery query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create(RamCreateCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        [HttpPost("Update")]
+        public async Task<IActionResult> Update(RamEditCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
         [HttpPost("Delete")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteRam(RamDeleteCommand command)
         {
-            if(await _unitOfWork._ramRepository.Delete(id))
-            {
-                return Ok(new ApiSuccessResult<RamEntity>());
-            }
-            else
-            {
-                return Ok(new ApiErrorResult<RamEntity>("Error"));
-            }
+            return Ok(await Mediator.Send(command));
         }
     }
 }

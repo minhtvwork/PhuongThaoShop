@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PTS.Application.Features.Voucher.DTOs;
+using PTS.Core.Enums;
 
 namespace PTS.Application.Features.Voucher.Queries
 {
@@ -33,7 +34,7 @@ namespace PTS.Application.Features.Voucher.Queries
         }
         public async Task<PaginatedResult<VoucherDto>> Handle(VoucherGetPageQuery queryInput, CancellationToken cancellationToken)
         {
-            var query = from listObj in _unitOfWork.Repository<VoucherEntity>().Entities.Where(x => x.Status > 0).AsNoTracking() select listObj;
+            var query = from listObj in _unitOfWork.Repository<VoucherEntity>().Entities.Where(x =>x.Status != (int)StatusEnum.Delete).AsNoTracking() select listObj;
             if (!string.IsNullOrEmpty(queryInput.Keywords))
             {
                 query = query.Where(x => x.MaVoucher.Contains(queryInput.Keywords) || x.TenVoucher.Contains(queryInput.Keywords));

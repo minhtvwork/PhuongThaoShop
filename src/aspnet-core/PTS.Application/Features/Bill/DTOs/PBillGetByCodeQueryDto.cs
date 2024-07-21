@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PTS.Application.Features.Bill.Queries
+namespace PTS.Application.Features.Bill.DTOs
 {
     public class PBillGetByCodeQueryDto
     {
@@ -15,12 +15,15 @@ namespace PTS.Application.Features.Bill.Queries
         public string? Address { get; set; }
         public string? CodeVoucher { get; set; }
         public decimal? GiamGia { get; set; }
-        public string Payment { get; set; }
+        public int Payment { get; set; }
         public string PaymentStatus { get; set; }
         public bool IsPayment { get; set; }
+        public string? StringPayment { get; set; }
         public int? UserId { get; set; }
         public int? Status { get; set; }
         public object? BillDetail { get; set; }
         public int Count { get; set; } = 0;
+        public decimal? Total { get; set; }
+        public decimal? IntoMoney { get; set; } 
     }
 }

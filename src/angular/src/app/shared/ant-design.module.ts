@@ -27,9 +27,11 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzResultModule } from 'ng-zorro-antd/result';
 import { ReactiveFormsModule } from "@angular/forms";
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 registerLocaleData(en);
 @NgModule({
 exports:[
@@ -58,8 +60,10 @@ exports:[
     NzPaginationModule,
     NzUploadModule,
     NzMessageModule,
+    NzResultModule,
     ReactiveFormsModule,
     FormsModule,
+    CKEditorModule,
 ],
  providers: [
     { provide: NZ_I18N, useValue: en_US }

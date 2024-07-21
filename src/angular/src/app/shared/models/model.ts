@@ -106,6 +106,24 @@ export interface RamDto {
   ma?: string;
   thongSo?: string;
 }
+export interface BillDto {
+  id: number;
+  invoiceCode: string;
+  createDate?: Date;
+  phoneNumber?: string;
+  fullName?: string;
+  address?: string;
+  codeVoucher?: string;
+  giamGia?: number;
+  payment: number;
+  stringPayment?: string;
+  isPayment: boolean;
+  userId?: number;
+  status?: number;
+  billDetail?: any;
+  count: number;
+}
+
 export interface RoleDto {
   id: number;
   code?: string;

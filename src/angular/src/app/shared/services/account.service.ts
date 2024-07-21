@@ -1,9 +1,10 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { ResponseDto, ProductDetailDto, VoucherDto, PagedResultDto, ServiceResponse } from '../models/model';
 import { tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -14,6 +15,7 @@ export class AccountService {
   private apiUrl = 'https://localhost:44302/api/';
   private token!: string;
   constructor(private http: HttpClient) { }
+  
   login(userName: string, password: string): Observable<any> {
     const url = `${this.apiUrl}Account/Login`;
     const body = { userName: userName, Password: password };
@@ -47,12 +49,25 @@ export class AccountService {
     return currentUser ? JSON.parse(currentUser).accessToken : null;
   }
   isLoggedIn(): boolean {
-    // Kiểm tra xem người dùng đã đăng nhập hay chưa
     return !!localStorage.getItem('currentUser');
   }
 
   logout(): void {
-    // Xóa thông tin người dùng khỏi local storage khi đăng xuất
     localStorage.removeItem('currentUser');
+  }
+  checkIsAdmin(): Promise<boolean> {
+    const url = `${this.apiUrl}Account/isAdmin`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.getAccessToken()}` 
+    });
+  
+    return this.http.post<boolean>(url, {}, { headers }).pipe(
+      map(response => response === true),
+      catchError(error => {
+        console.error('Error checking admin status:', error);
+        return of(false);
+      })
+    ).toPromise() as Promise<boolean>;
   }
 }

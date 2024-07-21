@@ -3,6 +3,7 @@ using PTS.Application.Dto;
 using PTS.Domain.Entities;
 using PTS.Application.Interfaces.Repositories;
 using BCrypt.Net;
+using Microsoft.AspNetCore.Identity;
 
 namespace PTS.Application.Features.Account.Commands
 {
@@ -26,7 +27,9 @@ namespace PTS.Application.Features.Account.Commands
             user.FullName = request.UserDto.FullName;
             user.Email = request.UserDto.Email;
             user.Address = request.UserDto.Address;
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.UserDto.Password);
+            PasswordHasher<UserEntity> passwordHasher = new PasswordHasher<UserEntity>();
+            user.PasswordHash = passwordHasher.HashPassword(user, request.UserDto.Password);
+           // user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.UserDto.Password);
             user.CrDateTime = DateTime.Now;
             //user.Status = 1;
             if (request.UserDto.Id > 0)

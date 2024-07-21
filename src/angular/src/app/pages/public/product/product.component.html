@@ -3,31 +3,46 @@
         <nz-breadcrumb-item>Trang chủ</nz-breadcrumb-item>
         <nz-breadcrumb-item>Laptop mới</nz-breadcrumb-item>
     </nz-breadcrumb>
-    <!-- <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Thương hiệu" [(ngModel)]="selectedValue">
+    <nz-select class="w-200 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Thương hiệu" [(ngModel)]="filters.manufacturer" (ngModelChange)="onFilterChange()">
         <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
         <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
         <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
     </nz-select>
-    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Giá" [(ngModel)]="selectedValue">
+    <nz-select class="w-200 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Giá" [(ngModel)]="filters.price" (ngModelChange)="onFilterChange()">
+        <nz-option nzLabel="0 - 10 Triệu" nzValue="1"></nz-option>
+        <nz-option nzLabel="10 Triệu - 20 Triệu" nzValue="2"></nz-option>
+        <nz-option nzLabel="20 Triệu - 30 Triệu" nzValue="3"></nz-option>
+        <nz-option nzLabel="30 Triệu - 40 Triệu" nzValue="4"></nz-option>
+        <nz-option nzLabel="40 Triệu - 50 Triệu" nzValue="5"></nz-option>
+        <nz-option nzLabel="Trên 50 Triệu" nzValue="6"></nz-option>
+    </nz-select>
+    <nz-select class="w-50 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="RAM" [(ngModel)]="filters.ram" (ngModelChange)="onFilterChange()">
+        <nz-option nzLabel="4GB" nzValue="1"></nz-option>
+        <nz-option nzLabel="8GB" nzValue="2"></nz-option>
+        <nz-option nzLabel="12GB" nzValue="3"></nz-option>
+        <nz-option nzLabel="16GB" nzValue="4"></nz-option>
+        <nz-option nzLabel="24GB" nzValue="5"></nz-option>
+        <nz-option nzLabel="32GB" nzValue="6"></nz-option>
+        <nz-option nzLabel="40GB" nzValue="7"></nz-option>
+        <nz-option nzLabel="64GB" nzValue="8"></nz-option>
+    </nz-select>
+    <nz-select class="w-200 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="CPU" [(ngModel)]="filters.cpu" (ngModelChange)="onFilterChange()">
+        <nz-option nzLabel="Jack" nzValue="128GB"></nz-option>
+        <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
+        <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+    </nz-select>
+    <nz-select class="mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Card VGA" [(ngModel)]="filters.cardVGA" (ngModelChange)="onFilterChange()">
         <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
         <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
         <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
     </nz-select>
-    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="CPU" [(ngModel)]="selectedValue">
-        <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
-        <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
-        <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+    <nz-select class="w-150 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Sắp xếp theo" [(ngModel)]="filters.sortBy" (ngModelChange)="onFilterChange()">
+        <nz-option nzLabel="Giá thấp đến cao" nzValue="1"></nz-option>
+        <nz-option nzLabel="Giá cao đến thấp" nzValue="2">Cao thấp</nz-option>
+        <nz-option nzLabel="Mới nhất" nzValue="3">Cao thấp</nz-option>
+        <nz-option nzLabel="Tên A-Z" nzValue="4">Cao thấp</nz-option>
     </nz-select>
-    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Card VGA" [(ngModel)]="selectedValue">
-        <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
-        <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
-        <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
-    </nz-select>
-    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="RAM" [(ngModel)]="selectedValue">
-        <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
-        <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
-        <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
-    </nz-select> -->
+    
     <div class="row pd-top-50">
         <div class="p-list d-flex flex-wrap">
             <ng-container *ngIf="products && products.length > 0; else loading">
@@ -36,24 +51,26 @@
                         <div class="p-item">
                             <div class="p-img">
                                 <a>
-                                    <img src="https://localhost:44302{{ p.imageMain }}"
-                                        alt="">
+                                    <img src="https://localhost:44302{{ p.imageMain }}" alt="">
                                 </a>
                             </div>
                             <div class="p-emtry">
                                 <a class="p-name" [routerLink]="['/product', p.id]">[New 100%] {{ p.nameProduct }}
                                     {{ p.code }} {{
                                     p.tenCpu }} {{ p.thongSoRam }} {{ p.thongSoHardDrive }}</a>
-                                <span class="p-price">
+                                <span class="p-price" *ngIf="p.availableQuantity > 0; else lienhe">
                                     <span class="box-text-update2021">
                                         <span class="show-shadow">
-                                           {{p.price| vndFormat}} 
+                                            {{p.price| vndFormat}}
                                         </span>
                                     </span>
                                     <span class="p-mprice">
                                         {{p.oldPrice | vndFormat}}
                                     </span>
                                 </span>
+                                <ng-template #lienhe>
+                                    <span>Liên hệ</span>
+                                  </ng-template>
                             </div>
                             <span class="productType">
                                 <img class="img-fluid" src="../../../../assets/images/sales.png" alt="sale off">
@@ -78,10 +95,7 @@
             </ng-template>
         </div>
     </div>
-    <nz-pagination
-  [nzPageIndex]="currentPage"
-  [nzTotal]="totalCount"
-  [nzPageSize]="pageSize"
-  (nzPageIndexChange)="onPageChange($event)">
-</nz-pagination>
+    <nz-pagination [nzPageIndex]="currentPage" [nzTotal]="totalCount" [nzPageSize]="pageSize"
+        (nzPageIndexChange)="onPageChange($event)">
+    </nz-pagination>
 </div>

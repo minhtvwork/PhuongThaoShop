@@ -20,11 +20,21 @@ export class PublicService {
 
   //   return this.http.post<any>(this.apiUrl+'Public/GetListProduct', body);
   // }
-  getListProducts(page: number, pageSize: number, keywords: string): Observable<any> {
+  getListProducts(page: number, pageSize: number, keywords: string, manufacturer?: string, productType?: string, ram?: number, cpu?: string, cardVGA?: string, hardDrive?: string, screen?: string,price?: number, sortBy?: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}Public/GetListProduct`, {
       page,
       pageSize,
-      keywords
+      keywords,
+      //  manufacturer,
+      //  productType,
+      ram,
+      cpu,
+      cardVGA,
+      hardDrive,
+      screen,
+      price,
+      sortBy
+
     });
   }
   getProducts(): Observable<ProductDetailDto[]> {
@@ -35,13 +45,18 @@ export class PublicService {
     return this.http.get<ResponseDto>(this.apiUrl + 'ProductDetail/PGetProductDetail', { params })
       .pipe(map(response => response.result));
   }
-  getProductById(productId: string): Observable<ProductDetailDto> {
-    const params = {
+  // getProductById(productId: string): Observable<ProductDetailDto> {
+  //   const params = {
 
-    };
+  //   };
 
-    return this.http.get<ResponseDto>(`${this.apiUrl}ProductDetail/GetById?id=${productId}`, { params })
-      .pipe(map(response => response.result));
+  //   return this.http.get<ResponseDto>(`${this.apiUrl}ProductDetail/GetById?id=${productId}`, { params })
+  //     .pipe(map(response => response.result));
+  // }
+  getProductById(id: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}Public/GetProductById`, {
+      id
+    });
   }
   getCartByUser(): Observable<CartItemDto[]> {
     const currentUserString = localStorage.getItem('currentUser');

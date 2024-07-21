@@ -17,6 +17,8 @@ import { CarouseleComponent } from './carousel';
 import { VndFormatPipe } from '../../shared/pipes/vnd-format.pipe'
 import { BillComponent } from './bill/bill.component';
 import { ShippingComponent } from './shipping/shipping.component';
+import { PaymentResultComponent } from './payment-result/payment-result.component';
+import { FindBillComponent } from './find-bill/find-bill.component';
 
 
 @NgModule({
@@ -34,7 +36,9 @@ import { ShippingComponent } from './shipping/shipping.component';
     VndFormatPipe,
     BillComponent,
     CartComponent,
-    ShippingComponent
+    ShippingComponent,
+    PaymentResultComponent,
+    FindBillComponent
   ],
   providers: [
     VndFormatPipe 

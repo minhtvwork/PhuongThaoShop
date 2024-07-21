@@ -14,6 +14,7 @@ import { RamComponent } from './ram/ram.component';
 import { RoleComponent } from './role/role.component';
 import { ImageComponent } from './image/image.component';
 import { SerialComponent } from './serial/serial.component';
+import { ManageBillComponent } from './manage-bill/manage-bill.component';
 
 
 
@@ -29,7 +30,8 @@ import { SerialComponent } from './serial/serial.component';
     RamComponent,
     RoleComponent,
     ImageComponent,
-    SerialComponent
+    SerialComponent,
+    ManageBillComponent
   ],
   imports: [
     CommonModule,

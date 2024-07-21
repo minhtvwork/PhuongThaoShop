@@ -96,14 +96,16 @@ namespace PTS.Persistence.Repositories
                             CreateDate = bill.CrDateTime,
                             GiamGia = voucher != null ? voucher.GiaTri : 0,
                             CodeVoucher = voucher != null ? voucher.MaVoucher : null,
-                            UserId = bill.UserEntityId
+                            Payment = bill.Payment,
+                            IsPayment = bill.IsPayment,
+                            UserId = bill.UserEntityId,
                         };
 
             return await query.AsNoTracking().FirstOrDefaultAsync();
 
             // await _context.BillEntity.AsNoTracking().FirstOrDefaultAsync(x => x.InvoiceCode == invoiceCode);
         }
-
+       
         public async Task<IEnumerable<BillDetailDto>> GetBillDetailByInvoiceCode(string invoiceCode)
         {
             try

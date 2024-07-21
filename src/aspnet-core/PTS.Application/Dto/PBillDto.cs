@@ -11,6 +11,7 @@
         public string? CodeVoucher { get; set; }
         public decimal? GiamGia { get; set; }
         public int Payment { get; set; }
+        public string? StringPayment { get; set; }
         public bool IsPayment { get; set; }
         public int? UserId { get; set; }
         public int? Status { get; set; }

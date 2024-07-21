@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PublicService } from '../../../shared/services/public.service';
 import { AccountService } from 'src/app/shared/services/account.service';
+import { PaymentService} from 'src/app/shared/services/payment.service';
 import { CartItemDto, PBillCreateCommand, ResponseDto, VoucherDto, ApiResult, PBillGetByCodeQueryDto } from '../../../shared/models/model';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-cart',
@@ -15,6 +16,7 @@ export class CartComponent {
   radioValue = 'A';
   cartItems: CartItemDto[] = [];
   createBillForm: FormGroup;
+  voucherForm: FormGroup;
   userName!: string;
   //@Input() request: PBillCreateCommand | undefined;
   request!: PBillCreateCommand;
@@ -22,32 +24,30 @@ export class CartComponent {
   selectedPaymentMethod!: number;
   constructor(
     private publicService: PublicService, private nzMessageService: NzMessageService, private fb: FormBuilder,
-    private accountService: AccountService, private router: Router) {
+    private accountService: AccountService, private vnpayService: PaymentService, private router: Router,  private route: ActivatedRoute) {
     this.createBillForm = this.fb.group({
-      fullName: ['Vũ Phương Thảo', [Validators.required]],
+      fullName: ['', [Validators.required]],
       address: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required]],
       email: ['', [Validators.required]],
       codeVoucher: [''],
-      payment: [1, [Validators.required]]
+      payment: [null, [Validators.required]]
     });
-    this.request = {
-      fullName: '',
-      address: '',
-      phoneNumber: '',
-      //email: '',
-      codeVoucher: '',
-      payment: 1,
-      cartItem: []
-    };
+    this.voucherForm = this.fb.group({
+      codeVoucher: ['']
+    });
   }
   ngOnInit(): void {
     this.loadCart();
     this.loadListVoucher();
     console.log(this.accountService.getuserName());
-
+    // this.route.queryParams.subscribe(params => {
+    //   if (params['vnp_ResponseCode']) {
+    //     this.handlePaymentCallback(params);
+    //   }
+    // });
   }
-
+  
   loadCart(): void {
     this.userName = this.accountService.getuserName();
     if (this.userName) {
@@ -141,9 +141,30 @@ export class CartComponent {
       this.loadVouchers = data.data;
     });
   }
+  paymentVnPay(name:string,amount:number, codeBill: string) {
+    const orderType = 'purchase';
+    const orderDescription = 'Thanh toán đơn hàng ABC';
 
+    this.vnpayService.createPayment(orderType, amount, orderDescription, name,codeBill).subscribe((response: any) => {
+      console.log(response);
+      window.location.href = response.paymentUrl;
+    });
+  }
+  // handlePaymentCallback(queryParams: any) {
+  //   console.log(queryParams)
+  //   this.vnpayService.paymentCallback(queryParams).subscribe((response: any) => {
+  //     if (response.status === 'success') {
+  //       alert('Thanh toán thành công');
+  //     } else {
+  //       alert('Thanh toán thất bại');
+  //     }
+  //   });
+  // }
   createBill(): void {
-    console.log(this.cartItems)
+    console.log(this.cartItems);
+    console.log(this.createBillForm.value);
+    const codeVoucherValue = this.voucherForm.get('codeVoucher')?.value;
+    this.createBillForm.patchValue({ codeVoucher: codeVoucherValue });
     if (this.cartItems.length > 0 && this.cartItems != null) {
       if (this.createBillForm.valid) {
         //this.request.fullName = this.createBillForm.get('fullName')?.value;
@@ -154,7 +175,14 @@ export class CartComponent {
               this.publicService.getBillByInvoiceCode(invoiceCode).subscribe(
                 (billResponse: any) => {
                   if (billResponse.isSuccessed) {
-                    this.router.navigate(['/hoa-don.html'], { state: { billData: billResponse.resultObj } });
+                    console.log(billResponse.resultObj)
+                    if(billResponse.resultObj.payment == 4){
+                      this.paymentVnPay("",billResponse.resultObj.total,billResponse.resultObj.invoiceCode)
+                    } 
+                    else{
+                        this.router.navigate(['/hoa-don.html'], { state: { billData: billResponse.resultObj } });
+                      }
+                    
                     if (!this.userName) {
                       localStorage.removeItem('cartItems');
                     }

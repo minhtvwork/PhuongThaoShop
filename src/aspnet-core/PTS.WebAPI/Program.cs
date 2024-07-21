@@ -1,21 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PTS.Application.Interfaces.Repositories;
-using PTS.Core.Services;
-using PTS.Data;
-using PTS.Persistence.Repositories;
-using PTS.Persistence.Repository;
-using PTS.Persistence.Services;
-using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 using PTS.Application.Extensions;
 using PTS.Persistence.Extensions;
 using PTS.Application.Features.Cart.Queries;
-using Microsoft.AspNetCore.Identity;
-using PTS.Domain.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text.Json.Serialization;
 using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,6 +33,15 @@ builder.Services.AddApplicationLayer(builder.Configuration);
 builder.Services.AddPersistenceLayer(builder.Configuration);
 //builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 builder.Services.AddControllers();
 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 //builder.Services.AddControllers().AddJsonOptions(options =>
@@ -78,9 +77,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors(t => t.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+
 app.MapControllers();
 app.Run();
 

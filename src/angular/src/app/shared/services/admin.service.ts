@@ -27,6 +27,14 @@ export class AdminService {
   //   };
   //   return this.http.post<PagedResultDto<any>>(url, body,{ headers: headers });
   // }
+  getPageBill(page: number, pageSize: number, keywords: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}Bill/GetPage`, {
+      page,
+      pageSize,
+      keywords
+    });
+  }
+  
   getPageVouchers(page: number, pageSize: number, keywords: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}Voucher/GetPage`, {
       page,

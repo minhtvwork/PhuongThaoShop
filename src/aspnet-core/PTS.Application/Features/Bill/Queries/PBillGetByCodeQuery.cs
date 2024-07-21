@@ -3,7 +3,7 @@ using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PTS.Application.Features.Bill.Commands;
-using PTS.Application.Features.Bill.Queries;
+using PTS.Application.Features.Bill.DTOs;
 using PTS.Application.Helper;
 using PTS.Application.Interfaces.Repositories;
 using PTS.Core.Enums;
@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace PTS.Application.Features.Bill.Queries
 {
-	public record PBillGetByCodeQuery : IRequest<ApiResult<PBillGetByCodeQueryDto>>
+    public record PBillGetByCodeQuery : IRequest<ApiResult<PBillGetByCodeQueryDto>>
 	{
 		public string InvoiceCode { get; set; }
 	}
@@ -38,7 +38,8 @@ namespace PTS.Application.Features.Bill.Queries
             if (bill != null)
             {
                 var billDetail = await _billRepository.GetBillDetailByInvoiceCode(queryInput.InvoiceCode);
-
+                decimal? totalAmount = billDetail.Sum(d => d.Price * d.Quantity) ;
+                decimal? intoMoney = totalAmount - bill.GiamGia;
                 var result = new PBillGetByCodeQueryDto
                 {
                     InvoiceCode = bill.InvoiceCode,
@@ -50,9 +51,12 @@ namespace PTS.Application.Features.Bill.Queries
                     CodeVoucher = bill.CodeVoucher,
                     GiamGia = bill.GiamGia,
                     PaymentStatus = bill.IsPayment ? "Đã thanh toán" : "Chưa thanh toán",
-                    Payment = AppUtils.GetPayment(bill.Payment),
+                    Payment = bill.Payment,
                     IsPayment = bill.IsPayment,
+                    StringPayment = GetStringPayment(bill.Payment),
                     UserId = bill.UserId,
+                    Total = totalAmount,
+                    IntoMoney = intoMoney,
                     BillDetail = billDetail,
                     Count = billDetail.Count()
                 };
@@ -69,6 +73,18 @@ namespace PTS.Application.Features.Bill.Queries
             {
                 IsSuccessed = false,
                 Message = $"Không tìm thấy hóa đơn của khách hàng {queryInput.InvoiceCode}."
+            };
+        }
+
+        private string GetStringPayment(int payment)
+        {
+            return payment switch
+            {
+                1 => "Thanh toán tại cửa hàng",
+                2 => "Thanh toán khi nhận hàng (COD)",
+                3 => "Thanh toán bằng chuyển khoản ngân hàng",
+                4 => "Thanh toán qua VNPAY",
+                _ => "Không xác định"
             };
         }
     }

@@ -21,6 +21,7 @@ namespace PTS.Application.Features.ProductDetail.DTOs
         public int IdImage { get; set; }
         public string? Upgrade { get; set; }
         public string? Description { get; set; }
+        public DateTime? CrDateTime { get; set; }
         public int AvailableQuantity { get; set; }
         public string? MaRam { get; set; }
         public string? ThongSoRam { get; set; }

@@ -11,10 +11,12 @@ using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using PTS.Shared;
 using System.Threading;
+using Nest;
+using PTS.Application.Features.Bill.DTOs;
 
 namespace PTS.Persistence.Services
 {
-	public class BillService : IBillService
+    public class BillService : IBillService
 	{
         private readonly UserManager<UserEntity> _userManager;
         private readonly IUnitOfWork _unitOfWork;
@@ -50,7 +52,12 @@ namespace PTS.Persistence.Services
         {
             try
             {
-                var user = await _userManager.FindByNameAsync(command.UserName);
+                UserEntity user = null;
+                if (!string.IsNullOrEmpty(command.UserName))
+                { 
+                    user = await _userManager.FindByNameAsync(command.UserName);
+                }
+               
                 IEnumerable<CartItemDto> cartItem = null;
 
                 if (!string.IsNullOrEmpty(command.UserName))
@@ -71,7 +78,7 @@ namespace PTS.Persistence.Services
                 var bill = new BillEntity
                 {
                     Id = 0,
-                    InvoiceCode = "Bill" + StringUtility.RandomString(7),
+                    InvoiceCode = StringUtility.RandomString(12),
                     CrDateTime = DateTime.Now,
                     Status = 2, // Trạng thái 2: Chờ xác nhận
                     FullName = user != null ? user.FullName : command.FullName,
@@ -80,6 +87,7 @@ namespace PTS.Persistence.Services
                     UserEntityId = user != null ? user.Id : null,
                     Payment = command.Payment,
                     IsPayment = false,
+                    
                     VoucherEntityId = voucherX != null ? voucherX.Id : (int?)null
                 };
 
@@ -100,8 +108,12 @@ namespace PTS.Persistence.Services
                         await _billDetailRepository.CreateBillDetail(billDetail);
                     }
                     var billDto = _mapper.Map<BillDto>(bill);
-                    var listEntity = _unitOfWork.Repository<CartDetailEntity>().Entities.Where(x => x.CartEntityId == user.Id).ToList();
-                    await _unitOfWork.Repository<CartDetailEntity>().DeleteManyAsync(listEntity);
+                    if(user != null)
+                    {
+                      var listEntity = _unitOfWork.Repository<CartDetailEntity>().Entities.Where(x => x.CartEntityId == user.Id).ToList();
+                      await _unitOfWork.Repository<CartDetailEntity>().DeleteManyAsync(listEntity);
+                    }
+                 
                     var result = await _unitOfWork.Save( new CancellationToken());
                     return new ApiResult<BillDto>
                     {
@@ -201,7 +213,27 @@ namespace PTS.Persistence.Services
 				_reponseBill.CodeVoucher = billT.CodeVoucher;
 				_reponseBill.GiamGia = billT.GiamGia;
 				_reponseBill.Payment = billT.Payment;
-				_reponseBill.IsPayment = billT.IsPayment;
+                if(billT.Payment == 1)
+                {
+                    _reponseBill.StringPayment = "Thanh toán tại cửa hàng";
+                }
+                else if (billT.Payment == 2)
+                {
+                    _reponseBill.StringPayment = "Thanh toán khi nhận hàng (COD)";
+                }
+                else if (billT.Payment == 3)
+                {
+                    _reponseBill.StringPayment = "Thanh toán bằng chuyển khoản ngân hàng";
+                }
+                else if (billT.Payment == 4)
+                {
+                    _reponseBill.StringPayment = "Thanh toán qua VNPAY";
+                }
+                else
+                {
+                    _reponseBill.StringPayment = "Không xác định";
+                }
+                _reponseBill.IsPayment = billT.IsPayment;
 				_reponseBill.UserId = billT.UserId;
 				_reponseBill.BillDetail = listBillDetail;
 				_reponseBill.Count = listBillDetail.Count();

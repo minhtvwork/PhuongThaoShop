@@ -41,6 +41,7 @@ namespace PTS.Application.Features.ProductDetail.DTOs
 		public string? MaCardVGA { get; set; }
 		public string? TenCardVGA { get; set; }
 		public string? ThongSoCardVGA { get; set; }
+		public List<string>? ListImage { get; set; }
 		public int PhanTramGiamGia { get; set; }
 		public int Status { get; set; }
 	}
