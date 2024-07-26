@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PTS.Application.Common.Mappings;
 using PTS.Application.Interfaces.Repositories;
+using PTS.Core.Enums;
 using PTS.Domain.Entities;
 using PTS.Shared;
 using System.ComponentModel;
@@ -36,7 +37,11 @@ namespace PTS.Application.Features.Bill.Commands
                 {
                     return await Result<int>.FailureAsync($"Id <b>{command.Code}</b> không tồn tại ");
                 }
-				entity.IsPayment = true;
+                if (entity.Status == (int)BillStatusEnum.Completed)
+                {
+                    return await Result<int>.FailureAsync($"Hóa đơn đã hoàn thành không được sửa ");
+                }
+                entity.IsPayment = true;
 				await _unitOfWork.Repository<BillEntity>().UpdateFieldsAsync(entity,
 					x => x.IsPayment);
 				var result = await _unitOfWork.Save(cancellationToken);

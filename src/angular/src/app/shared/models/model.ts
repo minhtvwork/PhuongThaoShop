@@ -123,7 +123,35 @@ export interface BillDto {
   billDetail?: any;
   count: number;
 }
-
+export interface BillGetPageDto {
+  id: number;
+  stt: number;
+  invoiceCode: string;
+  createDate?: Date;
+  phoneNumber?: string;
+  fullName?: string;
+  address?: string;
+  codeVoucher?: string;
+  giamGia?: number;
+  payment: number;
+  strPayment?: string;
+  strStatus: string;
+  isPayment: boolean;
+  strIsPayment : string
+  userId?: number;
+  status: number;
+  billDetail?: any;
+  count: number;
+}
+export interface BillDetail {
+  id: number;
+  code: string;
+  codeProductDetail?: string;
+  quantity: number;
+  price: number;
+  billEntityId: number;
+  crUserId?: number;
+}
 export interface RoleDto {
   id: number;
   code?: string;

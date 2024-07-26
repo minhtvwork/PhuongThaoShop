@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PTS.Core.Enums
 {
-    public enum InvoiceStatus
-    {
+	public enum PaymentEnum
+	{
         [Display(Name = "Thanh toán tiền mặt khi nhận hàng")]
         CashOnDelivery = 1,
 

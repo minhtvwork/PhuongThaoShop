@@ -34,8 +34,45 @@ namespace PTS.Application.Features.Bill.Queries
             }
             query = query.OrderBy(x => x.CrDateTime);
             var pQuery = query.ProjectTo<BillGetPageDto>(_mapper.ConfigurationProvider);
-            var result = await pQuery.ToPaginatedListAsync(queryInput.Page, queryInput.PageSize, cancellationToken);
-            return result;
+            var resultVar = await pQuery.ToPaginatedListAsync(queryInput.Page, queryInput.PageSize, cancellationToken);
+            if (resultVar.Data != null && resultVar.Data.Any())
+            {
+                int index = (queryInput.Page - 1) * queryInput.PageSize + 1;
+                foreach (var item in resultVar.Data)
+                {
+                    item.StrPayment = GetStringPayment(item.Payment);
+                    item.Stt = index++;
+                    item.StrStatus = GetStringStatus(item.Status);
+                    item.StrIsPayment = item.IsPayment ? "Đã thanh toán" : "Chưa thanh toán";
+                }
+            }
+            return resultVar;
+        }
+        private string GetStringPayment(int payment)
+        {
+            return payment switch
+            {
+                1 => "Thanh toán tại cửa hàng",
+                2 => "Thanh toán khi nhận hàng (COD)",
+                3 => "Thanh toán bằng chuyển khoản ngân hàng",
+                4 => "Thanh toán qua VNPAY",
+                _ => "Không xác định"
+            };
+        }
+        private string GetStringStatus(int status)
+        {
+            return status switch
+            {
+                0 => "Đã xóa",
+                2 => "Chờ xác nhận",
+                3 => "Chờ gửi hàng",
+                4 => "Đang giao hàng",
+                5 => "Giao hàng thành công",
+                6 => "Giao hàng thất bại",
+                7 => "Đã hủy",
+                8 => "Hoàn thành",
+                _ => "Không xác định"
+            };
         }
     }
 }

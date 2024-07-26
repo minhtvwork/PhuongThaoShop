@@ -15,6 +15,7 @@ import { RoleComponent } from './role/role.component';
 import { ImageComponent } from './image/image.component';
 import { SerialComponent } from './serial/serial.component';
 import { ManageBillComponent } from './manage-bill/manage-bill.component';
+import { BillDetailComponent } from './bill-detail/bill-detail.component';
 
 
 
@@ -31,7 +32,8 @@ import { ManageBillComponent } from './manage-bill/manage-bill.component';
     RoleComponent,
     ImageComponent,
     SerialComponent,
-    ManageBillComponent
+    ManageBillComponent,
+    BillDetailComponent
   ],
   imports: [
     CommonModule,

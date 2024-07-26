@@ -1,4 +1,4 @@
-<nz-layout class="app-layout">
+<nz-layout style="background-color: white;" class="app-layout">
     <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed"
       [nzTrigger]="null">
       <div class="sidebar-logo">
@@ -14,10 +14,7 @@
               <a [routerLink]="'/voucher'">Bán Hàng Tại Quầy</a>
             </li>
             <li nz-menu-item nzMatchRouter>
-              <a [routerLink]="'/product'">Quản Lý Đơn Hàng</a>
-            </li>
-            <li nz-menu-item nzMatchRouter>
-              <a>Workplace</a>
+              <a [routerLink]="'/manage-bill'">Quản Lý Đơn Hàng</a>
             </li>
           </ul>
         </li>

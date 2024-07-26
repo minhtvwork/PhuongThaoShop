@@ -61,6 +61,12 @@ namespace PTS.WebAPI.Controllers
         {
             return Ok(await Mediator.Send(query));
         }
+        [HttpPost("BillCreateOrUpdate")]
+        public async Task<IActionResult> BillCreateOrUpdate([FromBody] BillCreateOrUpdateCommand command)
+        {
+            var result = await Mediator.Send(command);
+            return Ok(result);
+        }
         //[AllowAnonymous]
         //[HttpGet("PGetBillByInvoiceCode")]
         //public async Task<IActionResult> PGetBillByInvoiceCode(string invoiceCode)

@@ -12,38 +12,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PTS.Application.Features.Bill.Commands
+namespace PTS.Application.Features.BillDetail.Commands
 {
-	public record BillDeleteCommand : IRequest<Result<int>>, IMapFrom<BillEntity>
+	public record BillDetailDeleteCommand : IRequest<Result<int>>, IMapFrom<BillDetailEntity>
 	{
 		public int Id { get; set; }
 	}
 
-	internal class BillDeleteCommandHandler : IRequestHandler<BillDeleteCommand, Result<int>>
+	internal class BillDetailDeleteCommandHandler : IRequestHandler<BillDetailDeleteCommand, Result<int>>
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
-		public BillDeleteCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+		public BillDetailDeleteCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 		}
-		public async Task<Result<int>> Handle(BillDeleteCommand command, CancellationToken cancellationToken)
+		public async Task<Result<int>> Handle(BillDetailDeleteCommand command, CancellationToken cancellationToken)
 		{
 			try
 			{
-				var entity = await _unitOfWork.Repository<BillEntity>().GetByIdAsync(command.Id);
+				var entity = await _unitOfWork.Repository<BillDetailEntity>().GetByIdAsync(command.Id);
 				if (entity == null)
 				{
 					return await Result<int>.FailureAsync($"Id <b>{command.Id}</b> không tồn tại ");
 				}
-                if (entity.Status == (int)BillStatusEnum.Completed)
-                {
-                    return await Result<int>.FailureAsync($"Hóa đơn đã hoàn thành không được xóa ");
-                }
-                entity = _mapper.Map<BillEntity>(command);
-				entity.Status = (int)StatusEnum.Delete;
-				await _unitOfWork.Repository<BillEntity>().UpdateFieldsAsync(entity,
+				entity = _mapper.Map<BillDetailEntity>(command);
+				entity.Status =(int)StatusEnum.Delete;
+				await _unitOfWork.Repository<BillDetailEntity>().UpdateFieldsAsync(entity,
 					x => x.Status);
 				var result = await _unitOfWork.Save(cancellationToken);
 				return result > 0

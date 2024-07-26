@@ -13,6 +13,7 @@ import { RoleComponent } from './role/role.component';
 import { ImageComponent } from './image/image.component';
 import { SerialComponent } from './serial/serial.component';
 import { ManageBillComponent } from './manage-bill/manage-bill.component';
+import { BillDetailComponent } from './bill-detail/bill-detail.component';
 const routes: Routes = [
   {
     //canActivate: [AuthGuard],
@@ -28,6 +29,7 @@ const routes: Routes = [
      { path: 'role',component: RoleComponent},
      { path: 'serial',component: SerialComponent},
      { path: 'manage-bill',component: ManageBillComponent},
+     { path: 'bill-detail/:id',component: BillDetailComponent},
     ], 
   }
 ];
