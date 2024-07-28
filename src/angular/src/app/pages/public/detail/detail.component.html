@@ -3,32 +3,10 @@
     <nz-breadcrumb-item>LapTop Mới</nz-breadcrumb-item>
 </nz-breadcrumb>
 <div class="card mb-3">
-    <!-- <ng-image-slider [images]="imageObject"></ng-image-slider>
-
-    <owl-carousel-o [options]="{ items: 1, dots: true, nav: true }">
-        <ng-container *ngFor="let slide of images">
-          <ng-template carouselSlide>
-            <img [src]="slide" [alt]="slide">
-            <div class="carousel-caption">
-              <h3>{{ slide }}</h3>
-            </div>
-          </ng-template>
-        </ng-container>
-      </owl-carousel-o> -->
-      
     <div *ngIf="product" class="card-body">
         <div class="row">
             <div class="col-lg-6 mb-4 mb-lg-0">
-                <!-- <owl-carousel-o [options]="{ items: 1, dots: true, nav: true }">
-                    <ng-container *ngFor="let slide of images">
-                      <ng-template carouselSlide>
-                        <img [src]="slide" [alt]="slide">
-                        <div class="carousel-caption">
-                          <h3>{{ slide }}</h3>
-                        </div>
-                      </ng-template>
-                    </ng-container>
-                  </owl-carousel-o> -->
+
             </div>
             <div class="col-lg-6">
                 <h5> {{ product.nameProduct }} {{ product.code }} ( {{ product.tenCpu }}, {{
@@ -36,11 +14,11 @@
                     {{ product.thongSoHardDrive }}, {{ product.tenCardVGA }} {{ product.thongSoCardVGA }} {{
                     product.kichCoManHinh }}
                     {{ product.tanSoManHinh }} {{ product.chatLieuManHinh }} )</h5>
-                <div class="fs--2 mb-3 d-inline-block text-decoration-none"><span
+                <!-- <div class="fs--2 mb-3 d-inline-block text-decoration-none"><span
                         class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span
                         class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span
                         class="fa fa-star-half-alt text-warning star-icon"></span><span class="ms-1 text-600">(8)</span>
-                </div>
+                </div> -->
                 <p>Số lượng còn lại: {{product.availableQuantity}}</p>
                 <div class="promotion"
                     style="border: 1px solid #16c60c;border-radius: 5px;position: relative;margin-bottom: 11px;    margin-top: 20px;">
@@ -63,19 +41,16 @@ text-transform: uppercase;border-radius: 30px;"><i class="fa fa-gift" style="fon
                 </div>
                 <div class="row">
                     <form #cartForm="ngForm">
-                        <!-- Bind the nz-input-number to the quantity property using ngModel -->
-                        <nz-input-number [(ngModel)]="quantity" name="quantity" [nzMin]="1" [nzMax]="100" [nzStep]="1"></nz-input-number>
                         <div class="col-auto px-2 px-md-3">
-                          <a class="btn btn-sm btn-primary" (click)="addToCart(product.id, quantity)">
-                            <span class="fas fa-cart-plus me-sm-2"></span>
-                            <span class="d-none d-sm-inline-block">Thêm vào giỏ hàng</span>
-                          </a>
+                            <nz-input-number [(ngModel)]="quantity" name="quantity" [nzMin]="1" [nzMax]="100"
+                                [nzStep]="1"></nz-input-number>
+
+                            <a class="btn btn-sm btn-primary mgl-20" (click)="addToCart(product.id, quantity)">
+                                <span class="fas fa-cart-plus me-sm-2"></span>
+                                <span class="d-none d-sm-inline-block">Thêm vào giỏ hàng</span>
+                            </a>
                         </div>
-                      </form>
-                      
-                    <div class="col-auto px-0"><a class="btn btn-sm btn-outline-danger border border-300" href="#!"
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Wish List"><span
-                                class="far fa-heart me-1"></span>282</a></div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -89,34 +64,13 @@ text-transform: uppercase;border-radius: 30px;"><i class="fa fa-gift" style="fon
                         <li class="nav-item"><a class="nav-link px-2 px-md-3" id="specifications-tab"
                                 data-bs-toggle="tab" href="#tab-specifications" role="tab"
                                 aria-controls="tab-specifications" aria-selected="false">Thông số chi tiêt</a></li>
-                        <li class="nav-item"><a class="nav-link px-2 px-md-3" id="reviews-tab" data-bs-toggle="tab"
-                                href="#tab-reviews" role="tab" aria-controls="tab-reviews"
-                                aria-selected="false">Đánh giá</a></li>
+                
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="tab-description" role="tabpanel"
                             aria-labelledby="description-tab">
                             <div class="mt-3">
-                                <p>Over the years, Apple has built a reputation for releasing its products with a lot of
-                                    fanfare – but that didn’t exactly happen for the MacBook Pro 2018. Rather, Apple’s
-                                    latest pro laptop experienced a subdued launch, in spite of it offering a notable
-                                    spec upgrade over the 2017 model – along with an improved keyboard. And, as with
-                                    previous generations the 15-inch MacBook Pro arrives alongside a 13-inch model.</p>
-                                <p>Apple still loves the MacBook Pro though, despite the quiet release. This is because,
-                                    while the iPhone XS and iPad, along with the 12-inch MacBook, are aimed at everyday
-                                    consumers, the MacBook Pro has always aimed at the creative and professional
-                                    audience. This new MacBook Pro brings a level of performance (and price) unlike its
-                                    more consumer-oriented devices. </p>
-                                <p>Still, Apple wants mainstream users to buy the MacBook Pro, too. So, if you’re just
-                                    looking for the most powerful MacBook on the market, you’ll love this new MacBook
-                                    Pro. Just keep in mind that, while the keyboard has been updated, there are still
-                                    some issues with it.</p>
-                                <p>There’s enough of a difference between the two sizes when it comes to performance to
-                                    warrant two separate reviews, and here we’ll be looking at how the flagship 15-inch
-                                    MacBook Pro performs in 2019.</p>
-                                <p>It's build quality and design is batter than elit. Numquam excepturi a debitis, sint
-                                    voluptates, nam odit vel delectus id repellendus vero reprehenderit quidem totam
-                                    praesentium vitae nesciunt deserunt. Sint, veniam?</p>
+                               <p> {{ product.description }}</p>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="tab-specifications" role="tabpanel"
@@ -124,93 +78,43 @@ text-transform: uppercase;border-radius: 30px;"><i class="fa fa-gift" style="fon
                             <table class="table fs--1 mt-3">
                                 <tbody>
                                     <tr>
-                                        <td class="bg-100" style="width: 30%;">Processor</td>
-                                        <td>2.3GHz quad-core Intel Core i5,</td>
+                                        <td class="bg-100" style="width: 30%;">CPU</td>
+                                        <td> {{ product.maCpu }} {{ product.tenCpu }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="bg-100" style="width: 30%;">Memory</td>
-                                        <td>8GB of 2133MHz LPDDR3 onboard memory</td>
+                                        <td class="bg-100" style="width: 30%;">RAM</td>
+                                        <td>{{ product.maRam }} {{ product.thongSoRam }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="bg-100" style="width: 30%;">Brand Name</td>
-                                        <td>Apple</td>
+                                        <td class="bg-100" style="width: 30%;">SSD</td>
+                                        <td>{{ product.maHardDrive }} {{ product.thongSoHardDrive }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="bg-100" style="width: 30%;">Model</td>
-                                        <td>Mac Book Pro</td>
+                                        <td class="bg-100" style="width: 30%;">Khả năng nâng cấp</td>
+                                        <td>{{ product.upgrade }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="bg-100" style="width: 30%;">Display</td>
-                                        <td>13.3-inch (diagonal) LED-backlit display with IPS technology</td>
+                                        <td class="bg-100" style="width: 30%;">Card VGA</td>
+                                        <td>{{ product.maCardVGA }} {{ product.tenCardVGA }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="bg-100" style="width: 30%;">Storage</td>
-                                        <td>512GB SSD</td>
+                                        <td class="bg-100" style="width: 30%;">Nhà sản xuất</td>
+                                        <td>{{ product.nameManufacturer }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="bg-100" style="width: 30%;">Graphics</td>
-                                        <td>Intel Iris Plus Graphics 655</td>
+                                        <td class="bg-100" style="width: 30%;">Màn hình</td>
+                                        <td>{{ product.kichCoManHinh }} {{ product.tanSoManHinh }} {{ product.chatLieuManHinh }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="bg-100" style="width: 30%;">Weight</td>
-                                        <td>7.15 pounds</td>
+                                        <td class="bg-100" style="width: 30%;">Màu sắc</td>
+                                        <td>{{ product.nameColor}}</td>
                                     </tr>
-                                    <tr>
-                                        <td class="bg-100" style="width: 30%;">Finish</td>
-                                        <td>Silver, Space Gray</td>
-                                    </tr>
+                                  
+                                  
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="reviews-tab">
-                            <div class="row mt-3">
-                                <div class="col-lg-6 mb-4 mb-lg-0">
-                                    <div class="mb-1"><span class="fa fa-star text-warning fs--1"></span><span
-                                            class="fa fa-star text-warning fs--1"></span><span
-                                            class="fa fa-star text-warning fs--1"></span><span
-                                            class="fa fa-star text-warning fs--1"></span><span
-                                            class="fa fa-star text-warning fs--1"></span><span
-                                            class="ms-3 text-dark fw-semi-bold">Awesome support, great code 😍</span>
-                                    </div>
-                                    <p class="fs--1 mb-2 text-600">By Drik Smith • October 14, 2019</p>
-                                    <p class="mb-0">You shouldn't need to read a review to see how nice and polished
-                                        this theme is. So I'll tell you something you won't find in the demo. After the
-                                        download I had a technical question, emailed the team and got a response right
-                                        from the team CEO with helpful advice.</p>
-                                    <hr class="my-4" />
-                                    <div class="mb-1"><span class="fa fa-star text-warning fs--1"></span><span
-                                            class="fa fa-star text-warning fs--1"></span><span
-                                            class="fa fa-star text-warning fs--1"></span><span
-                                            class="fa fa-star text-warning fs--1"></span><span
-                                            class="fa fa-star-half-alt text-warning star-icon fs--1"></span><span
-                                            class="ms-3 text-dark fw-semi-bold">Outstanding Design, Awesome
-                                            Support</span></div>
-                                    <p class="fs--1 mb-2 text-600">By Liane • December 14, 2019</p>
-                                    <p class="mb-0">This really is an amazing template - from the style to the font -
-                                        clean layout. SO worth the money! The demo pages show off what Bootstrap 4 can
-                                        impressively do. Great template!! Support response is FAST and the team is
-                                        amazing - communication is important.</p>
-                                </div>
-                                <div class="col-lg-6 ps-lg-5">
-                                    <form>
-                                        <h5 class="mb-3">Write your Review</h5>
-                                        <div class="mb-3"><label class="form-label">Ratting: </label>
-                                            <div class="d-block" data-rater='{"starSize":32,"step":0.5}'></div>
-                                        </div>
-                                        <div class="mb-3"><label class="form-label"
-                                                for="formGroupNameInput">Name:</label><input class="form-control"
-                                                id="formGroupNameInput" type="text" /></div>
-                                        <div class="mb-3"><label class="form-label"
-                                                for="formGroupEmailInput">Email:</label><input class="form-control"
-                                                id="formGroupEmailInput" type="email" /></div>
-                                        <div class="mb-3"><label class="form-label"
-                                                for="formGrouptextareaInput">Review:</label><textarea
-                                                class="form-control" id="formGrouptextareaInput" rows="3"></textarea>
-                                        </div><button class="btn btn-primary" type="submit">Submit</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                       
                     </div>
                 </div>
             </div>

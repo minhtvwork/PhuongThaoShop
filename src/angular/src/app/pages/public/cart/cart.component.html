@@ -2,12 +2,11 @@
   <div class="card-header">
     <div class="row justify-content-between">
       <div class="col-md-auto">
-        <h5 class="mb-3 mb-md-0">Shopping Cart (7 Items)</h5>
+        <!-- <h5 class="mb-3 mb-md-0">Shopping Cart (7 Items)</h5> -->
       </div>
       <div class="col-md-auto">
-        <a class="btn btn-sm btn-outline-secondary border-300 me-2 shadow-none" href="product/product-list.html">
+        <a class="btn btn-sm btn-outline-secondary border-300 me-2 shadow-none" [routerLink]="'/laptop-moi.html'">
           <span class="fas fa-chevron-left me-1" data-fa-transform="shrink-4"></span>Tiếp tục mua hàng</a>
-        <a class="btn btn-sm btn-primary" href="checkout.html">Checkout</a>
       </div>
     </div>
   </div>
@@ -76,7 +75,8 @@
   <div class="row">
     <form nz-form [nzLayout]="'inline'" [formGroup]="createBillForm">
       <div class="col-md-5 col-sm-5">
-        <nz-form-item class="pdt-15" nzGutter="6">
+        <div *ngIf="!userName" >
+            <nz-form-item class="pdt-15" nzGutter="6">
           <nz-form-label class="width-200" nzFor="fullName" [nzSm]="4" nzRequired>Họ và tên</nz-form-label>
           <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
             <input nz-input class="input-w-300" formControlName="fullName" />
@@ -100,6 +100,15 @@
             <input nz-input class="input-w-300" formControlName="email" />
           </nz-form-control>
         </nz-form-item>
+        </div>
+        <div *ngIf="userName">
+          <nz-radio-group formControlName="address">
+            <label >Xin mời bạn chọn địa chỉ giao hàng</label> <br>
+            <label *ngFor="let address of address" nz-radio [nzValue]="address.addressName">
+              <span style="margin-top: 30px;" >{{ address.addressName }}</span>
+            </label>
+          </nz-radio-group>
+        </div>
       </div>
       <div class="col-md-7 col-sm-7">
 

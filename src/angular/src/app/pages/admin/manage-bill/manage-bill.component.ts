@@ -70,6 +70,9 @@ export class ManageBillComponent implements OnInit {
         }
       );
     }
+    else {
+      this.nzMessageService.error('Hãy nhập đầy đủ giá trị');
+    }
   }
 
   close(): void {

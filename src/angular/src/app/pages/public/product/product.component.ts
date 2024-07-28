@@ -15,7 +15,7 @@ export class ProductComponent {
   totalCount = 0;
 
   filters: any = {
-    manufacturer: '',
+    manufacturer: 0,
     productType: '',
     ram: 0,
     cpu: '',

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AdminService } from '../../../shared/services/admin.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { HttpClient } from '@angular/common/http';
+import { ProductDetailGetPageDto } from 'src/app/shared/models/model';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
- import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import * as ClassicEditor from '@ckeditor/ckeditor5-basic-styles';
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
@@ -11,18 +13,18 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
 })
 export class ProductDetailComponent implements OnInit{
   productDetailForm!: FormGroup;
+  listData: ProductDetailGetPageDto[] = [];
   fileList: NzUploadFile[] = [];
   public Editor = ClassicEditor;
-  public model = {
-    editorData: '<p>Hello, world!</p>'
-  };
   constructor(
+    private adminService: AdminService,
     private fb: FormBuilder,
     private message: NzMessageService,
     private http: HttpClient
   ) {}
 
   ngOnInit(): void {
+    this.loadData();
     this.productDetailForm = this.fb.group({
       code: [null, [Validators.required, Validators.maxLength(50)]],
       price: [null, [Validators.required]],
@@ -31,7 +33,15 @@ export class ProductDetailComponent implements OnInit{
       // Add more form controls as needed
     });
   }
-
+  loadData(): void {
+      this.adminService.getPageProductDetail(1,30,'').subscribe(response => {
+      console.log(response.data)
+      this.listData = response.data;
+    });
+  }
+  create(): void {
+   
+  }
   beforeUpload = (file: NzUploadFile): boolean => {
     this.fileList = this.fileList.concat(file);
     return false;
@@ -44,7 +54,22 @@ export class ProductDetailComponent implements OnInit{
       this.message.error(`${info.file.name} file upload failed`);
     }
   }
-
+  delete(id: number): void {
+    // this.adminService.deleteBill(id).subscribe(
+    //   (response: any) => {
+    //     if (response.isSuccessed) {
+    //       this.nzMessageService.success('Thành công');
+    //       this.loadData();
+    //     } else {
+    //       this.nzMessageService.error('Thất bại');
+    //     }
+    //   },
+    //   (error) => {
+    //     this.nzMessageService.error('Thất bại');
+    //     console.error('API call failed:', error);
+    //   }
+    // );
+  }
   onSubmit(): void {
     if (this.productDetailForm.valid) {
       const formData = new FormData();

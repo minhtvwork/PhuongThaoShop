@@ -25,11 +25,12 @@ export class LoginComponent implements OnInit {
       const password = this.loginForm.get('password')!.value;
       
       this.accountService.login(userName, password).subscribe(
-        response => {
+        response => { 
+          console.log(response);
           if(response.isAdmin){
             this.router.navigateByUrl('/main');
           }
-          console.log(response);
+         
         },
         error => {
           // Xử lý lỗi nếu có

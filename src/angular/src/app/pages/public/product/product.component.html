@@ -4,9 +4,13 @@
         <nz-breadcrumb-item>Laptop mới</nz-breadcrumb-item>
     </nz-breadcrumb>
     <nz-select class="w-200 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Thương hiệu" [(ngModel)]="filters.manufacturer" (ngModelChange)="onFilterChange()">
-        <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
-        <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
-        <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+        <nz-option nzLabel="Laptop Acer" nzValue="2"></nz-option>
+        <nz-option nzLabel="Laptop Asus" nzValue="5"></nz-option>
+        <nz-option nzLabel="Laptop Dell" nzValue="1"></nz-option>
+        <nz-option nzLabel="Laptop Gigabyte" nzValue="6"></nz-option>
+        <nz-option nzLabel="Laptop Lenovo" nzValue="7"></nz-option>
+        <nz-option nzLabel="Laptop MSI" nzValue="8"></nz-option>
+        <nz-option nzLabel="Laptop Samsung" nzValue="9"></nz-option>
     </nz-select>
     <nz-select class="w-200 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Giá" [(ngModel)]="filters.price" (ngModelChange)="onFilterChange()">
         <nz-option nzLabel="0 - 10 Triệu" nzValue="1"></nz-option>
@@ -27,14 +31,24 @@
         <nz-option nzLabel="64GB" nzValue="8"></nz-option>
     </nz-select>
     <nz-select class="w-200 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="CPU" [(ngModel)]="filters.cpu" (ngModelChange)="onFilterChange()">
-        <nz-option nzLabel="Jack" nzValue="128GB"></nz-option>
-        <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
-        <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+        <nz-option nzLabel="Intel® Core™ i3" nzValue="Intel® Core™ i3"></nz-option>
+        <nz-option nzLabel="Intel® Core™ i5" nzValue="Intel® Core™ i5"></nz-option>
+        <nz-option nzLabel="Intel® Core™ i7" nzValue="Intel® Core™ i7"></nz-option>
+        <nz-option nzLabel="Intel® Core™ i9" nzValue="Intel® Core™ i9"></nz-option>
+        <nz-option nzLabel="AMD Ryzen™ 3" nzValue="AMD Ryzen™ 3"></nz-option>
+        <nz-option nzLabel="AMD Ryzen™ 5" nzValue="AMD Ryzen™ 5"></nz-option>
+        <nz-option nzLabel="AMD Ryzen™ 7" nzValue="AMD Ryzen™ 7"></nz-option>
+        <nz-option nzLabel="AMD Ryzen™ 9" nzValue="AMD Ryzen™ 9"></nz-option>
+        <nz-option nzLabel="Intel® Pentium" nzValue="Intel® Pentium"></nz-option>
+        <nz-option nzLabel="Intel® Celeron" nzValue="Intel® Celeron"></nz-option>
+        
     </nz-select>
-    <nz-select class="mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Card VGA" [(ngModel)]="filters.cardVGA" (ngModelChange)="onFilterChange()">
-        <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
-        <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
-        <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+    <nz-select class="w-250 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Card VGA" [(ngModel)]="filters.cardVGA" (ngModelChange)="onFilterChange()">
+        <nz-option nzLabel="NVIDIA® GeForce RTX™ 3070Ti" nzValue="NVIDIA® GeForce RTX™ 3070Ti"></nz-option>
+        <nz-option nzLabel="NVIDIA® GeForce RTX™ 3060Ti" nzValue="NVIDIA® GeForce RTX™ 3060Ti"></nz-option>
+        <nz-option nzLabel="NVIDIA® GeForce RTX™ 3050Ti" nzValue="NVIDIA® GeForce RTX™ 3050Ti"></nz-option>
+        <nz-option nzLabel="NVIDIA® GeForce RTX™ 3040Ti" nzValue="NVIDIA® GeForce RTX™ 3040Ti"></nz-option>
+        <nz-option nzLabel="Intel Graphics" nzValue="Intel Graphics"></nz-option>
     </nz-select>
     <nz-select class="w-150 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Sắp xếp theo" [(ngModel)]="filters.sortBy" (ngModelChange)="onFilterChange()">
         <nz-option nzLabel="Giá thấp đến cao" nzValue="1"></nz-option>

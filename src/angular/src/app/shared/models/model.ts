@@ -46,6 +46,38 @@ export interface ProductDetailDto {
   otherImages?: string[];
   phanTramGiamGia: number;
 }
+export interface ProductDetailGetPageDto {
+  stt: number;
+  id: number;
+  code?: string;
+  oldPrice: number;
+  price: number;
+  availableQuantity: number;
+  status: number;
+  upgrade?: string;
+  description?: string;
+  maRam?: string;
+  thongSoRam?: string;
+  thongSoHardDrive?: string;
+  maHardDrive?: string;
+  maCpu?: string;
+  tenCpu?: string;
+  nameColor?: string;
+  maColor?: string;
+  nameProduct?: string;
+  nameManufacturer?: string;
+  nameProductType?: string;
+  maManHinh?: string;
+  kichCoManHinh?: string;
+  tanSoManHinh?: string;
+  chatLieuManHinh?: string;
+  maCardVGA?: string;
+  tenCardVGA?: string;
+  thongSoCardVGA?: string;
+  imageMain?: string;
+  otherImages?: string[];
+  phanTramGiamGia: number;
+}
 export interface ResponseDto {
   result: any;
   isSuccess: boolean;
@@ -192,9 +224,16 @@ export interface ImageDto {
   id: number;
   name: string;
   url: string;
-  description?: string; // dấu ? để chỉ rằng thuộc tính này là tùy chọn
-  crUserId?: number; // dấu ? để chỉ rằng thuộc tính này là tùy chọn
-  crDateTime?: Date; // dấu ? để chỉ rằng thuộc tính này là tùy chọn
+  description?: string; 
+  crUserId?: number; 
+  crDateTime?: Date; 
   status: number;
 }
-
+export interface AddressDto {
+  addressId: number;
+  addressName?: string;
+  crUserId?: number;
+  crDateTime?: Date;
+  status: number;
+  userEntityId?: number;
+}

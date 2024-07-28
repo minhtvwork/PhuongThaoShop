@@ -2,7 +2,7 @@
     <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed"
       [nzTrigger]="null">
       <div class="sidebar-logo">
-        <a href="https://ng.ant.design/" target="_blank">
+        <a href="/" target="_blank">
           <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
           <h1>Admin PTS</h1>
         </a>
@@ -56,10 +56,16 @@
           </ul>
         </li>
        
-        <li nz-submenu nzOpen nzTitle="Quản Lý Tài Khoản" nzIcon="form">
+        <li nz-submenu nzOpen nzTitle="Thống kê dữ liệu" nzIcon="pie-chart">
           <ul>
             <li nz-menu-item nzMatchRouter>
-              <a>Basic Form</a>
+              <a [routerLink]="'/report-day'">Dữ liệu theo ngày</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a [routerLink]="'/report-month'">Dữ liệu theo tháng</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a [routerLink]="'/report-year'">Dữ liệu theo năm</a>
             </li>
           </ul>
         </li>
@@ -84,7 +90,7 @@
             </li>
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="Form" nzIcon="form">
+        <li nz-submenu nzOpen nzTitle="Quản lý hệ thống" nzIcon="setting">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a>Basic Form</a>

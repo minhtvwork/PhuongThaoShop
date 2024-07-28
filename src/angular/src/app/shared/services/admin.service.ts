@@ -46,7 +46,13 @@ export class AdminService {
       keywords
     });
   }
-
+  getPageProductDetail(page: number, pageSize: number, keywords: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}ProductDetail/GetPage`, {
+      page,
+      pageSize,
+      keywords
+    });
+  }
   getListRam(): Observable<any> {
     return this.http.get(`${this.apiUrl}GetList`);
   }

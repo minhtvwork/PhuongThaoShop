@@ -23,6 +23,7 @@ export class AccountService {
       map(response => {
         if (response && response.accessToken) {
           localStorage.setItem('currentUser', JSON.stringify({
+            id : response.id,
             userName: response.userName,
             role: response.roleName,
             accessToken: response.accessToken,
@@ -43,6 +44,10 @@ export class AccountService {
   getuserName(): string {
     const currentUser = localStorage.getItem('currentUser');
     return currentUser ? JSON.parse(currentUser).userName : null;
+  }
+  getUserId(): number {
+    const currentUser = localStorage.getItem('currentUser');
+    return currentUser ? JSON.parse(currentUser).id : null;
   }
   getAccessToken(): string {
     const currentUser = localStorage.getItem('currentUser');

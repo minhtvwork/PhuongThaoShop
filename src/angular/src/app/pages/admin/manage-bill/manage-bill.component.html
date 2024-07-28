@@ -26,14 +26,18 @@
         <td>{{ item.strIsPayment}}</td>
         <td>{{ item.strStatus}}</td>
         <td>
-          <a (click)="edit(item)" style="margin-right: 10px;">   <span class="kt-font-success">
-            <i nz-icon nzType="edit" nzTheme="outline"></i>
-        </span></a>
-        <a (click)="delete(item.id)" >
-          <span class="kt-font-danger">
-              <i nz-icon nzType="delete" nzTheme="outline"></i>
-          </span>
-      </a>
+          <ng-container *ngIf="item.status !== 8">
+            <a (click)="edit(item)" style="margin-right: 10px;">
+              <span class="kt-font-success">
+                <i nz-icon nzType="edit" nzTheme="outline"></i>
+              </span>
+            </a>
+            <a (click)="delete(item.id)">
+              <span class="kt-font-danger">
+                <i nz-icon nzType="delete" nzTheme="outline"></i>
+              </span>
+            </a>
+          </ng-container><br>
       <a style="background-color: cyan" (click)="openBillDetails(item.id)"><strong>Chi tiết</strong> </a>
         </td>
       </tr>

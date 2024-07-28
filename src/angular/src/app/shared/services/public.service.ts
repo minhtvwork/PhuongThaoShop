@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { ResponseDto, ProductDetailDto, CartItemDto, ServiceResponse, PBillCreateCommand,PBillGetByCodeQueryDto,ApiResult } from '../models/model';
+import { ResponseDto, ProductDetailDto, CartItemDto, ServiceResponse, PBillCreateCommand, PBillGetByCodeQueryDto, ApiResult } from '../models/model';
 import { AccountService } from 'src/app/shared/services/account.service';
 import { AppConstants } from 'src/app/constants';
 @Injectable({
@@ -20,12 +20,12 @@ export class PublicService {
 
   //   return this.http.post<any>(this.apiUrl+'Public/GetListProduct', body);
   // }
-  getListProducts(page: number, pageSize: number, keywords: string, manufacturer?: string, productType?: string, ram?: number, cpu?: string, cardVGA?: string, hardDrive?: string, screen?: string,price?: number, sortBy?: number): Observable<any> {
+  getListProducts(page: number, pageSize: number, keywords: string, manufacturer?: number, productType?: string, ram?: number, cpu?: string, cardVGA?: string, hardDrive?: string, screen?: string, price?: number, sortBy?: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}Public/GetListProduct`, {
       page,
       pageSize,
       keywords,
-      //  manufacturer,
+      manufacturer,
       //  productType,
       ram,
       cpu,
@@ -58,6 +58,11 @@ export class PublicService {
       id
     });
   }
+  getAddress(userId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}Address/GetByUserId`, {
+      userId
+    });
+  }
   getCartByUser(): Observable<CartItemDto[]> {
     const currentUserString = localStorage.getItem('currentUser');
     if (currentUserString) {
@@ -78,7 +83,7 @@ export class PublicService {
     return this.http.post<ResponseDto>(this.apiUrl + 'Cart/GetCartByUser?userName=kieumy', { params })
       .pipe(map(response => response.result));
   }
-  addProductToCart(userName: string, productId: string,quantity: number): Observable<ServiceResponse> {
+  addProductToCart(userName: string, productId: string, quantity: number): Observable<ServiceResponse> {
     const params = {
       userName: userName,
       idProductDetail: productId,
@@ -102,10 +107,10 @@ export class PublicService {
     return this.http.get<any>(`${this.apiUrl}Public/GetListVoucher`);
   }
   createBill(request: PBillCreateCommand): Observable<ApiResult<PBillGetByCodeQueryDto>> {
-   // request.userName = this.accountService.getuserName();
-   console.log(request);
-   console.log(this.accountService.getuserName());
-   request.userName = this.accountService.getuserName();
+    // request.userName = this.accountService.getuserName();
+    console.log(request);
+    console.log(this.accountService.getuserName());
+    request.userName = this.accountService.getuserName();
     const cartItemsString = localStorage.getItem('cartItems');
     if (cartItemsString) {
       request.cartItem = JSON.parse(cartItemsString);
@@ -116,7 +121,7 @@ export class PublicService {
       fullName: request.fullName,
       userName: request.userName,
       phoneNumber: request.phoneNumber,
-      address:request.address,
+      address: request.address,
       codeVoucher: request.codeVoucher,
       payment: request.payment,
       cartItem: request.cartItem
@@ -126,7 +131,7 @@ export class PublicService {
   }
   getBillByInvoiceCode(invoiceCode: string): Observable<any> {
     const params = {
-      invoiceCode : invoiceCode,
+      invoiceCode: invoiceCode,
     };
 
     return this.http.post<any>(`${this.apiUrl}Public/GetBill`, params);

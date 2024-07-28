@@ -3,7 +3,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [
+      "ckeditor__ckeditor5-build-classic"
+
+    ]
   },
   "files": [
     "src/main.ts"
