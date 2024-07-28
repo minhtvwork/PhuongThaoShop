@@ -45,7 +45,7 @@ namespace WebApp.Controllers
             }
             else
             {
-                return Redirect("thanh-toan-that-bai"); 
+                return Redirect("http://localhost:4200/thanh-toan-that-bai"); 
             }
         }
 

@@ -6,10 +6,10 @@ using PTS.Shared.Dto;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
 using PTS.Application.Interfaces.Repositories;
-using PTS.Application.Features.PhapDienDocs.Fields.Queries;
 using PTS.WebAPI.Controllers;
 using PTS.Application.Features.ProductDetail.Commands;
 using PTS.Application.Features.Voucher.Commands;
+using PTS.Application.Features.ProductDetail.Queries;
 namespace PTS.WebAPI
 {
     [Route("api/[controller]")]
@@ -43,11 +43,10 @@ namespace PTS.WebAPI
         {
             return Ok(await _unitOfWork._productDetailRepository.GetPagedAsync(request));
         }
-        [HttpPost("GetPagedq")]
-        public async Task<IActionResult> GetPaged(ProductDetailGetPageQuery request)
+        [HttpPost("GetPage")]
+        public async Task<IActionResult> GetPage(ProductDetailGetPageQuery query)
         {
-            var vouchers = await _mediator.Send(request);
-            return Ok(vouchers);
+            return Ok(await Mediator.Send(query));
         }
         [AllowAnonymous]
         [HttpPost("PublicGetList")]

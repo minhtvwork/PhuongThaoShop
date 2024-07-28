@@ -110,6 +110,11 @@ namespace PTS.Persistence.Migrations
                         {
                             UserId = 1,
                             RoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            RoleId = 3
                         });
                 });
 
@@ -130,6 +135,36 @@ namespace PTS.Persistence.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("UserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("PTS.Domain.Entities.AddressEntity", b =>
+                {
+                    b.Property<int>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressId"));
+
+                    b.Property<string>("AddressName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CrDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CrUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserEntityId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AddressId");
+
+                    b.HasIndex("UserEntityId");
+
+                    b.ToTable("Address");
                 });
 
             modelBuilder.Entity("PTS.Domain.Entities.BillDetailEntity", b =>
@@ -163,6 +198,12 @@ namespace PTS.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdUserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -213,6 +254,12 @@ namespace PTS.Persistence.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdUserId")
                         .HasColumnType("int");
 
                     b.Property<int?>("UserEntityId")
@@ -808,7 +855,7 @@ namespace PTS.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "1",
+                            ConcurrencyStamp = "phuongthaoshop.vn",
                             Description = "Administrator",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
@@ -816,7 +863,7 @@ namespace PTS.Persistence.Migrations
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "1",
+                            ConcurrencyStamp = "phuongthaoshop.vn",
                             Description = "Employee",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
@@ -824,7 +871,7 @@ namespace PTS.Persistence.Migrations
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "1",
+                            ConcurrencyStamp = "phuongthaoshop.vn",
                             Description = "Customer",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
@@ -896,6 +943,12 @@ namespace PTS.Persistence.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("UpdDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdUserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BillDetailEntityId")
@@ -918,14 +971,8 @@ namespace PTS.Persistence.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("AvatarPath")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("BirthDay")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -933,9 +980,6 @@ namespace PTS.Persistence.Migrations
 
                     b.Property<DateTime?>("CrDateTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("DefaultActionId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -1013,17 +1057,34 @@ namespace PTS.Persistence.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "phuongthaoshop.vn",
-                            Email = "admin@phuongthaoshop.vn",
+                            Email = "adphuongthao@gmail.com",
                             EmailConfirmed = false,
-                            FullName = "Administrator",
+                            FullName = "Nguyễn Phương Thảo",
                             LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@PHUONGTHAOSHOP.VN",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAENoSyJq+fsaU/otrS3m9MDzLeC06rnA+tlPziFDtP90djGCUahLBTKDkQfigUE5V9A==",
+                            NormalizedEmail = "ADPHUONGTHAO@GMAIL.COM",
+                            NormalizedUserName = "ADPHUONGTHAO",
+                            PasswordHash = "AQAAAAIAAYagAAAAEERQ5zhByb7xZMDVKaUFJyA4tG2mPyAfI4qumrpxq9HQUA0hi1Lqq0Z5VHIn+Snh5A==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "phuongthaoshop.vn",
                             TwoFactorEnabled = false,
-                            UserName = "adminphuongthao"
+                            UserName = "adphuongthao"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "phuongthaoshop.vn",
+                            Email = "thuhuyen@gmail.com",
+                            EmailConfirmed = false,
+                            FullName = "Vũ Thị Huyền",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "THUHUYEN@GMAIL.COM",
+                            NormalizedUserName = "THUHUYEN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAsRvIOt7/n/cu9jrjdu+J3p65VkYt3/Rd32McBFRq7CndQLFNEbv4s/66UZYXHP+w==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "phuongthaoshop.vn",
+                            TwoFactorEnabled = false,
+                            UserName = "thuhuyen"
                         });
                 });
 
@@ -1121,6 +1182,15 @@ namespace PTS.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PTS.Domain.Entities.AddressEntity", b =>
+                {
+                    b.HasOne("PTS.Domain.Entities.UserEntity", "UserEntity")
+                        .WithMany("AddressEntities")
+                        .HasForeignKey("UserEntityId");
+
+                    b.Navigation("UserEntity");
+                });
+
             modelBuilder.Entity("PTS.Domain.Entities.BillDetailEntity", b =>
                 {
                     b.HasOne("PTS.Domain.Entities.BillEntity", "BillEntity")
@@ -1206,7 +1276,7 @@ namespace PTS.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("PTS.Domain.Entities.RamEntity", "RamEntity")
-                        .WithMany()
+                        .WithMany("ProductDetailEntities")
                         .HasForeignKey("RamEntityId");
 
                     b.HasOne("PTS.Domain.Entities.ScreenEntity", "ScreenEntity")
@@ -1321,6 +1391,11 @@ namespace PTS.Persistence.Migrations
                     b.Navigation("ProductDetailEntities");
                 });
 
+            modelBuilder.Entity("PTS.Domain.Entities.RamEntity", b =>
+                {
+                    b.Navigation("ProductDetailEntities");
+                });
+
             modelBuilder.Entity("PTS.Domain.Entities.ScreenEntity", b =>
                 {
                     b.Navigation("ProductDetailEntities");
@@ -1328,6 +1403,8 @@ namespace PTS.Persistence.Migrations
 
             modelBuilder.Entity("PTS.Domain.Entities.UserEntity", b =>
                 {
+                    b.Navigation("AddressEntities");
+
                     b.Navigation("Cart");
                 });
 #pragma warning restore 612, 618

@@ -33,13 +33,13 @@ namespace PTS.Persistence.Services
 			var user = await _userManager.FindByNameAsync(userName);
 			if (user == null)
 			{
-				return new LoginResponse(false, null, null, null, null, null, null, false, null);
+				return new LoginResponse(user.Id,false, null, null, null, null, null, null, false, null);
 			}
 
 			var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 			if (!result.Succeeded)
 			{
-				return new LoginResponse(false, null, null, null, null, null, null, false, null);
+				return new LoginResponse(0,false, null, null, null, null, null, null, false, null);
 			}
 
 			string token = GenerateJwtToken(user);
@@ -54,9 +54,9 @@ namespace PTS.Persistence.Services
 			catch (Exception ex)
 			{
 				//_logger.LogError(ex, "An error occurred while getting roles for user {UserName}", userName);
-				return new LoginResponse(true, user.UserName, user.FullName, user.PhoneNumber, user.Address, user.Email, null, false, token);
+				return new LoginResponse(user.Id,true, user.UserName, user.FullName, user.PhoneNumber,"", user.Email, null, false, token);
 			}
-			return new LoginResponse(true, user.UserName, user.FullName, user.PhoneNumber, user.Address, user.Email, roles.FirstOrDefault(), isAdmin, token);
+			return new LoginResponse(user.Id,true, user.UserName, user.FullName, user.PhoneNumber, "", user.Email, roles.FirstOrDefault(), isAdmin, token);
 		}
 
 		private string GenerateJwtToken(UserEntity user)

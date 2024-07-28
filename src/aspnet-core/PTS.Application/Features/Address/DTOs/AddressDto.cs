@@ -1,15 +1,15 @@
 ﻿using PTS.Application.Common.Mappings;
 using PTS.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
-namespace PTS.Application.Features.Ram.DTOs
+namespace PTS.Application.Features.Address.DTOs
 {
-    public class RamDto : IMapFrom<RamEntity>
+    public class AddressDto : IMapFrom<AddressEntity>
     {
-        public int Id { get; set; }
-        public string Ma { get; set; }
-        public string ThongSo { get; set; }
+        public int AddressId { get; set; }
+        public string? AddressName { get; set; }
         public int? CrUserId { get; set; }
         public DateTime? CrDateTime { get; set; }
         public int Status { get; set; }
+        public int? UserEntityId { get; set; }
     }
 }

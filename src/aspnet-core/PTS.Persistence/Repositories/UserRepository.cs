@@ -75,7 +75,6 @@ namespace PTS.Persistence.Repositories
             {
                 // _update.Password = obj.Password;
                 _update.FullName = obj.FullName;
-                _update.Address = obj.Address;
                 _update.PhoneNumber = obj.PhoneNumber;
                 _update.Status = obj.Status;
                 _context.UserEntity.Update(_update);

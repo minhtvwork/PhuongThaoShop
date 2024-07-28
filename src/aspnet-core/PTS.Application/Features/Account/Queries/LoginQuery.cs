@@ -45,9 +45,9 @@ namespace PTS.Application.Features.Account.Queries
 		     	var roles = await _userManager.GetRolesAsync(user);
 		      	bool isAdmin =	roles.Contains("Admin");
 				var token = GenerateJwtToken(user);
-				return new LoginResponse(true, user.UserName, user.FullName, user.PhoneNumber, user.Address, user.Email, roles.FirstOrDefault(), isAdmin, token);
+				return new LoginResponse(user.Id, true, user.UserName, user.FullName, user.PhoneNumber, "", user.Email, roles.FirstOrDefault(), isAdmin, token);
 			}
-			return new LoginResponse(false, null, null, null, null, null, null, false, null);
+			return new LoginResponse(0,false, null, null, null, null, null, null, false, null);
 		}
 		private string GenerateJwtToken(UserEntity user)
 		{

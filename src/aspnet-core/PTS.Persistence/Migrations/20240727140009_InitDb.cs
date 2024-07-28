@@ -243,9 +243,6 @@ namespace PTS.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BirthDay = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DefaultActionId = table.Column<int>(type: "int", nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AvatarPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsEnabled = table.Column<bool>(type: "bit", nullable: true),
@@ -341,6 +338,28 @@ namespace PTS.Persistence.Migrations
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Address",
+                columns: table => new
+                {
+                    AddressId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AddressName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CrUserId = table.Column<int>(type: "int", nullable: true),
+                    CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    UserEntityId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.AddressId);
+                    table.ForeignKey(
+                        name: "FK_Address_Users_UserEntityId",
+                        column: x => x.UserEntityId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -466,6 +485,8 @@ namespace PTS.Persistence.Migrations
                     UserEntityId = table.Column<int>(type: "int", nullable: true),
                     CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdUserId = table.Column<int>(type: "int", nullable: true),
+                    UpdDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -567,6 +588,8 @@ namespace PTS.Persistence.Migrations
                     BillEntityId = table.Column<int>(type: "int", nullable: false),
                     CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdUserId = table.Column<int>(type: "int", nullable: true),
+                    UpdDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -647,6 +670,8 @@ namespace PTS.Persistence.Migrations
                     SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CrUserId = table.Column<int>(type: "int", nullable: true),
                     CrDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdUserId = table.Column<int>(type: "int", nullable: true),
+                    UpdDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     ProductDetailEntityId = table.Column<int>(type: "int", nullable: true),
                     BillDetailEntityId = table.Column<int>(type: "int", nullable: true)
@@ -671,20 +696,33 @@ namespace PTS.Persistence.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, "1", "Administrator", "Admin", "ADMIN" },
-                    { 2, "1", "Employee", "Employee", "EMPLOYEE" },
-                    { 3, "1", "Customer", "Customer", "CUSTOMER" }
+                    { 1, "phuongthaoshop.vn", "Administrator", "Admin", "ADMIN" },
+                    { 2, "phuongthaoshop.vn", "Employee", "Employee", "EMPLOYEE" },
+                    { 3, "phuongthaoshop.vn", "Customer", "Customer", "CUSTOMER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "Address", "AvatarPath", "BirthDay", "ConcurrencyStamp", "CrDateTime", "DefaultActionId", "Email", "EmailConfirmed", "FullName", "IsEnabled", "LastTimeChangePass", "LastTimeLogin", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "Notes", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Status", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, null, null, null, "phuongthaoshop.vn", null, null, "admin@phuongthaoshop.vn", false, "Administrator", null, null, null, false, null, "ADMIN@PHUONGTHAOSHOP.VN", "ADMIN", null, "AQAAAAIAAYagAAAAENoSyJq+fsaU/otrS3m9MDzLeC06rnA+tlPziFDtP90djGCUahLBTKDkQfigUE5V9A==", null, false, "phuongthaoshop.vn", null, false, "adminphuongthao" });
+                columns: new[] { "Id", "AccessFailedCount", "AvatarPath", "ConcurrencyStamp", "CrDateTime", "Email", "EmailConfirmed", "FullName", "IsEnabled", "LastTimeChangePass", "LastTimeLogin", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "Notes", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Status", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { 1, 0, null, "phuongthaoshop.vn", null, "adphuongthao@gmail.com", false, "Nguyễn Phương Thảo", null, null, null, false, null, "ADPHUONGTHAO@GMAIL.COM", "ADPHUONGTHAO", null, "AQAAAAIAAYagAAAAEERQ5zhByb7xZMDVKaUFJyA4tG2mPyAfI4qumrpxq9HQUA0hi1Lqq0Z5VHIn+Snh5A==", null, false, "phuongthaoshop.vn", null, false, "adphuongthao" },
+                    { 2, 0, null, "phuongthaoshop.vn", null, "thuhuyen@gmail.com", false, "Vũ Thị Huyền", null, null, null, false, null, "THUHUYEN@GMAIL.COM", "THUHUYEN", null, "AQAAAAIAAYagAAAAEAsRvIOt7/n/cu9jrjdu+J3p65VkYt3/Rd32McBFRq7CndQLFNEbv4s/66UZYXHP+w==", null, false, "phuongthaoshop.vn", null, false, "thuhuyen" }
+                });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { 1, 1 });
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 3, 2 }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Address_UserEntityId",
+                table: "Address",
+                column: "UserEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bill_UserEntityId",
@@ -826,6 +864,9 @@ namespace PTS.Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Address");
+
             migrationBuilder.DropTable(
                 name: "CartDetail");
 

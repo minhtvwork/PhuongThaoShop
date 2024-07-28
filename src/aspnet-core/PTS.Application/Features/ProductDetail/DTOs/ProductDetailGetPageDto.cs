@@ -9,25 +9,9 @@ using System.Threading.Tasks;
 
 namespace PTS.Application.Features.ProductDetail.DTOs
 {
-    public class PProductDetailGetPageDto : IMapFrom<ProductDetailEntity>
+    public class ProductDetailGetPageDto : ProductDetailDto
     {
-        public int Id { get; set; }
-        [Required]
-        [MaxLength(50)]
-        public string Code { get; set; }
-        public decimal Price { get; set; }
-        public decimal OldPrice { get; set; }
-        public string ImageMain { get; set; }
         public int IdImage { get; set; }
-        public string? Upgrade { get; set; }
-        public string? Description { get; set; }
-        public int ProductEntityId { get; set; }
-        public int? ColorEntityId { get; set; }
-        public int? RamEntityId { get; set; }
-        public int? CpuEntityId { get; set; }
-        public int? HardDriveEntityId { get; set; }
-        public int? ScreenEntityId { get; set; }
-        public int? CardVGAEntityId { get; set; }
         public int? ManufacturerEntityId { get; set; }
         public int? CrUserId { get; set; }
         public int? DiscountId { get; set; }
@@ -52,6 +36,7 @@ namespace PTS.Application.Features.ProductDetail.DTOs
         public string? TenCardVGA { get; set; }
         public string? ThongSoCardVGA { get; set; }
         public int PhanTramGiamGia { get; set; }
-        public int Status { get; set; }
+        public string? ImageMain { get; set; }
+        public int Stt {  get; set; }   
     }
 }

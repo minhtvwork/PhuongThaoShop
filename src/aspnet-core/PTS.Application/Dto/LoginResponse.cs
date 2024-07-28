@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PTS.Application.Dto
 {
-    public record LoginResponse(bool IsSuccess, string? UserName, string? FullName, string? PhoneNumber, string? Address, string? Email, string? RoleName, bool IsAdmin, string? AccessToken)
+    public record LoginResponse(int id, bool IsSuccess, string? UserName, string? FullName, string? PhoneNumber, string? Address, string? Email, string? RoleName, bool IsAdmin, string? AccessToken)
     {
     }
 }

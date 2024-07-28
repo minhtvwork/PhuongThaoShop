@@ -16,7 +16,9 @@ namespace PTS.Domain.Entities
         public int BillEntityId { get; set; }
 		public int? CrUserId { get; set; }
 		public DateTime? CrDateTime { get; set; }
-		public int Status { get; set; }
+        public int? UpdUserId { get; set; }
+        public DateTime? UpdDateTime { get; set; }
+        public int Status { get; set; }
 		public virtual BillEntity? BillEntity { get; set; }
         public virtual SerialEntity? SerialEntity { get; set; }
     }

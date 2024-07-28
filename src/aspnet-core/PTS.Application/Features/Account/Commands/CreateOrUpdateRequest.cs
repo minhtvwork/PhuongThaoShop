@@ -26,7 +26,6 @@ namespace PTS.Application.Features.Account.Commands
             user.PhoneNumber = request.UserDto.PhoneNumber;
             user.FullName = request.UserDto.FullName;
             user.Email = request.UserDto.Email;
-            user.Address = request.UserDto.Address;
             PasswordHasher<UserEntity> passwordHasher = new PasswordHasher<UserEntity>();
             user.PasswordHash = passwordHasher.HashPassword(user, request.UserDto.Password);
            // user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.UserDto.Password);

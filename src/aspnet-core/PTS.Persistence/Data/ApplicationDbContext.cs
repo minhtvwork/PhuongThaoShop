@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NAudio.CoreAudioApi;
 using PTS.Domain.Entities;
+using System.Net;
 
 namespace PTS.Data
 {
@@ -41,6 +42,7 @@ namespace PTS.Data
         public virtual DbSet<ContactEntity> ContactEntity { get; set; }
         public virtual DbSet<DiscountEntity> DiscountEntityy { get; set; }
         public virtual DbSet<ProductDetailImage> ProductDetailImage { get; set; }
+        public virtual DbSet<AddressEntity> AddressEntity { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

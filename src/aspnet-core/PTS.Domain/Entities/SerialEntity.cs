@@ -13,7 +13,9 @@ namespace PTS.Domain.Entities
         public string SerialNumber { get; set; }
 		public int? CrUserId { get; set; }
 		public DateTime? CrDateTime { get; set; }
-		public int Status { get; set; }
+        public int? UpdUserId { get; set; }
+        public DateTime? UpdDateTime { get; set; }
+        public int Status { get; set; }
 		public int? ProductDetailEntityId {  get; set; }
         [ForeignKey("BillDetailEntity")]
         public int? BillDetailEntityId { get; set; }

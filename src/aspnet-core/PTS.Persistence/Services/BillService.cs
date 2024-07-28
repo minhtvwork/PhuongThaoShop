@@ -83,7 +83,7 @@ namespace PTS.Persistence.Services
                     Status = 2, // Trạng thái 2: Chờ xác nhận
                     FullName = user != null ? user.FullName : command.FullName,
                     PhoneNumber = user != null ? user.PhoneNumber : command.PhoneNumber,
-                    Address = user != null ? user.Address : command.Address,
+                    Address = command.Address,
                     UserEntityId = user != null ? user.Id : null,
                     Payment = command.Payment,
                     IsPayment = false,

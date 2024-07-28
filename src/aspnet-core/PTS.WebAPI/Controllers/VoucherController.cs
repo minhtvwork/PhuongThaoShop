@@ -1,49 +1,51 @@
 ﻿
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using PTS.Application.Features.BillDetail.Commands;
-using PTS.Application.Features.BillDetail.Queries;
+using PTS.Application.Features.Voucher.Commands;
+using PTS.Application.Features.Voucher.Queries;
 
 namespace PTS.WebAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class BillDetailController : BaseController
-	{
-		public BillDetailController()
-		{
-		
-		}
-		[HttpGet("GetAll")]
-		public async Task<IActionResult> GetAll()
-		{
-			return Ok(await Mediator.Send(new BillDetailGetAllQuery()));
-		}
-		
-		//[HttpPost("GetPage")]
-		//public async Task<IActionResult> GetPage(BillDetailGetPageQuery query)
-		//{
-		//	return Ok(await _mediator.Send(query));
-		//}
-		[HttpPost("GetByBillId")]
-		public async Task<IActionResult> GetByBillId(BillDetailGetByBillIdQuery query)
-		{
-			return Ok(await Mediator.Send(query));
-		}
-		//[HttpPost("Create")]
-		//public async Task<IActionResult> Create(BillDetailCreateCommand command)
-		//{
-		//	return Ok(await _mediator.Send(command));
-		//}
-		//[HttpPost("Update")]
-		//public async Task<IActionResult> Update(BillDetailEditCommand command)
-		//{
-		//	return Ok(await _mediator.Send(command));
-		//}
-		//[HttpPost("Delete")]
-		//public async Task<IActionResult> DeleteBillDetail(BillDetailDeleteCommand command)
-		//{
-		//	return Ok(await _mediator.Send(command));
-		//}
-	}
+	
+    public class VoucherController : BaseController
+    {
+        private readonly IMediator _mediator;
+        public VoucherController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _mediator.Send(new VoucherGetAllQuery()));
+        }
+
+        [HttpPost("GetPage")]
+        public async Task<IActionResult> GetPage(VoucherGetPageQuery query)
+        {
+            return Ok(await _mediator.Send(query));
+        }
+        [HttpPost("GetById")]
+        public async Task<IActionResult> GetById(VoucherGetByIdQuery query)
+        {
+            return Ok(await _mediator.Send(query));
+        }
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create(VoucherCreateCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpPost("Update")]
+        public async Task<IActionResult> Update(VoucherEditCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+        [HttpPost("Delete")]
+        public async Task<IActionResult> DeleteVoucher(VoucherDeleteCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+    }
 }
