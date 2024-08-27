@@ -11,6 +11,7 @@ using MediatR;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using PTS.Application.Features.Voucher.Queries;
 using PTS.Application.Features.Image.Queries;
+using PTS.Application.Features.Product.Commands;
 namespace PTS.WebAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -86,10 +87,34 @@ namespace PTS.WebAPI.Controllers
             {
                Name = file.FileName,
                Url = $"/uploads/{file.FileName}",
-               CrDateTime = DateTime.Now
+               CrDateTime = DateTime.Now,
+               Status = 1
             };
             return Ok(await _mediator.Send(command));
         }
+        [HttpPost("Update")]
+        public async Task<IActionResult> CreateOrUpdate(ImageEditCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete(int id,string url)
+        {
+            if (string.IsNullOrEmpty(url))
+                return BadRequest("No file URL provided");
+            var fileName = Path.GetFileName(url);
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "uploads", fileName);
+            if (!System.IO.File.Exists(filePath))
+                return NotFound("File not found");
+            System.IO.File.Delete(filePath);
+            var command = new ImageDeleteCommand
+            {
+               Id = id
+            };
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
 
         //[HttpPut]
         //public async Task<IActionResult> UpdateImage(ImageEntity image)
@@ -164,7 +189,7 @@ namespace PTS.WebAPI.Controllers
 
 
 
-      //  [HttpPost]
+        //  [HttpPost]
         //[Route("TaiAnh")]
         //public async Task<IActionResult> TaiAnh(IFormFile file, string objectType, int? objectId, string imageCode)
         //{

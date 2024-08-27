@@ -8,6 +8,8 @@ using PTS.Domain.Entities;
 using PTS.Application.Interfaces.Repositories;
 using System.Linq.Expressions;
 using PTS.WebAPI.Controllers;
+using PTS.Application.Features.Cpu.Commands;
+using PTS.Application.Features.Cpu.Queries;
 
 namespace PTS.WebAPI.Controllers
 {
@@ -15,45 +17,33 @@ namespace PTS.WebAPI.Controllers
     [ApiController]
     public class CpuController : BaseController
     {
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-        public CpuController(IMapper mapper, IUnitOfWork unitOfWork)
+        public CpuController()
         {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
         }
-        [HttpGet("GetList")]
-        public async Task<IActionResult> GetList()
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(await _unitOfWork._cpuRepository.GetList());
+            return Ok(await Mediator.Send(new CpuGetAllQuery()));
         }
-        [HttpPost("GetPaged")]
-        public async Task<IActionResult> GetPaged(PagedRequestDto request)
+        [HttpPost("GetPage")]
+        public async Task<IActionResult> GetPage(CpuGetPageQuery query)
         {
-            return Ok(await _unitOfWork._cpuRepository.GetPagedAsync(request));
+            return Ok(await Mediator.Send(query));
         }
-        [HttpGet("GetById")]
-        public async Task<IActionResult> GetById(int id)
+        [HttpPost("GetById")]
+        public async Task<IActionResult> GetById(CpuGetByIdQuery query)
         {
-            return Ok(await _unitOfWork._cpuRepository.GetById(id));
+            return Ok(await Mediator.Send(query));
         }
-        [HttpPost("CreateOrUpdateAsync")]
-        public async Task<IActionResult> CreateOrUpdateAsync(CpuDto objDto)
+        [HttpPost("CreateOrUpdate")]
+        public async Task<IActionResult> CreateOrUpdate(CpuCreateOrUpdateCommand command)
         {
-            var obj = _mapper.Map<CpuEntity>(objDto);
-            if (objDto.Id > 0)
-            {
-                return Ok(await _unitOfWork._cpuRepository.Update(obj));
-            }
-            else
-            {
-                return Ok(await _unitOfWork._cpuRepository.Create(obj));
-            }
+            return Ok(await Mediator.Send(command));
         }
         [HttpPost("Delete")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(CpuDeleteCommand command)
         {
-            return Ok(await _unitOfWork._cpuRepository.Delete(id));
+            return Ok(await Mediator.Send(command));
         }
     }
 }

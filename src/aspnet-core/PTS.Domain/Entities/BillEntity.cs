@@ -18,6 +18,7 @@ namespace PTS.Domain.Entities
         public string? FullName { get; set; }
         [MaxLength(150)]
         public string? Address { get; set; }
+        public string? Notes { get; set; }
         public int Payment { get; set; }
         //1 thanh toán tại cửa hàng 2 thanh toán khi nhận hàng 3 thanh toán bằng chuyển khoản ngân hàng
         public bool IsPayment { get; set; }

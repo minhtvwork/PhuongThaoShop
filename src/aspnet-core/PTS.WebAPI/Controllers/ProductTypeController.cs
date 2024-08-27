@@ -6,51 +6,46 @@ using PTS.Shared.Dto;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
 using PTS.Application.Interfaces.Repositories;
+using PTS.Application.Features.ProductType.Commands;
+using PTS.Application.Features.ProductType.Queries;
 namespace PTS.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ProductTypeController : BaseController
     {
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-        public ProductTypeController(IMapper mapper, IUnitOfWork unitOfWork)
+        public ProductTypeController()
         {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
         }
-        [HttpGet("GetList")]
-        public async Task<IActionResult> GetList()
+        [Authorize(Policy = "AdminPolicy")]
+        //[Authorize(Roles = "Admin")]
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(await _unitOfWork._productTypeRepository.GetList());
+            return Ok(await Mediator.Send(new ProductTypeGetAllQuery()));
+
         }
-        [HttpPost("GetPaged")]
-        public async Task<IActionResult> GetPaged(PagedRequestDto request)
+       /// [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "AdminPolicy")]
+        [HttpPost("GetPage")]
+        public async Task<IActionResult> GetPage(ProductTypeGetPageQuery query)
         {
-            return Ok(await _unitOfWork._productTypeRepository.GetPagedAsync(request));
+            return Ok(await Mediator.Send(query));
         }
-        [HttpGet("GetById")]
-        public async Task<IActionResult> GetById(int id)
+        [HttpPost("GetById")]
+        public async Task<IActionResult> GetById(ProductTypeGetByIdQuery query)
         {
-            return Ok(await _unitOfWork._productTypeRepository.GetById(id));
+            return Ok(await Mediator.Send(query));
         }
-        [HttpPost("CreateOrUpdateAsync")]
-        public async Task<IActionResult> CreateOrUpdateAsync(ProductTypeDto objDto)
+        [HttpPost("CreateOrUpdate")]
+        public async Task<IActionResult> CreateOrUpdate(ProductTypeCreateOrUpdateCommand command)
         {
-            var obj = _mapper.Map<ProductTypeEntity>(objDto);
-            if (objDto.Id > 0)
-            {
-                return Ok(await _unitOfWork._productTypeRepository.Update(obj));
-            }
-            else
-            {
-                return Ok(await _unitOfWork._productTypeRepository.Create(obj));
-            }
+            return Ok(await Mediator.Send(command));
         }
         [HttpPost("Delete")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(ProductTypeDeleteCommand command)
         {
-            return Ok(await _unitOfWork._productTypeRepository.Delete(id));
+            return Ok(await Mediator.Send(command));
         }
     }
 }

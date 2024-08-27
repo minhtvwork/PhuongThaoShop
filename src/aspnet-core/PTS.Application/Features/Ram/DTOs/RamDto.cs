@@ -11,5 +11,6 @@ namespace PTS.Application.Features.Ram.DTOs
         public int? CrUserId { get; set; }
         public DateTime? CrDateTime { get; set; }
         public int Status { get; set; }
+        public int Stt { get; set; }
     }
 }

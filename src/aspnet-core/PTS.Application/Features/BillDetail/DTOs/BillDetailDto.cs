@@ -14,5 +14,6 @@ namespace PTS.Application.Features.BillDetail.DTOs
         public int? CrUserId { get; set; }
         public DateTime? CrDateTime { get; set; }
         public int Status { get; set; }
+        public List<string> ListSerial { get; set; }
     }
 }

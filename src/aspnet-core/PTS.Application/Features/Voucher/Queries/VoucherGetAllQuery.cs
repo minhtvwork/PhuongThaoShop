@@ -26,7 +26,7 @@ namespace PTS.Application.Features.Voucher.Queries
 		{
 			var result = await _unitOfWork.Repository<VoucherEntity>().Entities
 				.AsNoTracking()
-				.Where(x => x.Status != (int)StatusEnum.Delete)
+				.Where(x => x.Status == (int)StatusEnum.Active && x.StartDay <= DateTime.Now && DateTime.Now <= x.EndDay)
 				.ProjectTo<VoucherDto>(_mapper.ConfigurationProvider)
 				.ToListAsync(cancellationToken);
 			return await Result<List<VoucherDto>>.SuccessAsync(result);

@@ -5,6 +5,8 @@ using PTS.Application.Dto;
 using PTS.Domain.Entities;
 using PTS.Application.Interfaces.Repositories;
 using PTS.Shared.Dto;
+using PTS.Application.Features.HardDrive.Commands;
+using PTS.Application.Features.HardDrive.Queries;
 
 namespace PTS.WebAPI.Controllers
 {
@@ -12,45 +14,33 @@ namespace PTS.WebAPI.Controllers
     [ApiController]
     public class HardDriveController : BaseController
     {
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-        public HardDriveController(IMapper mapper, IUnitOfWork unitOfWork)
+        public HardDriveController()
         {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
         }
-        [HttpGet("GetList")]
-        public async Task<IActionResult> GetList()
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(await _unitOfWork._hardDriveRepository.GetList());
+            return Ok(await Mediator.Send(new HardDriveGetAllQuery()));
         }
-        [HttpPost("GetPaged")]
-        public async Task<IActionResult> GetPaged(PagedRequestDto request)
+        [HttpPost("GetPage")]
+        public async Task<IActionResult> GetPage(HardDriveGetPageQuery query)
         {
-            return Ok(await _unitOfWork._hardDriveRepository.GetPagedAsync(request));
+            return Ok(await Mediator.Send(query));
         }
-        [HttpGet("GetById")]
-        public async Task<IActionResult> GetById(int id)
+        [HttpPost("GetById")]
+        public async Task<IActionResult> GetById(HardDriveGetByIdQuery query)
         {
-            return Ok(await _unitOfWork._hardDriveRepository.GetById(id));
+            return Ok(await Mediator.Send(query));
         }
-        [HttpPost("CreateOrUpdateAsync")]
-        public async Task<IActionResult> CreateOrUpdateAsync(HardDriveDto objDto)
+        [HttpPost("CreateOrUpdate")]
+        public async Task<IActionResult> CreateOrUpdate(HardDriveCreateOrUpdateCommand command)
         {
-            var obj = _mapper.Map<HardDriveEntity>(objDto);
-            if (objDto.Id > 0)
-            {
-                return Ok(await _unitOfWork._hardDriveRepository.Update(obj));
-            }
-            else
-            {
-                return Ok(await _unitOfWork._hardDriveRepository.Create(obj));
-            }
+            return Ok(await Mediator.Send(command));
         }
         [HttpPost("Delete")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(HardDriveDeleteCommand command)
         {
-            return Ok(await _unitOfWork._hardDriveRepository.Delete(id));
+            return Ok(await Mediator.Send(command));
         }
     }
 }

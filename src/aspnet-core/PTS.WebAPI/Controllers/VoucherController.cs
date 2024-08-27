@@ -1,6 +1,8 @@
 ﻿
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PTS.Application.Features.Product.Commands;
+using PTS.Application.Features.Product.Queries;
 using PTS.Application.Features.Voucher.Commands;
 using PTS.Application.Features.Voucher.Queries;
 
@@ -21,26 +23,20 @@ namespace PTS.WebAPI.Controllers
         {
             return Ok(await _mediator.Send(new VoucherGetAllQuery()));
         }
-
         [HttpPost("GetPage")]
         public async Task<IActionResult> GetPage(VoucherGetPageQuery query)
         {
-            return Ok(await _mediator.Send(query));
+            return Ok(await Mediator.Send(query));
         }
         [HttpPost("GetById")]
         public async Task<IActionResult> GetById(VoucherGetByIdQuery query)
         {
             return Ok(await _mediator.Send(query));
         }
-        [HttpPost("Create")]
-        public async Task<IActionResult> Create(VoucherCreateCommand command)
+        [HttpPost("CreateOrUpdate")]
+        public async Task<IActionResult> CreateOrUpdate(VoucherCreateOrUpdateCommand command)
         {
-            return Ok(await _mediator.Send(command));
-        }
-        [HttpPost("Update")]
-        public async Task<IActionResult> Update(VoucherEditCommand command)
-        {
-            return Ok(await _mediator.Send(command));
+            return Ok(await Mediator.Send(command));
         }
         [HttpPost("Delete")]
         public async Task<IActionResult> DeleteVoucher(VoucherDeleteCommand command)

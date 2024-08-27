@@ -34,7 +34,7 @@ namespace PTS.WebAPI.Controllers
         }
         [HttpPost("CreateOrUpdate")]
         public async Task<IActionResult> CreateOrUpdate(BillDetailCreateOrUpdateCommand command)
-        {
+         {
             return Ok(await Mediator.Send(command));
         }
         [HttpPost("Delete")]

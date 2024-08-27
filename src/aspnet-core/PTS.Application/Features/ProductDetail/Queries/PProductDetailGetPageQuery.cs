@@ -6,6 +6,7 @@ using PTS.Application.DTOs;
 using PTS.Application.Extensions;
 using PTS.Application.Features.ProductDetail.DTOs;
 using PTS.Application.Interfaces.Repositories;
+using PTS.Core.Enums;
 using PTS.Domain.Entities;
 using PTS.Shared;
 
@@ -16,8 +17,8 @@ namespace PTS.Application.Features.ProductDetail.Queries
         public int? Manufacturer { get; set; }
         public string? ProductType { get; set; }
         public int? Ram { get; set; }
-        public string? Cpu { get; set; }
-        public string? CardVGA { get; set; }
+        public int Cpu { get; set; }
+        public int CardVGA { get; set; }
         public string? HardDrive { get; set; }
         public string? Screen { get; set; }
         public string? Search { get; set; }
@@ -42,8 +43,8 @@ namespace PTS.Application.Features.ProductDetail.Queries
         {
             try
             {
-                var image = _unitOfWork.Repository<ImageEntity>().Entities.AsNoTracking();
-                var query = (from a in _unitOfWork.Repository<ProductDetailEntity>().Entities.AsNoTracking()
+                var image = _unitOfWork.Repository<ImageEntity>().Entities.Where(x => x.Status != (int)StatusEnum.Delete).AsNoTracking();
+                var query = (from a in _unitOfWork.Repository<ProductDetailEntity>().Entities.Where(x => x.Status == 1).AsNoTracking()
                              join pImage in _unitOfWork.Repository<ProductDetailImage>().Entities.Where(x => x.IsIndex).AsNoTracking()
                                   on a.Id equals pImage.ProductDetailId into pImageGroup
                              from pImage in pImageGroup.DefaultIfEmpty()
@@ -51,12 +52,13 @@ namespace PTS.Application.Features.ProductDetail.Queries
                              {
                                  Id = a.Id,
                                  Code = a.Code,
-                                 OldPrice = a.OldPrice,
                                  Price = a.Price,
                                  Status = a.Status,
                                  Upgrade = a.Upgrade,
                                  Description = a.Description,
                                  CrDateTime = a.CrDateTime,
+                                 CpuEntityId = a.CpuEntityId,
+                                 CardVGAEntityId = a.CardVGAEntityId,
                                  AvailableQuantity = 0,
                                  ThongSoRam = a.RamEntity.ThongSo,
                                  MaRam = a.RamEntity.Ma,
@@ -77,7 +79,8 @@ namespace PTS.Application.Features.ProductDetail.Queries
                                  NameProductType = a.ProductEntity.ProductTypeEntity.Name,
                                  ManufacturerEntityId = a.ProductEntity.ManufacturerEntityId,
                                  NameManufacturer = a.ProductEntity.ManufacturerEntity.Name,
-                                 PhanTramGiamGia = Convert.ToInt32((((a.OldPrice - a.Price) / a.OldPrice) * 100)),
+                                 NewPrice = a.Price - (a.Discount != null ? a.Discount.Percentage : 0),
+                                 PhanTramGiamGia = a.Discount != null && a.Price != 0 ? Convert.ToInt32((a.Discount.Percentage / a.Price) * 100) : 0,
                                  IdImage = pImage != null ? pImage.ImageId : 0
                              });
                 if (queryInput.Manufacturer > 0)
@@ -155,14 +158,26 @@ namespace PTS.Application.Features.ProductDetail.Queries
                         break;
                 }
 
-                if (!string.IsNullOrEmpty(queryInput.Cpu))
+                if (!string.IsNullOrEmpty(queryInput.Keywords))
                 {
-                    query = query.Where(a => a.MaCpu.Contains(queryInput.Cpu) || a.TenCpu.Contains(queryInput.Cpu));
+                    query = query.Where(a => a.Code.Contains(queryInput.Keywords) || a.NameProduct.Contains(queryInput.Keywords) || a.NameProduct.Contains(queryInput.Keywords) || a.NameManufacturer.Contains(queryInput.Keywords) || a.ThongSoRam.Contains(queryInput.Keywords));
                 }
-                if (!string.IsNullOrEmpty(queryInput.CardVGA))
+                if(queryInput.Cpu > 0)
                 {
-                    query = query.Where(a => a.MaCardVGA.Contains(queryInput.CardVGA) || a.MaCardVGA.Contains(queryInput.CardVGA));
+                    query = query.Where(x => x.CpuEntityId == queryInput.Cpu);
                 }
+                if (queryInput.CardVGA > 0)
+                {
+                    query = query.Where(x => x.CardVGAEntityId == queryInput.CardVGA);
+                }
+                //if (!string.IsNullOrEmpty(queryInput.Cpu))
+                //{
+                //    query = query.Where(a => a.MaCpu.Contains(queryInput.Cpu) || a.TenCpu.Contains(queryInput.Cpu));
+                //}
+                //if (!string.IsNullOrEmpty(queryInput.CardVGA))
+                //{
+                //    query = query.Where(a => a.MaCardVGA.Contains(queryInput.CardVGA) || a.MaCardVGA.Contains(queryInput.CardVGA));
+                //}
                 var result = await query.ToPaginatedListAsync(queryInput.Page, queryInput.PageSize, cancellationToken);
 
                 foreach (var productDetail in result.Data)
@@ -191,7 +206,7 @@ namespace PTS.Application.Features.ProductDetail.Queries
         {
             int getCount = _unitOfWork.Repository<ProductDetailEntity>().Entities.AsNoTracking()
                 .Where(x => x.Status > 0 && x.Id == id)
-                .Join(_unitOfWork.Repository<SerialEntity>().Entities.AsNoTracking(),
+                .Join(_unitOfWork.Repository<SerialEntity>().Entities.AsNoTracking().Where(x => x.BillDetailEntityId == null && x.Status != (int)StatusEnum.Delete),
                       a => a.Id,
                       b => b.ProductDetailEntityId,
                       (a, b) => new { a.Id })

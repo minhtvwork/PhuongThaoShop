@@ -8,8 +8,8 @@ namespace PTS.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize(Roles = "admin")]
-    [AllowAnonymous]
+     //[Authorize(Roles = "Admin")]
+   [AllowAnonymous]
     public class BaseController : ControllerBase
     {
         private ISender _mediator = null;

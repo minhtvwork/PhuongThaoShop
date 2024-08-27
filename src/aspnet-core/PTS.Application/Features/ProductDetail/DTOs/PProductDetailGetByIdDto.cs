@@ -13,11 +13,10 @@ namespace PTS.Application.Features.ProductDetail.DTOs
 	public class PProductDetailGetByIdDto 
 	{
 		public int Id { get; set; }
-		[Required]
-		[MaxLength(50)]
 		public string Code { get; set; }
 		public decimal Price { get; set; }
-		public decimal OldPrice { get; set; }
+        public decimal NewPrice { get; set; }
+        public decimal OldPrice { get; set; }
 		public string ImageMain { get; set; }
 		public int IdImage { get; set; }
 		public string? Upgrade { get; set; }
@@ -44,5 +43,6 @@ namespace PTS.Application.Features.ProductDetail.DTOs
 		public List<string>? ListImage { get; set; }
 		public int PhanTramGiamGia { get; set; }
 		public int Status { get; set; }
-	}
+        public string strStatus { get; set; }
+    }
 }

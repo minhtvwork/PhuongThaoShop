@@ -11,6 +11,7 @@ namespace PTS.Application.Interfaces.Repositories
         Task<ServiceResponse> Update(ProductDetailEntity obj);
         Task<ServiceResponse> Delete(int id);
         Task<IEnumerable<ProductDetailEntity>> GetListAsync();
+        Task<int> GetIdByCode(string code);
         Task<IEnumerable<ProductDetailDto>> PGetProductDetail(int? getNumber, string? codeProductDetail, int? status, string? search, decimal? from, decimal? to, string? sortBy, int? page,
             string? productType, string? namufacturer, string? ram, string? CPU, string? cardVGA);
         Task<IEnumerable<ProductDetailDto>> PublicGetList(GetProductDetailRequest request);

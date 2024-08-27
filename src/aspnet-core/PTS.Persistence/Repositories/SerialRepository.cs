@@ -126,5 +126,10 @@ namespace PTS.Persistence.Repositories
         {
             return await _context.SerialEntity.FindAsync(id);
         }
+        public async Task<SerialEntity> FindBySerialNumberAsync(string serialNumber)
+        {
+            return await _context.SerialEntity
+                .FirstOrDefaultAsync(s => s.SerialNumber == serialNumber);
+        }
     }
 }

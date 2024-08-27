@@ -7,6 +7,7 @@ using PTS.Persistence.Extensions;
 using PTS.Application.Features.Cart.Queries;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using OfficeOpenXml;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication(options =>
@@ -23,13 +24,20 @@ builder.Services.AddAuthentication(options =>
 		ValidateIssuerSigningKey = true,
 		ValidIssuer = builder.Configuration["Jwt:Issuer"],
 		ValidAudience = builder.Configuration["Jwt:Issuer"],
-		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-	};
+		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+       // RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+    };
+});
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+    {
+        policy.RequireClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "Admin");
+    });
 });
 
 //IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddApplicationLayer(builder.Configuration);
-//builder.Services.AddInfrastructureLayer();
 builder.Services.AddPersistenceLayer(builder.Configuration);
 //builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -73,6 +81,21 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api.phuongthaoshop.vn v1"));
 }
+app.Use(async (context, next) =>
+{
+    var user = context.User;
+    if (user?.Identity?.IsAuthenticated == true)
+    {
+        var claimsIdentity = user.Identity as ClaimsIdentity;
+        var roleClaim = claimsIdentity?.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+        if (roleClaim != null)
+        {
+            claimsIdentity?.AddClaim(new Claim(ClaimsIdentity.DefaultRoleClaimType, roleClaim.Value));
+        }
+    }
+    await next();
+});
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseHttpsRedirection();
@@ -93,7 +116,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

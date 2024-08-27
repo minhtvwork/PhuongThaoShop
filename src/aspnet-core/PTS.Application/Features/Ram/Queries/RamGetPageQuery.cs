@@ -35,6 +35,14 @@ namespace PTS.Application.Features.Ram.Queries
             query = query.OrderBy(x => x.CrDateTime);
             var pQuery = query.ProjectTo<RamDto>(_mapper.ConfigurationProvider);
             var result = await pQuery.ToPaginatedListAsync(queryInput.Page, queryInput.PageSize, cancellationToken);
+            if (result.Data != null && result.Data.Any())
+            {
+                int index = (queryInput.Page - 1) * queryInput.PageSize + 1;
+                foreach (var item in result.Data)
+                {
+                    item.Stt = index++;
+                }
+            }
             return result;
         }
     }

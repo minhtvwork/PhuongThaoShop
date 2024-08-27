@@ -37,15 +37,16 @@ namespace PTS.Application.Features.Image.Commands
 				{
 					return await Result<int>.FailureAsync($"Id <b>{command.Id}</b> không tồn tại ");
 				}
-				entity = _mapper.Map<ImageEntity>(command);
-				entity.Status =(int)StatusEnum.Delete;
-				await _unitOfWork.Repository<ImageEntity>().UpdateFieldsAsync(entity,
-					x => x.Status);
-				var result = await _unitOfWork.Save(cancellationToken);
-				return result > 0
-						? await Result<int>.SuccessAsync(entity.Id, "Cập nhật dữ liệu thành công.")
-						: await Result<int>.FailureAsync("Cập nhật dữ liệu không thành công.");
-			}
+                await _unitOfWork.Repository<ImageEntity>().DeleteAsync(entity);
+
+                var deleteResult = await _unitOfWork.Save(cancellationToken);
+                if (deleteResult > 0)
+                {
+                    return await Result<int>.SuccessAsync($"Xóa dữ liệu thành công ");
+                }
+
+                return await Result<int>.FailureAsync($"Xóa dữ liệu không thành công ");
+            }
 			catch (Exception e)
 			{
 

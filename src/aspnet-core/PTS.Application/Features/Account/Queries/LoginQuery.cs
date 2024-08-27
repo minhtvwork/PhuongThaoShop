@@ -49,24 +49,34 @@ namespace PTS.Application.Features.Account.Queries
 			}
 			return new LoginResponse(0,false, null, null, null, null, null, null, false, null);
 		}
-		private string GenerateJwtToken(UserEntity user)
-		{
-			var claims = new List<Claim>
-			{
-				new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-					new Claim(ClaimTypes.NameIdentifier, user.FullName)
-			};
-			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-			var token = new JwtSecurityToken(
-			issuer: _configuration["Jwt:Issuer"],
-				audience: _configuration["Jwt:Issuer"],
-				claims: claims,
-				expires: DateTime.Now.AddDays(30),
-				signingCredentials: creds);
+        private string GenerateJwtToken(UserEntity user)
+        {
+            var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // Sử dụng Id của User thay vì FullName
+        new Claim(ClaimTypes.Name, user.UserName) // Thêm Username vào claims
+    };
 
-			return new JwtSecurityTokenHandler().WriteToken(token);
-		}
-	}
+            var roles = _userManager.GetRolesAsync(user).Result;
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: "laptopphuongthao.vn",
+                audience: "laptopphuongthao.vn",
+                claims: claims,
+                expires: DateTime.Now.AddDays(30),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+    }
 }

@@ -16,6 +16,7 @@ namespace PTS.Application.Features.Bill.DTOs
         public string? PhoneNumber { get; set; }
         public string? FullName { get; set; }
         public string? Address { get; set; }
+        public string? Notes { get; set; }
         public int Payment { get; set; }
         //1 thanh toán tại cửa hàng 2 thanh toán khi nhận hàng 3 thanh toán bằng chuyển khoản ngân hàng
         public bool IsPayment { get; set; }
@@ -23,7 +24,9 @@ namespace PTS.Application.Features.Bill.DTOs
         public int? VoucherEntityId { get; set; }
         public int? UserEntityId { get; set; }
         public int? CrUserId { get; set; }
+        public int? UpdUserId { get; set; }
         public DateTime? CrDateTime { get; set; }
+        public DateTime? UpdDateTime { get; set; }
         public int Status { get; set; }
     }
 }

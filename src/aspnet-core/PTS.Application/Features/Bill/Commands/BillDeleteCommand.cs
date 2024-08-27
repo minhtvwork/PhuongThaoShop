@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace PTS.Application.Features.Bill.Commands
 {
@@ -37,19 +38,36 @@ namespace PTS.Application.Features.Bill.Commands
 				{
 					return await Result<int>.FailureAsync($"Id <b>{command.Id}</b> không tồn tại ");
 				}
-                if (entity.Status == (int)BillStatusEnum.Completed)
+                if (entity.Status != (int)BillStatusEnum.Cancelled)
                 {
-                    return await Result<int>.FailureAsync($"Hóa đơn đã hoàn thành không được xóa ");
+                    return await Result<int>.FailureAsync($"Bạn chỉ được phép xóa những đơn hàng đã hủy");
                 }
-                entity = _mapper.Map<BillEntity>(command);
-				entity.Status = (int)StatusEnum.Delete;
-				await _unitOfWork.Repository<BillEntity>().UpdateFieldsAsync(entity,
-					x => x.Status);
-				var result = await _unitOfWork.Save(cancellationToken);
-				return result > 0
-						? await Result<int>.SuccessAsync(entity.Id, "Cập nhật dữ liệu thành công.")
-						: await Result<int>.FailureAsync("Cập nhật dữ liệu không thành công.");
-			}
+                var listBillDetail = await _unitOfWork.Repository<BillDetailEntity>()
+                      .Entities
+                      .Where(x => x.BillEntityId == command.Id)
+                      .ToListAsync();
+				foreach (var item in listBillDetail)
+				{
+                    await _unitOfWork.Repository<BillDetailEntity>().DeleteAsync(item);
+                }
+				await _unitOfWork.Repository<BillEntity>().DeleteAsync(entity);
+
+                var deleteResult = await _unitOfWork.Save(cancellationToken);
+                if (deleteResult > 0)
+                {
+                    return await Result<int>.SuccessAsync($"Xóa dữ liệu thành công ");
+                }
+
+                return await Result<int>.FailureAsync($"Xóa dữ liệu không thành công ");
+                //            entity = _mapper.Map<BillEntity>(command);
+                //entity.Status = (int)StatusEnum.Delete;
+                //await _unitOfWork.Repository<BillEntity>().UpdateFieldsAsync(entity,
+                //	x => x.Status);
+                //var result = await _unitOfWork.Save(cancellationToken);
+                //return result > 0
+                //		? await Result<int>.SuccessAsync(entity.Id, "Cập nhật dữ liệu thành công.")
+                //		: await Result<int>.FailureAsync("Cập nhật dữ liệu không thành công.");
+            }
 			catch (Exception e)
 			{
 				throw;

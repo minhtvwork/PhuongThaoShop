@@ -16,5 +16,6 @@ namespace PTS.Application.Features.Voucher.DTOs
         public int SoLuong { get; set; }
         public int Status { get; set; }
         public DateTime CrDateTime { get; set; }
+        public int Stt { get; set; }
     }
 }

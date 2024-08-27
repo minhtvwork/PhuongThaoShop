@@ -7,6 +7,8 @@ using PTS.Application.Dto;
 using PTS.Application.Interfaces.Repositories;
 using PTS.Application.Features.Bill.Commands;
 using PTS.Application.Features.Bill.Queries;
+using PTS.Application.Features.ProductDetail.Commands;
+using PTS.Application.Features.BillDetail.Queries;
 
 namespace PTS.WebAPI.Controllers
 {
@@ -51,6 +53,12 @@ namespace PTS.WebAPI.Controllers
         {
             return Ok(await _mediator.Send(new GetListBillQuery()));
         }
+
+        [HttpGet("BillNotification")]
+        public async Task<IActionResult> BillNotification()
+        {
+            return Ok(await _mediator.Send(new BillNotificationQuery()));
+        }
         [HttpPost("GetBill")]
         public async Task<IActionResult> GetBill(GetPageBillDto request)
         {
@@ -61,11 +69,32 @@ namespace PTS.WebAPI.Controllers
         {
             return Ok(await Mediator.Send(query));
         }
+        [HttpPost("GetPage2")]
+        public async Task<IActionResult> GetPage2(BillGetPageV2Query query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
+        [HttpPost("GetById")]
+        public async Task<IActionResult> GetById(BillGetByIdQuery query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
+        [AllowAnonymous]
+        [HttpPost("BillGetByUserId")]
+        public async Task<IActionResult> BillGetByUserId(BillGetByUserIdQuery query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
         [HttpPost("BillCreateOrUpdate")]
         public async Task<IActionResult> BillCreateOrUpdate([FromBody] BillCreateOrUpdateCommand command)
         {
             var result = await Mediator.Send(command);
             return Ok(result);
+        }
+        [HttpPost("Delete")]
+        public async Task<IActionResult> Delete(BillDeleteCommand command)
+        {
+            return Ok(await Mediator.Send(command));
         }
         //[AllowAnonymous]
         //[HttpGet("PGetBillByInvoiceCode")]

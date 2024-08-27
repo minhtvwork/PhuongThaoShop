@@ -6,6 +6,8 @@ using PTS.Application.Dto;
 using PTS.Domain.Entities;
 using PTS.Application.Interfaces.Repositories;
 using OfficeOpenXml;
+using PTS.Application.Features.Serial.Commands;
+using PTS.Application.Features.Serial.Queries;
 
 namespace PTS.WebAPI.Controllers
 {
@@ -20,89 +22,117 @@ namespace PTS.WebAPI.Controllers
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
-        [HttpGet("GetList")]
-        public async Task<IActionResult> GetList()
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(await _unitOfWork._serialRepository.GetList());
+            return Ok(await Mediator.Send(new SerialGetAllQuery()));
         }
-        [HttpPost("GetPaged")]
-        public async Task<IActionResult> GetPaged(PagedRequestDto request)
+        [HttpPost("GetByCodeProductDetail")]
+        public async Task<IActionResult> GetByCodeProductDetail(SerialGetByCodeProductDetailQuery query)
         {
-            return Ok(await _unitOfWork._serialRepository.GetPagedAsync(request));
+            return Ok(await Mediator.Send(query));
         }
-        [HttpGet("GetById")]
-        public async Task<IActionResult> GetById(int id)
+
+        [HttpPost("GetPage")]
+        public async Task<IActionResult> GetPage(SerialGetPageQuery query)
         {
-            return Ok(await _unitOfWork._serialRepository.GetById(id));
+            return Ok(await Mediator.Send(query));
+        }
+        [HttpPost("GetById")]
+        public async Task<IActionResult> GetById(SerialGetByIdQuery query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
+        [HttpPost("CreateOrUpdate")]
+        public async Task<IActionResult> CreateOrUpdate(SerialCreateOrUpdateCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        [HttpPost("Update")]
+        public async Task<IActionResult> Update(SerialUpdateCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        [HttpPost("Delete")]
+        public async Task<IActionResult> DeleteSerial(SerialDeleteCommand command)
+        {
+            return Ok(await Mediator.Send(command));
         }
         [HttpPost]
         [Route("upload")]
         public async Task<IActionResult> Upload(IFormFile file)
         {
-            List<SerialEntity> list = new List<SerialEntity>();
             if (file == null || file.Length == 0)
-                return BadRequest("Tệp không hợp lệ");
+                return BadRequest(new { status = "error", message = "Tệp không hợp lệ" });
+
+            List<SerialEntity> list = new List<SerialEntity>();
             try
             {
-             using (var stream = new MemoryStream())
-            {
-                await file.CopyToAsync(stream);
-                using (var package = new ExcelPackage(stream))
+                using (var stream = new MemoryStream())
                 {
-                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-                    int rowCount = worksheet.Dimension.Rows;
-                    int colCount = worksheet.Dimension.Columns;
-
-                    for (int row = 2; row < rowCount; row++)
+                    await file.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
                     {
-                            var serialNumberCell = worksheet.Cells[row, 1].Value;
-                            if (serialNumberCell == null)
-                            {
-                                continue; 
-                            }
+                        ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                        int rowCount = worksheet.Dimension.Rows;
 
-                            var serial = new SerialEntity
+                        for (int row = 2; row <= rowCount++; row++)
+                        {
+                            var serialNumberCell = worksheet.Cells[row, 1].Value;
+                            var codeCell = worksheet.Cells[row, 2].Value;
+
+                            if (serialNumberCell == null || string.IsNullOrWhiteSpace(serialNumberCell.ToString()))
+                                continue;
+
+                            if (codeCell == null || string.IsNullOrWhiteSpace(codeCell.ToString()))
+                                continue;
+
+                            string serialNumber = serialNumberCell.ToString().Trim();
+                            string code = codeCell.ToString().Trim();
+                            var existingSerial = await _unitOfWork._serialRepository
+                                .FindBySerialNumberAsync(serialNumber);
+
+                            if (existingSerial != null)
+                                continue;
+
+                            var idProductDetail = await _unitOfWork._productDetailRepository.GetIdByCode(code);
+                            if (idProductDetail != null)
                             {
-                                SerialNumber = serialNumberCell.ToString().Trim(),
-                                Status = 1
-                                // ProductDetailEntityId = 1
-                            };
-                            list.Add(serial);
+                                var serial = new SerialEntity
+                                {
+                                    SerialNumber = serialNumber,
+                                    CrDateTime = DateTime.Now,
+                                    Status = 1,
+                                    ProductDetailEntityId = idProductDetail
+                                };
+                                list.Add(serial);
+                            }
+                        }
+
+                        if (list.Any())
+                        {
+                            await _unitOfWork._serialRepository.CreateMany(list);
+                            return Ok(new { status = "success", message = "Tệp đã được tải lên và xử lý thành công." });
+                        }
+                        else
+                        {
+                            return BadRequest(new { status = "error", message = "Không có dữ liệu hợp lệ để xử lý." });
+                        }
                     }
-                        await _unitOfWork._serialRepository.CreateMany(list);
                 }
             }
-            }
-            catch (Exception)
+            catch (Exception ex)
             {
+                return StatusCode(500, new { status = "error", message = "Đã xảy ra lỗi trong quá trình xử lý tệp: " + ex.Message });
+            }
+        }
 
-                throw;
-            }
-            return Ok("Tệp đã được tải lên và xử lý thành công");
-        }
-        [HttpPost("CreateOrUpdateAsync")]
-        public async Task<IActionResult> CreateOrUpdateAsync(SerialDto objDto)
-        {
-            var obj = _mapper.Map<SerialEntity>(objDto);
-            if (objDto.Id > 0)
-            {
-                return Ok(await _unitOfWork._serialRepository.Update(obj));
-            }
-            else
-            {
-                return Ok(await _unitOfWork._serialRepository.Create(obj));
-            }
-        }
+
         [HttpPost("CreateMany")]
         public async Task<IActionResult> CreateMany(List<SerialDto> listObjDto)
         {
             var listObj = _mapper.Map<List<SerialEntity>>(listObjDto);
             return Ok(await _unitOfWork._serialRepository.CreateMany(listObj));
-        }
-        [HttpPost("Delete")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            return Ok(await _unitOfWork._serialRepository.Delete(id));
         }
     }
 }

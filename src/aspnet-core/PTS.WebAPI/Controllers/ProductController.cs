@@ -5,6 +5,8 @@ using PTS.Shared.Dto;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
 using PTS.Application.Interfaces.Repositories;
+using PTS.Application.Features.Product.Commands;
+using PTS.Application.Features.Product.Queries;
 
 namespace PTS.WebAPI.Controllers
 {
@@ -12,45 +14,34 @@ namespace PTS.WebAPI.Controllers
     [ApiController]
     public class ProductController : BaseController
     {
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-        public ProductController(IMapper mapper, IUnitOfWork unitOfWork)
+        public ProductController()
         {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
+
         }
-        [HttpGet("GetList")]
-        public async Task<IActionResult> GetList()
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(await _unitOfWork._productRepository.GetList());
+            return Ok(await Mediator.Send(new ProductGetAllQuery()));
         }
-        [HttpPost("GetPaged")]
-        public async Task<IActionResult> GetPaged(PagedRequestDto request)
+        [HttpPost("GetPage")]
+        public async Task<IActionResult> GetPage(ProductGetPageQuery query)
         {
-            return Ok(await _unitOfWork._productRepository.GetPagedAsync(request));
+            return Ok(await Mediator.Send(query));
         }
-        [HttpGet("GetById")]
-        public async Task<IActionResult> GetById(int id)
+        [HttpPost("GetById")]
+        public async Task<IActionResult> GetById(ProductGetByIdQuery query)
         {
-            return Ok(await _unitOfWork._productRepository.GetById(id));
+            return Ok(await Mediator.Send(query));
         }
-        [HttpPost("CreateOrUpdateAsync")]
-        public async Task<IActionResult> CreateOrUpdateAsync(ProductDto objDto)
+        [HttpPost("CreateOrUpdate")]
+        public async Task<IActionResult> CreateOrUpdate(ProductCreateOrUpdateCommand command)
         {
-            var obj = _mapper.Map<ProductEntity>(objDto);
-            if (objDto.Id > 0)
-            {
-                return Ok(await _unitOfWork._productRepository.Update(obj));
-            }
-            else
-            {
-                return Ok(await _unitOfWork._productRepository.Create(obj));
-            }
+            return Ok(await Mediator.Send(command));
         }
         [HttpPost("Delete")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(ProductDeleteCommand command)
         {
-            return Ok(await _unitOfWork._productRepository.Delete(id));
+            return Ok(await Mediator.Send(command));
         }
 
     }

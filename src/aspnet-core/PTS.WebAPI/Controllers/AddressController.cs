@@ -38,7 +38,7 @@ namespace PTS.WebAPI.Controllers
             return Ok(await Mediator.Send(command));
         }
         [HttpPost("Delete")]
-        public async Task<IActionResult> DeleteAddress(AddressDeleteCommand command)
+        public async Task<IActionResult> Delete(AddressDeleteCommand command)
         {
             return Ok(await Mediator.Send(command));
         }

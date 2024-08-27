@@ -5,6 +5,8 @@ using PTS.Shared.Dto;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
 using PTS.Application.Interfaces.Repositories;
+using PTS.Application.Features.Color.Commands;
+using PTS.Application.Features.Color.Queries;
 
 namespace PTS.WebAPI.Controllers
 {
@@ -12,45 +14,34 @@ namespace PTS.WebAPI.Controllers
     [ApiController]
     public class ColorController : BaseController
     {
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-        public ColorController(IMapper mapper, IUnitOfWork unitOfWork)
+        public ColorController()
         {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
+         
         }
-        [HttpGet("GetList")]
-        public async Task<IActionResult> GetList()
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
         {
-        return Ok(await _unitOfWork._colorRepository.GetList());
+            return Ok(await Mediator.Send(new ColorGetAllQuery()));
         }
-        [HttpPost("GetPaged")]
-        public async Task<IActionResult> GetPaged(PagedRequestDto request)
+        [HttpPost("GetPage")]
+        public async Task<IActionResult> GetPage(ColorGetPageQuery query)
         {
-            return Ok(await _unitOfWork._colorRepository.GetPagedAsync(request));
+            return Ok(await Mediator.Send(query));
         }
-        [HttpGet("GetById")]
-        public async Task<IActionResult> GetById(int id)
+        [HttpPost("GetById")]
+        public async Task<IActionResult> GetById(ColorGetByIdQuery query)
         {
-            return Ok(await _unitOfWork._colorRepository.GetById(id));
+            return Ok(await Mediator.Send(query));
         }
-        [HttpPost("CreateOrUpdateAsync")]
-        public async Task<IActionResult> CreateOrUpdateAsync(ColorDto objDto)
+        [HttpPost("CreateOrUpdate")]
+        public async Task<IActionResult> CreateOrUpdate(ColorCreateOrUpdateCommand command)
         {
-            var obj = _mapper.Map<ColorEntity>(objDto);
-            if(objDto.Id > 0)
-            {  
-              return Ok(await _unitOfWork._colorRepository.Update(obj));
-            }
-            else
-            {
-                return Ok(await _unitOfWork._colorRepository.Create(obj));
-            }
+            return Ok(await Mediator.Send(command));
         }
         [HttpPost("Delete")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(ColorDeleteCommand command)
         {
-         return Ok(await _unitOfWork._colorRepository.Delete(id));
+            return Ok(await Mediator.Send(command));
         }
     }
 }

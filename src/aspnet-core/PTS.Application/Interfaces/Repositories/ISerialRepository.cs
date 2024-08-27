@@ -14,5 +14,6 @@ namespace PTS.Application.Interfaces.Repositories
         Task<PagedResultDto<SerialDto>> GetPagedAsync(PagedRequestDto request);
         Task<IEnumerable<SerialEntity>> GetList();
         Task<SerialEntity> GetById(int id);
+        Task<SerialEntity> FindBySerialNumberAsync(string serialNumber);
     }
 }

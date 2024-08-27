@@ -15,15 +15,8 @@ namespace PTS.Application.Features.Image.Commands
     public record ImageEditCommand : IRequest<Result<int>>, IMapFrom<ImageEntity>
     {
 		public int Id { get; set; }
-		[MaxLength(50)]
-		public string Url { get; set; }
-		[MaxLength(200)]
-		public string? TenImage { get; set; }
-		public DateTime? StartDay { get; set; }
-		public DateTime? EndDay { get; set; }
-		public decimal GiaTri { get; set; }
-		public int SoLuong { get; set; }
-		public int Status { get; set; }
+        public string Name { get; set; }
+        public int Status { get; set; }
 	}
 
     internal class ImageEditCommandHandler : IRequestHandler<ImageEditCommand, Result<int>>
@@ -44,10 +37,10 @@ namespace PTS.Application.Features.Image.Commands
                 {
                     return await Result<int>.FailureAsync($"Id <b>{command.Id}</b> không tồn tại ");
                 }
-                if (command.Url != entity.Url)
+                if (command.Name != entity.Name)
                 {
                     var existing = await _unitOfWork.Repository<ImageEntity>().Entities.AsNoTracking()
-                    .FirstOrDefaultAsync(x => x.Url== command.Url, cancellationToken);
+                    .FirstOrDefaultAsync(x => x.Name == command.Name, cancellationToken);
                     if (existing != null)
                     {
                         return await Result<int>.FailureAsync("Mã đã tồn tại. Vui lòng chọn tên khác.");
@@ -56,7 +49,7 @@ namespace PTS.Application.Features.Image.Commands
                
 				entity = _mapper.Map<ImageEntity>(command);
 				await _unitOfWork.Repository<ImageEntity>().UpdateFieldsAsync(entity,
-					x => x.Url,
+					x => x.Name,
 					x => x.Status);
 				var result = await _unitOfWork.Save(cancellationToken);
 				return result > 0
