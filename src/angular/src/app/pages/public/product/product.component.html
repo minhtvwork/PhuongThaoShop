@@ -3,7 +3,8 @@
         <nz-breadcrumb-item>Trang chủ</nz-breadcrumb-item>
         <nz-breadcrumb-item>Laptop mới</nz-breadcrumb-item>
     </nz-breadcrumb>
-    <nz-select class="w-200 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Thương hiệu" [(ngModel)]="filters.manufacturer" (ngModelChange)="onFilterChange()">
+    <nz-select class="w-200 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Thương hiệu"
+        [(ngModel)]="filters.manufacturer" (ngModelChange)="onFilterChange()">
         <nz-option nzLabel="Laptop Acer" nzValue="2"></nz-option>
         <nz-option nzLabel="Laptop Asus" nzValue="5"></nz-option>
         <nz-option nzLabel="Laptop Dell" nzValue="1"></nz-option>
@@ -12,7 +13,8 @@
         <nz-option nzLabel="Laptop MSI" nzValue="8"></nz-option>
         <nz-option nzLabel="Laptop Samsung" nzValue="9"></nz-option>
     </nz-select>
-    <nz-select class="w-200 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Giá" [(ngModel)]="filters.price" (ngModelChange)="onFilterChange()">
+    <nz-select class="w-200 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Giá" [(ngModel)]="filters.price"
+        (ngModelChange)="onFilterChange()">
         <nz-option nzLabel="0 - 10 Triệu" nzValue="1"></nz-option>
         <nz-option nzLabel="10 Triệu - 20 Triệu" nzValue="2"></nz-option>
         <nz-option nzLabel="20 Triệu - 30 Triệu" nzValue="3"></nz-option>
@@ -20,7 +22,8 @@
         <nz-option nzLabel="40 Triệu - 50 Triệu" nzValue="5"></nz-option>
         <nz-option nzLabel="Trên 50 Triệu" nzValue="6"></nz-option>
     </nz-select>
-    <nz-select class="w-50 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="RAM" [(ngModel)]="filters.ram" (ngModelChange)="onFilterChange()">
+    <nz-select class="w-50 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="RAM" [(ngModel)]="filters.ram"
+        (ngModelChange)="onFilterChange()">
         <nz-option nzLabel="4GB" nzValue="1"></nz-option>
         <nz-option nzLabel="8GB" nzValue="2"></nz-option>
         <nz-option nzLabel="12GB" nzValue="3"></nz-option>
@@ -30,7 +33,7 @@
         <nz-option nzLabel="40GB" nzValue="7"></nz-option>
         <nz-option nzLabel="64GB" nzValue="8"></nz-option>
     </nz-select>
-    <nz-select class="w-200 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="CPU" [(ngModel)]="filters.cpu" (ngModelChange)="onFilterChange()">
+    <!-- <nz-select class="w-200 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="CPU" [(ngModel)]="filters.cpu" (ngModelChange)="onFilterChange()">
         <nz-option nzLabel="Intel® Core™ i3" nzValue="Intel® Core™ i3"></nz-option>
         <nz-option nzLabel="Intel® Core™ i5" nzValue="Intel® Core™ i5"></nz-option>
         <nz-option nzLabel="Intel® Core™ i7" nzValue="Intel® Core™ i7"></nz-option>
@@ -42,26 +45,36 @@
         <nz-option nzLabel="Intel® Pentium" nzValue="Intel® Pentium"></nz-option>
         <nz-option nzLabel="Intel® Celeron" nzValue="Intel® Celeron"></nz-option>
         
+    </nz-select> -->
+    <nz-select class="w-200 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Chọn CPU" [(ngModel)]="filters.cpu" (ngModelChange)="onFilterChange()">
+        <nz-option *ngFor="let item of loadCpus" [nzLabel]="item.ma" [nzValue]="item.id">
+        </nz-option>
+      </nz-select>
+    <nz-select class="w-200 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Chọn Card VGA" [(ngModel)]="filters.cardVGA"
+        (ngModelChange)="onFilterChange()">
+        <nz-option *ngFor="let item of loadCardVGAs" [nzLabel]="item.ma" [nzValue]="item.id">
+        </nz-option>
     </nz-select>
-    <nz-select class="w-250 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Card VGA" [(ngModel)]="filters.cardVGA" (ngModelChange)="onFilterChange()">
+    <!-- <nz-select class="w-250 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Card VGA" [(ngModel)]="filters.cardVGA" (ngModelChange)="onFilterChange()">
         <nz-option nzLabel="NVIDIA® GeForce RTX™ 3070Ti" nzValue="NVIDIA® GeForce RTX™ 3070Ti"></nz-option>
         <nz-option nzLabel="NVIDIA® GeForce RTX™ 3060Ti" nzValue="NVIDIA® GeForce RTX™ 3060Ti"></nz-option>
         <nz-option nzLabel="NVIDIA® GeForce RTX™ 3050Ti" nzValue="NVIDIA® GeForce RTX™ 3050Ti"></nz-option>
         <nz-option nzLabel="NVIDIA® GeForce RTX™ 3040Ti" nzValue="NVIDIA® GeForce RTX™ 3040Ti"></nz-option>
         <nz-option nzLabel="Intel Graphics" nzValue="Intel Graphics"></nz-option>
-    </nz-select>
-    <nz-select class="w-150 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Sắp xếp theo" [(ngModel)]="filters.sortBy" (ngModelChange)="onFilterChange()">
+    </nz-select> -->
+    <nz-select class="w-150 mgl-t-15" nzShowSearch nzAllowClear nzPlaceHolder="Sắp xếp theo"
+        [(ngModel)]="filters.sortBy" (ngModelChange)="onFilterChange()">
         <nz-option nzLabel="Giá thấp đến cao" nzValue="1"></nz-option>
         <nz-option nzLabel="Giá cao đến thấp" nzValue="2">Cao thấp</nz-option>
         <nz-option nzLabel="Mới nhất" nzValue="3">Cao thấp</nz-option>
         <nz-option nzLabel="Tên A-Z" nzValue="4">Cao thấp</nz-option>
     </nz-select>
-    
+
     <div class="row pd-top-50">
-        <div class="p-list d-flex flex-wrap">
+        <div class="p-list flex-wrap">
             <ng-container *ngIf="products && products.length > 0; else loading">
                 <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4" *ngFor="let p of products">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 mgl35" *ngFor="let p of products">
                         <div class="p-item">
                             <div class="p-img">
                                 <a>
@@ -75,28 +88,34 @@
                                 <span class="p-price" *ngIf="p.availableQuantity > 0; else lienhe">
                                     <span class="box-text-update2021">
                                         <span class="show-shadow">
-                                            {{p.price| vndFormat}}
+                                            {{p.newPrice| vndFormat}}
                                         </span>
                                     </span>
                                     <span class="p-mprice">
-                                        {{p.oldPrice | vndFormat}}
+                                        {{p.price | vndFormat}}
                                     </span>
                                 </span>
                                 <ng-template #lienhe>
                                     <span>Liên hệ</span>
-                                  </ng-template>
+                                </ng-template>
                             </div>
-                            <span class="productType">
-                                <img class="img-fluid" src="../../../../assets/images/sales.png" alt="sale off">
-                                <span class="percent">-{{p.phanTramGiamGia}}%</span>
+                            <span class="p-price" *ngIf="p.phanTramGiamGia > 0; else noGiamGia">
+                                <span class="productType">
+                                    <img class="img-fluid" src="../../../../assets/images/sales.png" alt="sale off">
+                                    <span class="percent">-{{p.phanTramGiamGia}}%</span>
+                                </span>
                             </span>
+                            <ng-template #noGiamGia>
+
+                            </ng-template>
+
                         </div>
                     </div>
                 </div>
             </ng-container>
 
             <ng-template #loading>
-                <div>Loading...</div>
+                <div>Không có sản phẩm </div>
             </ng-template>
 
             <ng-template #loading>

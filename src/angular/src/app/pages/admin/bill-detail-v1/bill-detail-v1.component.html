@@ -1,0 +1,116 @@
+<div style="max-width: 300px;">
+
+</div>
+<div nz-row [nzGutter]="24" style="margin-bottom: 15px;">
+    <div nz-col [nzSpan]="18">
+    </div>
+    <div nz-col [nzSpan]="3"><button type="button" nz-button nzType="default" [routerLink]="'/online-sales'">Quay
+            lại</button></div>
+    <div nz-col [nzSpan]="3">
+        <!-- <ng-container *ngIf="statusBill == 2 || statusBill == 3">
+            <button nz-button nzType="primary" style="margin-bottom: 15px;" (click)="create()">
+                <i class="fa fa-plus"></i> Thêm mới
+            </button></ng-container> -->
+    </div>
+</div>
+
+<nz-table #basicTable [nzData]="billDetails" nzBordered nzSize="middle" [nzPageSize]="10">
+    <thead>
+        <tr>
+            <th nzWidth="10%">Mã hóa đơn chi tiết</th>
+            <th nzWidth="20%">Mã sản phẩm</th>
+            <th nzWidth="15%">Số lượng</th>
+            <th nzWidth="15%">Danh sách serial</th>
+            <th nzWidth="15%">Giá</th>
+            <th nzWidth="10%">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of basicTable.data">
+            <td>{{ item.code }}</td>
+            <td>{{ item.codeProductDetail }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{item.listSerial}}</td>
+            <td>{{ item.price | currency: 'VND':'symbol':'1.0-0':'vi-VN' }}</td>
+
+            <td>
+                <ng-container *ngIf="statusBill == 2 || statusBill == 3">
+                    <!-- <a (click)="edit(item)" title="Sửa hóa đơn" style="margin-right: 10px;">
+                        <span class="kt-font-success">
+                            <i nz-icon nzType="edit" nzTheme="outline"></i>
+                        </span>
+                    </a>
+                    <a title="Xóa hóa đơn" nz-popconfirm nzPopconfirmTitle="Bạn có muốn xóa hóa đơn này không?"
+                        nzPopconfirmPlacement="bottom" (nzOnConfirm)="delete(item.id)" (nzOnCancel)="cancel()">
+                        <span class="kt-font-danger">
+                            <i nz-icon nzType="delete" nzTheme="outline"></i>
+                        </span>
+                    </a><br> -->
+                    <a (click)="openAnotherForm(item.id,item.codeProductDetail,item.quantity - item.listSerial.length)">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </ng-container>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="{{ modalTitle }}" (nzOnCancel)="close()" (click)="save()"
+    [nzWidth]="'30%'">
+    <nz-layout *nzModalContent>
+        <form nz-form [formGroup]="fbForm" style="background-color:white;">
+            <input nz-input formControlName="id" style="display: none;" />
+            <div nz-col>
+                <nz-form-label nzFor="codeProductDetail" nzRequired>Mã sản phẩm chi tiết</nz-form-label>
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-select class="width-200" nzShowSearch nzAllowClear nzPlaceHolder="Chọn mã chi tiết sản phẩm"
+                            formControlName="codeProductDetail">
+                            <nz-option *ngFor="let item of productDetails" [nzLabel]="item.code" [nzValue]="item.code">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-label nzFor="quantity" [nzSm]="6" nzRequired>Số lượng</nz-form-label>
+                <nz-form-item>
+
+                    <nz-form-control [nzSm]="18" nzErrorTip="Giá trị bắt buộc!">
+                        <nz-input-number [nzMin]="1" [nzMax]="100" [nzStep]="1" nz-input formControlName="quantity" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+        </form>
+    </nz-layout>
+    <div *nzModalFooter>
+        <button type="button" nz-button nzType="default" (click)="close()">Đóng</button>
+        <button type="button" nz-button nzType="primary" (click)="save()"><i nz-icon nzType="save"></i>Lưu
+        </button>
+    </div>
+</nz-modal>
+<nz-modal [(nzVisible)]="isAnotherFormVisible" nzTitle="Thêm số serial cho đơn hàng" (nzOnCancel)="closeAnotherForm()"
+    (nzOnOk)="saveAnotherForm()" [nzWidth]="'30%'">
+    <nz-layout *nzModalContent>
+        <form nz-form [formGroup]="serialForm" style="background-color:white;">
+            <div nz-col>
+                <nz-form-label nzFor="serialNumber" nzRequired>Số serial sản phẩm</nz-form-label>
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-select class="width-200" nzShowSearch nzAllowClear nzPlaceHolder="Chọn số serial"
+                            formControlName="serialNumber" nzMode="multiple" (ngModelChange)="onSerialsChange($event)">
+                            <nz-option *ngFor="let item of serials" [nzLabel]="item.serialNumber" [nzValue]="item.id">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </form>
+    </nz-layout>
+    <div *nzModalFooter>
+        <button type="button" nz-button nzType="default" (click)="closeAnotherForm()">Đóng</button>
+        <button type="button" nz-button nzType="primary" (click)="saveAnotherForm()"><i nz-icon
+                nzType="save"></i>Lưu</button>
+    </div>
+</nz-modal>

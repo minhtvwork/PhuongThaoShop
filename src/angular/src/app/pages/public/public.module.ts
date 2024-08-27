@@ -19,6 +19,11 @@ import { BillComponent } from './bill/bill.component';
 import { ShippingComponent } from './shipping/shipping.component';
 import { PaymentResultComponent } from './payment-result/payment-result.component';
 import { FindBillComponent } from './find-bill/find-bill.component';
+import { CustomerInfoComponent } from './customer-info/customer-info.component';
+import { RegisterComponent } from './register/register.component';
+import { DonHangComponent } from './don-hang/don-hang.component';
+import { ThongTinComponent } from './thong-tin/thong-tin.component';
+import { TraCuuDonHangComponent } from './tra-cuu-don-hang/tra-cuu-don-hang.component';
 
 
 @NgModule({
@@ -38,10 +43,15 @@ import { FindBillComponent } from './find-bill/find-bill.component';
     CartComponent,
     ShippingComponent,
     PaymentResultComponent,
-    FindBillComponent
+    FindBillComponent,
+    CustomerInfoComponent,
+    RegisterComponent,
+    DonHangComponent,
+    ThongTinComponent,
+    TraCuuDonHangComponent
   ],
   providers: [
-    VndFormatPipe 
+   // VndFormatPipe 
   ],
   imports: [
     CommonModule,

@@ -20,7 +20,7 @@ export class PublicService {
 
   //   return this.http.post<any>(this.apiUrl+'Public/GetListProduct', body);
   // }
-  getListProducts(page: number, pageSize: number, keywords: string, manufacturer?: number, productType?: string, ram?: number, cpu?: string, cardVGA?: string, hardDrive?: string, screen?: string, price?: number, sortBy?: number): Observable<any> {
+  getListProducts(page: number, pageSize: number, keywords: string, manufacturer?: number, productType?: string, ram?: number, cpu?: number, cardVGA?: number, hardDrive?: string, screen?: string, price?: number, sortBy?: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}Public/GetListProduct`, {
       page,
       pageSize,
@@ -63,6 +63,14 @@ export class PublicService {
       userId
     });
   }
+  createOrUpdateAddress(id?: number, addressName?: string, userEntityId?: number
+  ): Observable<any> {
+
+    return this.http.post<any>(`${this.apiUrl}Address/CreateOrUpdate`, {
+      id,addressName, userEntityId
+    });
+  }
+ 
   getCartByUser(): Observable<CartItemDto[]> {
     const currentUserString = localStorage.getItem('currentUser');
     if (currentUserString) {
@@ -108,12 +116,18 @@ export class PublicService {
   }
   createBill(request: PBillCreateCommand): Observable<ApiResult<PBillGetByCodeQueryDto>> {
     // request.userName = this.accountService.getuserName();
-    console.log(request);
-    console.log(this.accountService.getuserName());
     request.userName = this.accountService.getuserName();
     const cartItemsString = localStorage.getItem('cartItems');
+    var addressAll = '';
     if (cartItemsString) {
       request.cartItem = JSON.parse(cartItemsString);
+      
+    }
+    if(this.accountService.getuserName()){
+      addressAll = request.address;
+    }
+    else {
+      addressAll = (request.address || '') +', '+ (request.communeText || '') +', '+ (request.districtText || '') +', '+ (request.provinceText || '')
     }
     console.log(request);
 
@@ -121,7 +135,8 @@ export class PublicService {
       fullName: request.fullName,
       userName: request.userName,
       phoneNumber: request.phoneNumber,
-      address: request.address,
+      address: addressAll ,
+      notes: request.notes,
       codeVoucher: request.codeVoucher,
       payment: request.payment,
       cartItem: request.cartItem
@@ -135,5 +150,40 @@ export class PublicService {
     };
 
     return this.http.post<any>(`${this.apiUrl}Public/GetBill`, params);
+  }
+  getCountById(id: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}ProductDetail/GetCountById`, {
+      id
+    });
+  }
+  getProvinces(): Observable<any> {
+    return this.http.get(`https://vapi.vnappmob.com/api/province/`);
+  }
+  getDistricts(provinceId: string): Observable<any> {
+    return this.http.get(`https://vapi.vnappmob.com/api/province/district/${provinceId}`);
+  }
+  getCommunes(districtId: string): Observable<any> {
+    return this.http.get(`https://vapi.vnappmob.com/api/province/ward/${districtId}`);
+  }
+  getBillByUserId(userId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}Bill/BillGetByUserId`, {
+      userId
+    });
+  }
+  getUserById(id: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}User/GetById`, { id });
+  }
+
+  // createOrUpdateUser(user: any): Observable<any> {
+  //   var fullName = user.fullName;
+  //   var phoneNumber = user.phoneNumber;
+  //   return this.http.post(`${this.apiUrl}User/CreateOrUpdate`,{phoneNumber});
+  // }
+  createOrUpdateUser(id?: number, fullName?: string, phoneNumber?: string,email?: string
+  ): Observable<any> {
+
+    return this.http.post<any>(`${this.apiUrl}User/CreateOrUpdate`, {
+     id,fullName,phoneNumber,email
+    });
   }
 }

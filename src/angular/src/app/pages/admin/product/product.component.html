@@ -1,1 +1,92 @@
-<p>product works!</p>
+<div nz-row [nzGutter]="24" style="margin-bottom: 15px;">
+  <div nz-col [nzSpan]="12">
+    <input nz-input placeholder="Tìm kiếm theo từ khóa" [(ngModel)]="searchKeyword" (ngModelChange)="search()" />
+  </div>
+  <div nz-col [nzSpan]="6">
+    <button nz-button nzType="primary" (click)="create()">
+      <i class="fa fa-plus"></i> Thêm mới
+    </button>
+  </div>
+</div>
+<nz-table #basicTable [nzData]="listData" nzBordered nzSize="middle">
+  <thead>
+    <tr>
+      <th nzWidth="1%">STT</th>
+      <th nzWidth="10%">Tên sản phẩm</th>
+      <th nzWidth="10%">Nhà sản xuất</th>
+      <th nzWidth="10%">Loại sản phẩm</th>
+      <th nzWidth="13%">Ngày tạo</th>
+      <th nzWidth="5%">Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of basicTable.data">
+      <td>{{ item.stt}}</td>
+      <td>{{ item.name}}</td>
+      <td>{{item.manufacturerName}}</td>
+      <td>{{item.productTypeName}}</td>
+      <td>{{ item.crDateTime | date:
+        'dd/MM/yyyy, HH:mm' }}</td>
+      <td>
+        <a (click)="edit(item)" title="Sửa hóa đơn" style="margin-right: 10px;">
+          <span class="kt-font-success">
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
+          </span>
+        </a>
+        <a title="Xóa hóa đơn" nz-popconfirm nzPopconfirmTitle="Bạn có muốn xóa hóa đơn này không?"
+          nzPopconfirmPlacement="bottom" (nzOnConfirm)="delete(item.id)" (nzOnCancel)="cancel()">
+          <span class="kt-font-danger">
+            <i nz-icon nzType="delete" nzTheme="outline"></i>
+          </span>
+        </a>
+
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="{{ modalTitle }}" (nzOnCancel)="close()" (click)="save()"
+  [nzWidth]="'50%'">
+  <nz-layout *nzModalContent>
+    <form nz-form [formGroup]="fbForm" style="background-color:white;">
+      <input nz-input formControlName="id" style="display: none;" />
+
+      <nz-form-item> <nz-form-label nzFor="name" [nzSm]="6" nzRequired>Tên sản phẩm</nz-form-label>
+        <nz-form-control [nzSm]="18" nzErrorTip="Giá trị bắt buộc!">
+          <input nz-input formControlName="name" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item> <nz-form-label [nzSm]="6" nzFor="" nzRequired>Nhà sản xuất</nz-form-label>
+        <nz-form-control [nzSm]="18">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn nhà sản xuất" formControlName="manufacturerEntityId">
+            <nz-option *ngFor="let item of manufacturers" [nzLabel]="item.name" [nzValue]="item.id">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item> <nz-form-label [nzSm]="6" nzFor="" nzRequired>Loại sản phẩm</nz-form-label>
+        <nz-form-control [nzSm]="18">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn loại sản phẩm" formControlName="productTypeEntityId">
+            <nz-option *ngFor="let item of productTypes" [nzLabel]="item.name" [nzValue]="item.id">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- <nz-form-item>
+        <nz-form-label nzFor="status" [nzSm]="6" nzRequired>Trạng thái</nz-form-label>
+        <nz-form-control [nzSm]="18" nzErrorTip="Giá trị bắt buộc!">
+          <nz-select formControlName="status" nzPlaceHolder="Chọn trạng thái">
+            <nz-option [nzValue]="1" nzLabel="Hoạt động"></nz-option>
+            <nz-option [nzValue]="2" nzLabel="Chờ xác nhận"></nz-option>
+
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item> -->
+    </form>
+  </nz-layout>
+  <div *nzModalFooter>
+    <button type="button" nz-button nzType="default" (click)="close()">Đóng</button>
+    <button type="button" nz-button nzType="primary" (click)="save()"><i nz-icon nzType="save"></i>Lưu
+    </button>
+  </div>
+</nz-modal>

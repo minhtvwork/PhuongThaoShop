@@ -15,7 +15,7 @@ export class AccountService {
   private apiUrl = 'https://localhost:44302/api/';
   private token!: string;
   constructor(private http: HttpClient) { }
-  
+
   login(userName: string, password: string): Observable<any> {
     const url = `${this.apiUrl}Account/Login`;
     const body = { userName: userName, Password: password };
@@ -23,7 +23,7 @@ export class AccountService {
       map(response => {
         if (response && response.accessToken) {
           localStorage.setItem('currentUser', JSON.stringify({
-            id : response.id,
+            id: response.id,
             userName: response.userName,
             role: response.roleName,
             accessToken: response.accessToken,
@@ -64,9 +64,9 @@ export class AccountService {
     const url = `${this.apiUrl}Account/isAdmin`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.getAccessToken()}` 
+      'Authorization': `Bearer ${this.getAccessToken()}`
     });
-  
+
     return this.http.post<boolean>(url, {}, { headers }).pipe(
       map(response => response === true),
       catchError(error => {
@@ -74,5 +74,32 @@ export class AccountService {
         return of(false);
       })
     ).toPromise() as Promise<boolean>;
+  }
+
+  register(model: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}Account/register`, model, { responseType: 'text' });
+  }
+  checkUserPermission(token: string): Promise<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}Account/check-permission`,
+      { token: token },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).toPromise()
+      .then(response => response !== undefined && response !== null ? response : false)
+      .catch(error => {
+        console.error('Error checking user permission', error);
+        return true;
+      });
+  }
+  getUserRoles(): Observable<string[]> {
+    const token = this.getAccessToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    let username = this.getuserName();
+    const params = { username };
+    return this.http.get<string[]>(`${this.apiUrl}Account/GetUserRoles`, { headers, params });
   }
 }

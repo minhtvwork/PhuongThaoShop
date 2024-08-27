@@ -28,10 +28,15 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { ReactiveFormsModule } from "@angular/forms";
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { EditorModule } from '@tinymce/tinymce-angular';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { VndFormatPipe } from 'src/app/shared/pipes/vnd-format.pipe';
+import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
+import { VndFormatPipe2 } from "./pipes/vnd-format.pipe2";
 registerLocaleData(en);
 @NgModule({
 exports:[
@@ -61,12 +66,17 @@ exports:[
     NzUploadModule,
     NzMessageModule,
     NzResultModule,
+    NzPopoverModule,
     ReactiveFormsModule,
-    FormsModule,
+    FormsModule, 
+    EditorModule,
     CKEditorModule,
+    NzQRCodeModule
 ],
  providers: [
-    { provide: NZ_I18N, useValue: en_US }
+    { provide: NZ_I18N, useValue: en_US },
+      VndFormatPipe ,
+      VndFormatPipe2
   ],
 })
 export class AntDesignModule{}

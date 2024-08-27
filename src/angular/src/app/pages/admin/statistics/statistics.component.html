@@ -1,0 +1,70 @@
+<div nz-row nzGutter="16">
+    <!-- Doanh thu theo thời gian -->
+    <div nz-col nzSpan="12">
+        <!-- <nz-card nzTitle="Doanh thu theo thời gian">
+        <ngx-charts-bar-vertical
+          [view]="[600, 400]"
+          [scheme]="colorScheme"
+          [results]="revenueData"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="true"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          [xAxisLabel]="'Ngày'"
+          [yAxisLabel]="'Doanh thu'"
+        >
+        </ngx-charts-bar-vertical>
+      </nz-card> -->
+    </div>
+
+    <!-- Số lượng sản phẩm bán ra -->
+    <!-- <div nz-col nzSpan="12">
+      <nz-card nzTitle="Số lượng sản phẩm bán ra">
+        <ngx-charts-pie-chart
+          [view]="[600, 400]"
+          [scheme]="colorScheme"
+          [results]="salesData"
+          [legend]="true"
+          [labels]="true"
+        >
+        </ngx-charts-pie-chart>
+      </nz-card>
+    </div> -->
+</div>
+<div nz-row nzGutter="16">
+  <!-- Sản phẩm bán chạy nhất -->
+  <div nz-col nzSpan="12">
+      <nz-card nzTitle="Doanh thu">
+         <h1>{{totalRevenue | currency: 'VND':'symbol':'1.0-0':'vi-VN'}}</h1>
+      </nz-card>
+  </div>
+  <div nz-col nzSpan="12">
+    <nz-card nzTitle="Tỉ lệ hủy đơn hàng">
+       <h1>{{cancellation}}</h1>
+    </nz-card>
+</div>
+</div>
+<div nz-row nzGutter="16" style="margin-top: 30px;">
+    <!-- Sản phẩm bán chạy nhất -->
+    <div nz-col nzSpan="24">
+        <nz-card nzTitle="Sản phẩm bán chạy nhất">
+            <nz-table #basicTable [nzData]="bestSellers" [nzBordered]="true">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">Số thứ tự</th>
+                        <th>Mã sản phẩm chi tiết</th>
+                        <th>Số lượng bán</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of basicTable.data; index as i">
+                        <td>{{i +1}}</td>
+                        <td>{{ item.codeProductDetail }}</td>
+                        <td>{{ item.totalSold }}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </nz-card>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+
+<form style="max-width: 600px; margin-left: 350px; margin-top: 20px;" [formGroup]="registerForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+        <nz-form-label nzRequired [nzSpan]="6">Tài khoản</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <input nz-input formControlName="userName" placeholder="Nhập tài khoản của bạn" />
+            <div *ngIf="registerForm.get('userName')?.touched && registerForm.get('userName')?.errors">
+                <nz-alert *ngIf="registerForm.get('userName')?.errors?.['required']" nzType="error"
+                    nzMessage="Không được để trống"></nz-alert>
+            </div>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzRequired [nzSpan]="6">Họ và tên</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <input nz-input formControlName="fullName" placeholder="Nhập họ và tên của bạn" />
+            <div *ngIf="registerForm.get('fullName')?.touched && registerForm.get('fullName')?.errors">
+                <nz-alert *ngIf="registerForm.get('fullName')?.errors?.['required']" nzType="error"
+                    nzMessage="Không được để trống"></nz-alert>
+            </div>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzRequired [nzSpan]="6">Số điện thoại</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <input nz-input formControlName="phoneNumber" placeholder="Nhập số điện thoại bạn" />
+            <div *ngIf="registerForm.get('phoneNumber')?.touched && registerForm.get('phoneNumber')?.errors">
+                <nz-alert *ngIf="registerForm.get('phoneNumber')?.errors?.['required']" nzType="error"
+                    nzMessage="Không được để trống"></nz-alert>
+            </div>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzRequired [nzSpan]="6">Email</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <input nz-input formControlName="email" placeholder="Nhập Email" />
+            <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors">
+                <nz-alert *ngIf="registerForm.get('email')?.errors?.['required']" nzType="error"
+                    nzMessage="Không được để trống"></nz-alert>
+                <nz-alert *ngIf="registerForm.get('email')?.errors?.['email']" nzType="error"
+                    nzMessage="Email không hợp lệ"></nz-alert>
+            </div>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label nzRequired [nzSpan]="6">Mật khẩu</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <input nz-input type="password" formControlName="password" placeholder="Enter your password" />
+            <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors">
+                <nz-alert *ngIf="registerForm.get('password')?.errors?.['required']" nzType="error"
+                    nzMessage="Không được để trống"></nz-alert>
+                <nz-alert *ngIf="registerForm.get('password')?.errors?.['minlength']" nzType="error"
+                    nzMessage="Mật khẩu phải trên 6 kí tự và có chữ với số"></nz-alert>
+            </div>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label nzRequired [nzSpan]="6">Xác nhận mật khẩu </nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <input nz-input type="password" formControlName="confirmPassword" placeholder="Xác nhận mật khẩu" />
+            <div *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.errors">
+                <nz-alert *ngIf="registerForm.get('confirmPassword')?.errors?.['required']" nzType="error"
+                    nzMessage="Không được để trống"></nz-alert>
+                <nz-alert *ngIf="registerForm.get('confirmPassword')?.errors?.['confirm']" nzType="error"
+                    nzMessage="Mật khẩu sai"></nz-alert>
+            </div>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary" [disabled]="!registerForm.valid">Đăng ký</button>
+        </nz-form-control>
+    </nz-form-item>
+</form>

@@ -1,4 +1,3 @@
-
 <nz-layout>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid bg-white">
@@ -10,28 +9,32 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul nz-menu nzMode="horizontal" [nzTheme]="'light'">
-          <li nz-menu-item><a [routerLink]="'/'">Trang chủ</a></li>
-          <li nz-submenu  nzTitle="Laptop" nzIcon="laptop">
+           <li nz-menu-item><a [routerLink]="'/'">      <i nz-icon nzType="home" style="font-size: 20px;" nzTheme="outline"></i>Trang chủ</a></li>
+          <!--<li nz-submenu  nzTitle="Laptop" nzIcon="laptop">
             <ul>
-              <li nz-menu-item [routerLink]="'/laptop-moi.html'">Laptop Mới</li>
+              <li nz-menu-item [routerLink]="'/laptop-moi.html'"></li>
               <li nz-menu-item [routerLink]="'/lap'">Laptop Lenovo Mới</li>
               <li nz-menu-item>Laptop Dell Mới</li>
               <li nz-menu-item>Laptop Lenovo Mới</li>
               <li nz-menu-item>Laptop Dell Mới</li>
               <li nz-menu-item>Laptop Lenovo Mới</li>
             </ul>
-          </li>
-
-          <li nz-menu-item><a [routerLink]="'/'">Tin Tức, Khuyến Mại</a></li>
-          <li nz-menu-item><a [routerLink]="'/'">Tra Cứu Đơn Hàng</a></li>
-          <li nz-menu-item><a [routerLink]="'/cart'"><nz-badge [nzCount]="totalCartItem" [nzStyle]="{ backgroundColor: '#52c41a' }">
-            <i nz-icon nzType="shopping-cart" style="font-size: 40px;" nzTheme="outline"></i>
-          </nz-badge></a></li>
+          </li> -->
+          <li nz-menu-item><a [routerLink]="'/laptop-moi.html'"> <i nz-icon nzType="laptop" style="font-size: 20px;"
+                nzTheme="outline"></i>Laptop Mới</a></li>
+          <li nz-menu-item><a [routerLink]="'/gioi-thieu.html'"> <i nz-icon nzType="pic-center" style="font-size: 20px;"
+                nzTheme="outline"></i>Giới thiệu</a></li>
+          <li nz-menu-item><a [routerLink]="'/tra-cuu-don-hang.html'"> <i nz-icon nzType="eye" style="font-size: 20px;"
+                nzTheme="outline"></i>Tra Cứu Đơn Hàng</a></li>
+          <li nz-menu-item><a [routerLink]="'/cart'"><nz-badge [nzCount]="totalCartItem"
+                [nzStyle]="{ backgroundColor: '#52c41a' }">
+                <i nz-icon nzType="shopping-cart" style="font-size: 40px;" nzTheme="outline"></i>
+              </nz-badge></a></li>
           <ng-container *ngIf="userName; else loginLink">
             <li nz-submenu nzTitle="{{userName}}" nzIcon="user">
               <ul>
-                <li nz-menu-item>Thông tin cá nhân</li>
-                <li nz-menu-item>Đơn hàng của tôi</li>
+                <li nz-menu-item [routerLink]="'/thong-tin-ca-nhan'">Thông tin cá nhân</li>
+                <li nz-menu-item [routerLink]="'/don-hang.html'">Đơn hàng của tôi</li>
                 <li nz-menu-item (click)="logOut()">Đăng xuất</li>
               </ul>
             </li>
@@ -42,16 +45,19 @@
         </ul>
         <form class="d-flex">
           <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-            <input type="text" nz-input placeholder="Nhập tên sản phẩm để tìm kiếm" />
+            <input type="text" nz-input placeholder="Nhập tên sản phẩm để tìm" [(ngModel)]="keyword" name="searchKeyword" />
           </nz-input-group>
           <ng-template #suffixIconButton>
-            <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
+            <button nz-button nzType="primary" nzSearch (click)="findProduct(keyword)">
+              <span nz-icon nzType="search"></span>
+            </button>
           </ng-template>
         </form>
+        
       </div>
     </div>
   </nav>
-</nz-layout> 
+</nz-layout>
 
 
 <nz-modal [(nzVisible)]="isVisible" nzTitle="Đăng Nhập" (nzOnCancel)="handleCancel()" [nzFooter]="[]"
@@ -59,32 +65,27 @@
   <nz-layout class="login-layout" *nzModalContent>
     <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()">
       <nz-form-item>
-        <nz-form-control nzErrorTip="Please input your userName!">
+        <nz-form-control nzErrorTip="Hãy nhập tên tài khoản!">
           <nz-input-group nzPrefixIcon="user">
-            <input type="text" nz-input formControlName="userName" placeholder="userName" />
+            <input type="text" nz-input formControlName="userName" placeholder="Tài khoản" />
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control nzErrorTip="Please input your Password!">
+        <nz-form-control nzErrorTip="Hãy nhập mật khẩu!">
           <nz-input-group nzPrefixIcon="lock">
-            <input type="password" nz-input formControlName="password" placeholder="Password" />
+            <input type="password" nz-input formControlName="password" placeholder="Mật khẩu" />
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
       <div nz-row class="login-form-margin">
         <div nz-col [nzSpan]="12">
-          <label nz-checkbox>
-            <span>Remember me</span>
-          </label>
-        </div>
-        <div nz-col [nzSpan]="12">
-          <a class="login-form-forgot">Forgot password</a>
+          <a class="login-form-forgot">Quên mật khẩu</a>
         </div>
       </div>
-      <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
-      Or
-      <a>register now!</a>
+      <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Đăng nhập</button>
+      Hoặc
+      <a (click)="navigateToRegister()">Đăng ký tài khoản</a>
     </form>
   </nz-layout>
 </nz-modal>

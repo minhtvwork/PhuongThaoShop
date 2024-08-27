@@ -8,4 +8,13 @@
   .mgl-20{
     margin-left: 20px;
   }
+  .carousel-inner {
+    max-height: 400px; /* Đặt chiều cao tối đa cho carousel */
+  }
+  
+  .carousel-item img {
+    height: 100%; /* Đặt chiều cao hình ảnh theo chiều cao của carousel */
+    object-fit: cover; /* Đảm bảo hình ảnh lấp đầy không gian mà không bị biến dạng */
+    width: 100%; /* Đảm bảo hình ảnh rộng bằng carousel */
+  }
   

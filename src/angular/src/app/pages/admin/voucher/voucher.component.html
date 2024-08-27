@@ -1,77 +1,112 @@
-<nz-input-group [nzSuffix]="suffixTemplate" class="input-custom">
-  <input type="text" nz-input placeholder="Search by keyword" [(ngModel)]="keywords" (ngModelChange)="onSearch()" />
-</nz-input-group>
-<ng-template #suffixTemplate>
-  <i nz-icon nzType="search"></i>
-</ng-template>
-<button nz-button nzType="primary" (click)="openEditModal()">
-  <i class="fa fa-plus"></i> Thêm mới
-</button>
-<nz-table nzShowPagination nzShowSizeChanger [nzData]="listOfData" [nzLoading]="loading" [nzTotal]="total"
-  [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" (nzPageIndexChange)="onPageChange($event)"
-  (nzPageSizeChange)="onPageSizeChange($event)">
+<div nz-row [nzGutter]="24" style="margin-bottom: 15px;">
+  <div nz-col [nzSpan]="12">
+    <input nz-input placeholder="Tìm kiếm theo từ khóa" [(ngModel)]="searchKeyword" (ngModelChange)="search()" />
+  </div>
+  <div nz-col [nzSpan]="6">
+    <button nz-button nzType="primary" (click)="create()">
+      <i class="fa fa-plus"></i> Thêm mới
+    </button>
+  </div>
+</div>
+<nz-table #basicTable [nzData]="listData" nzBordered nzSize="middle">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Age</th>
-      <th>Address</th>
-      <th>Action</th>
+      <th nzWidth="1%">STT</th>
+      <th nzWidth="10%">Mã Voucher</th>
+      <th nzWidth="10%">Tên Voucher</th>
+      <th nzWidth="13%">Giá trị</th>
+      <th nzWidth="13%">Số lượng</th>
+      <th nzWidth="10%">Ngày bắt đầu</th>
+      <th nzWidth="13%">Kết thúc</th>
+
+      <th nzWidth="10%">Trạng thái</th>
+      <th nzWidth="5%">Hành động</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of listOfData">
-      <td>{{ data.id }}</td>
-      <td>{{ data.tenVoucher }}</td>
-      <td>{{ data.giaTri}}</td>
+    <tr *ngFor="let item of basicTable.data">
+      <td>{{ item.stt}}</td>
+      <td>{{ item.maVoucher}}</td>
+      <td>{{ item.tenVoucher}}</td>
+      <td>{{ item.giaTri}}</td>
+      <td>{{ item.soLuong}}</td>
+      <td>{{ item.startDay| date:
+        'dd/MM/yyyy, HH:mm' }}</td>
+      <td>{{ item.endDay| date:
+        'dd/MM/yyyy, HH:mm' }}</td>
+
+<td>
+  {{ item.status === 1 ? 'Hiển thị' : 'Ẩn' }}
+</td>
+
       <td>
-        <a style="margin-right: 10px;">
-          <span class="kt-font-danger">
-            <i nz-icon nzType="delete" nzTheme="outline"></i>
-          </span>
-        </a>
-        <a (click)="openEditModal()">
+        <a (click)="edit(item)" title="Sửa" style="margin-right: 10px;">
           <span class="kt-font-success">
             <i nz-icon nzType="edit" nzTheme="outline"></i>
           </span>
         </a>
+        <a title="Xóa" nz-popconfirm nzPopconfirmTitle="Bạn có muốn xóa không?"
+          nzPopconfirmPlacement="bottom" (nzOnConfirm)="delete(item.id)" (nzOnCancel)="cancel()">
+          <span class="kt-font-danger">
+            <i nz-icon nzType="delete" nzTheme="outline"></i>
+          </span>
+        </a>
+
       </td>
     </tr>
   </tbody>
 </nz-table>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="{{ modalTitle }}" (nzOnCancel)="close()" (click)="save()"
+  [nzWidth]="'50%'">
+  <nz-layout *nzModalContent>
+    <form nz-form [formGroup]="fbForm" style="background-color:white;">
+      <input nz-input formControlName="id" style="display: none;" />
 
-<nz-modal [(nzVisible)]="isEditModalVisible" nzTitle="Edit" (nzOnCancel)="closeEditModal()" (nzOnOk)="handleEdit()">
-  <nz-layout class="login-layout" *nzModalContent>
-    <form nz-form #myForm="ngForm" nzLayout="horizontal">
-      <nz-form-item>
-        <nz-form-label nzFor="maTinh" [nzSm]="8" nzRequired>Mã</nz-form-label>
-        <nz-form-control [nzSm]="16" nzErrorTip="Giá trị bắt buộc!">
-          <input nz-input name="maTinh" required />
+      <nz-form-item> <nz-form-label nzFor="maVoucher" [nzSm]="6" nzRequired>Mã</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Giá trị bắt buộc!">
+          <input nz-input formControlName="maVoucher" />
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item nzGutter="6">
-        <nz-form-label nzFor="tenTinh" [nzSm]="8" nzRequired>Tên</nz-form-label>
-        <nz-form-control [nzSm]="16" nzErrorTip="Giá trị bắt buộc!">
-          <input nz-input name="tenTinh" required>
+      <nz-form-item> <nz-form-label nzFor="tenVoucher" [nzSm]="6" nzRequired>Tên</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Giá trị bắt buộc!">
+          <input nz-input formControlName="tenVoucher" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item> <nz-form-label nzFor="giaTri" [nzSm]="6" nzRequired>Giá trị</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Giá trị bắt buộc!">
+          <nz-input-number formControlName="giaTri" class="width-200"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item> <nz-form-label nzFor="soLuong" [nzSm]="6" nzRequired>Số lượng</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Giá trị bắt buộc!">
+          <nz-input-number formControlName="soLuong" class="width-200"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item> <nz-form-label nzFor="startDay" [nzSm]="6" nzRequired>Ngày bắt đầu</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Giá trị bắt buộc!">
+          <nz-date-picker formControlName="startDay"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item> <nz-form-label nzFor="endDay" [nzSm]="6" nzRequired>Ngày kết thúc</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Giá trị bắt buộc!">
+          <nz-date-picker formControlName="endDay"></nz-date-picker>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label nzFor="cap" [nzSm]="8">Cấp</nz-form-label>
-        <nz-form-control>
-          <nz-date-picker name="">Ngày bắt đầu</nz-date-picker>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzFor="cap" [nzSm]="8">Ngày kết thúc</nz-form-label>
-        <nz-form-control>
-          <nz-date-picker name=""></nz-date-picker>
+        <nz-form-label nzFor="status" [nzSm]="6" nzRequired>Trạng thái</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Giá trị bắt buộc!">
+          <nz-select formControlName="status" nzPlaceHolder="Chọn trạng thái">
+            <nz-option [nzValue]="1" nzLabel="Hiển thị"></nz-option>
+            <nz-option [nzValue]="2" nzLabel="Ẩn"></nz-option>
+
+          </nz-select>
         </nz-form-control>
       </nz-form-item>
     </form>
   </nz-layout>
-
   <div *nzModalFooter>
-    <button type="button" nz-button nzType="default">Đóng</button>
-    <button type="button" nz-button nzType="primary"><i nz-icon nzType="save"></i>Lưu
+    <button type="button" nz-button nzType="default" (click)="close()">Đóng</button>
+    <button type="button" nz-button nzType="primary" (click)="save()"><i nz-icon nzType="save"></i>Lưu
     </button>
   </div>
 </nz-modal>

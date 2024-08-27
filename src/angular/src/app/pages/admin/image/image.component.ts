@@ -30,7 +30,7 @@ export class ImageComponent {
   apiUrl = 'https://localhost:44302/api/images/upload';
   isVisible = false;
   isSave = false;
-  modalTitle = 'Thêm Ram';
+  modalTitle = 'Thêm';
   listOfData: ImageDto[] = [];
   fbForm!: FormGroup;
   request: PagedRequest = { skipCount: 0, maxResultCount: 10 };
@@ -40,8 +40,8 @@ export class ImageComponent {
   ngOnInit(): void {
     this.fbForm = this.fb.group({
       id: '0',
-      ma: ['', [Validators.required]],
-      thongSo: ['', [Validators.required]]
+      name: ['', [Validators.required]],
+      status: ['', [Validators.required]]
     });
     this.loadData();
   }
@@ -91,15 +91,15 @@ export class ImageComponent {
     this.isVisible = false;
   }
   edit(item: ImageDto): void {
-    this.modalTitle = 'Sửa Ram';
+    this.modalTitle = 'Sửa';
     this.fbForm.patchValue(item);
     this.isVisible = true;
   }
 
-  delete(id: number): void {
-    this.adminService.deleteRam(id).subscribe(
+  delete(id: number,url: string): void {
+    this.adminService.deleteImage(id,url).subscribe(
       (response: any) => {
-        if (response.isSuccessed) {
+        if (response.succeeded) {
           this.nzMessageService.success('Thành công');
           this.loadData();
         } else {
@@ -112,7 +112,19 @@ export class ImageComponent {
       }
     );
   }
-
+  onDelete(id: number, fileName: string): void {
+    this.adminService.deleteImage(id, fileName).subscribe(
+      response => {
+        console.log('File deleted successfully', response);
+      },
+      error => {
+        console.error('Error deleting file', error);
+      }
+    );
+  }
+  cancel(): void {
+    this.nzMessageService.info('Bạn đã hủy thao tác');
+  }
   handleChange(event: { file: NzUploadFile }): void {
     if (event.file.status === 'done') {
       this.loadData();

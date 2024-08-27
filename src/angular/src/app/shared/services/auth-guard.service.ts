@@ -12,16 +12,22 @@ export class AuthGuard implements CanActivate {
   async canActivate(): Promise<boolean> {
     const currentUserString = localStorage.getItem('currentUser');
     if (currentUserString) {
-      console.log('currentUser found in localStorage');
       const currentUser = JSON.parse(currentUserString);
       const token = currentUser.accessToken;
+
       if (token) {
-        const isAdmin = await this.accountService.checkIsAdmin();
-        if (isAdmin) {
-          return true;
+        try {
+          const roles = await this.accountService.getUserRoles().toPromise();
+          if (Array.isArray(roles) && (roles.includes('Admin') || roles.includes('Employee'))) {
+            return true;
+          }
+        } catch (error) {
+          console.error('Error checking user roles', error);
         }
       }
     }
+
+    // Điều hướng đến trang đăng nhập nếu người dùng không có quyền
     await this.router.navigateByUrl('/login', { skipLocationChange: true });
     return false;
   }

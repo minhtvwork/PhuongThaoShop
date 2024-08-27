@@ -1,0 +1,28 @@
+<form class="d-flex" style="max-width: 300px;">
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+      <input 
+        type="text" 
+        nz-input 
+        placeholder="Nhập mã hóa đơn để tìm" 
+        [(ngModel)]="keyword" 
+        name="searchKeyword" />
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button 
+        nz-button 
+        nzType="primary" 
+        nzSearch 
+        (click)="findProduct()">
+        <span nz-icon nzType="search"></span>
+      </button>
+    </ng-template>
+  </form>
+  
+  <div *ngIf="billCode; else noBills">
+    <app-find-bill [billCode]="billCode"></app-find-bill>
+  </div>
+  
+  <ng-template #noBills>
+    <p>Không có dữ liệu hóa đơn.</p>
+  </ng-template>
+  

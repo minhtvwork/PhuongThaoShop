@@ -1,76 +1,109 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AdminService } from '../../../shared/services/admin.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { VoucherDto, VoucherCreateDto } from '../../../shared/models/model';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { VoucherDto} from 'src/app/shared/models/model';
+import { NzMessageService } from 'ng-zorro-antd/message';
 @Component({
   selector: 'app-voucher',
   templateUrl: './voucher.component.html',
   styleUrls: ['./voucher.component.scss']
 })
 export class VoucherComponent implements OnInit {
-  vouchers = [];
-  total = 0;
-  loading = true;
-  pageSize = 10;
-  pageIndex = 1;
-  keywords = '';
-  dataInput!: VoucherCreateDto; // Khởi tạo thuộc tính dataInput
-  rfDataModal: FormGroup = this.formBuilder.group({});
-  saving = false;
-  isEditModalVisible = false;
-  // loading = true;
-  // pageSize = 10;
-  // pageIndex = 1;
-  // total = 1;
-  listOfData: VoucherDto[] = [];
-  productId!: string;
-
-  constructor(private adminService: AdminService, private formBuilder: FormBuilder) { }
+  isVisible = false;
+  isSave = false;
+  modalTitle = 'Thêm';
+  listData: VoucherDto[] = [];
+  fbForm!: FormGroup;
+  searchKeyword = '';
+  constructor(private adminService: AdminService, private router: Router, private modal: NzModalService, private nzMessageService: NzMessageService, private fb: FormBuilder) {}
   ngOnInit(): void {
+    this.fbForm = this.fb.group({
+      id: 0,
+      maVoucher: ['', [Validators.required]],
+      tenVoucher: ['', [Validators.required]],
+      startDay: [null, [Validators.required]],
+      endDay: [null, [Validators.required]],
+      giaTri: [0, [Validators.required]],
+      soLuong: [0, [Validators.required]],
+      status: [0, [Validators.required]],
+    });
     this.loadData();
   }
-  // loadVouchers(): void {
-  //   this.loading = true;
-  //   const sorting = ''; // You can add sorting logic here if needed
-  //   this.adminService.getVouchers(this.pageIndex, this.pageSize, sorting)
-  //     .subscribe(result => {
-  //       this.listOfData = result.items;
-  //       this.total = result.totalCount;
-  //       this.loading = false;
-  //     }, error => {
-  //       console.error('Error fetching vouchers:', error);
-  //       this.loading = false;
-  //     });
-  // }
   loadData(): void {
-    this.loading = true;
-    this.adminService.getPageVouchers(this.pageIndex, this.pageSize, this.keywords).subscribe(data => {
-      this.loading = false;
-      this.listOfData = data.data;
-      this.total = data.totalCount;
+    this.adminService.getPageVoucher(1, 99999, this.searchKeyword).subscribe(response => {
+      console.log(response.data)
+      this.listData = response.data;
     });
   }
-  onPageChange(pageIndex: number): void {
-    this.pageIndex = pageIndex;
-    this.loadData();
+  search(): void {
+    this.loadData();  // Reload and filter the data based on the keyword
+  }
+  create(): void {
+    this.modalTitle = 'Thêm ';
+    this.fbForm.reset({
+      id: '0'
+    });
+    this.isVisible = true;
+  }
+  save(): void {
+    if (this.fbForm.valid) {
+      const obj = this.fbForm.value;
+      this.isSave = true;
+      const startDay: Date = new Date(obj.startDay);
+const endDay: Date = new Date(obj.endDay);
+      this.adminService.createOrUpdateVoucher(obj.id,obj.maVoucher, obj.tenVoucher,startDay,endDay,obj.giaTri,obj.soLuong,obj.status).subscribe(
+        (response: any) => {
+          if (response.succeeded) {
+            this.nzMessageService.success(response.messages);
+            this.isSave = false;
+            this.isVisible = false;
+            this.loadData();
+            this.fbForm.reset({ id: '0' });
+          } else {
+            this.nzMessageService.error(response.messages);
+            this.isSave = false;
+          }
+        },
+        (error) => {
+          this.isSave = false;
+          this.nzMessageService.error('Thất bại');
+          console.error('API call failed:', error);
+        }
+      );
+    }
+    else {
+      this.nzMessageService.error('Hãy nhập đầy đủ giá trị');
+    }
   }
 
-  onPageSizeChange(pageSize: number): void {
-    this.pageSize = pageSize;
-    this.loadData();
+  close(): void {
+    this.isVisible = false;
+  }
+  cancel(): void {
+    this.nzMessageService.info('Bạn đã hủy thao tác');
+  }
+  edit(item: VoucherDto): void {
+    this.modalTitle = 'Sửa ';
+    this.fbForm.patchValue(item);
+    this.isVisible = true;
   }
 
-  onSearch(): void {
-    this.pageIndex = 1;
-    this.loadData();
-  }
-  openEditModal(): void {
-    this.isEditModalVisible = true;
-  }
-  closeEditModal(): void {
-    this.isEditModalVisible = false;
-  }
-  handleEdit(): void {
-    this.closeEditModal();
+  delete(id: number): void {
+    this.adminService.deleteVoucher(id).subscribe(
+      (response: any) => {
+        if (response.succeeded) {
+          this.nzMessageService.success('Thành công');
+          this.loadData();
+        } else {
+          this.nzMessageService.error('Thất bại');
+        }
+      },
+      (error) => {
+        this.nzMessageService.error('Thất bại');
+        console.error('API call failed:', error);
+      }
+    );
   }
 }

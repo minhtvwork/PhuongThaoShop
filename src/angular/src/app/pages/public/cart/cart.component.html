@@ -42,7 +42,7 @@
               (ngModelChange)="quantityChange(data.id, $event)"></nz-input-number>
           </div>
           <div class="col-md-4 text-end ps-0 order-0 order-md-1 mb-2 mb-md-0 text-600">
-            {{ data.price * data.quantity | vndFormat }}</div>
+            {{ data.newPrice * data.quantity | vndFormat }}</div>
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@
   </div>
 </div>
 <div class="card-footer bg-light d-flex justify-content-end">
-  <form class="me-3"[formGroup]="voucherForm">
+  <form class="me-3" [formGroup]="voucherForm">
     <nz-form-item nzGutter="6">
       <nz-form-control>
         <label class="width-200">Mã giảm giá</label> <br>
@@ -75,39 +75,75 @@
   <div class="row">
     <form nz-form [nzLayout]="'inline'" [formGroup]="createBillForm">
       <div class="col-md-5 col-sm-5">
-        <div *ngIf="!userName" >
-            <nz-form-item class="pdt-15" nzGutter="6">
-          <nz-form-label class="width-200" nzFor="fullName" [nzSm]="4" nzRequired>Họ và tên</nz-form-label>
-          <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
-            <input nz-input class="input-w-300" formControlName="fullName" />
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item class="pdt-15" nzGutter="6">
-          <nz-form-label class="width-200" nzFor="address" [nzSm]="4" nzRequired>Địa chỉ</nz-form-label>
-          <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
-            <input nz-input class="input-w-300" formControlName="address" />
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item class="pdt-15" nzGutter="6">
-          <nz-form-label class="width-200" nzFor="phoneNumber" [nzSm]="4" nzRequired>Số điện thoại</nz-form-label>
-          <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
-            <input nz-input class="input-w-300" formControlName="phoneNumber" />
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item class="pdt-15" nzGutter="6">
-          <nz-form-label class="width-200" nzFor="email" [nzSm]="4" nzRequired>Email</nz-form-label>
-          <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
-            <input nz-input class="input-w-300" formControlName="email" />
-          </nz-form-control>
-        </nz-form-item>
+        <div *ngIf="!userName">
+          <nz-form-item class="pdt-15" nzGutter="6">
+            <nz-form-label class="width-200" nzFor="fullName" [nzSm]="4" nzRequired>Họ và tên</nz-form-label>
+            <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
+              <input nz-input class="input-w-300" formControlName="fullName" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="pdt-15" nzGutter="6">
+            <nz-form-label class="width-200" nzFor="phoneNumber" [nzSm]="4" nzRequired>Số điện thoại</nz-form-label>
+            <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
+              <input nz-input class="input-w-300" formControlName="phoneNumber" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="pdt-15" nzGutter="6">
+            <nz-form-label class="width-200" nzFor="province" [nzSm]="4" nzRequired>Tỉnh</nz-form-label>
+            <nz-form-control [nzSm]="13" nzErrorTip="Vui lòng chọn tỉnh!">
+              <nz-select formControlName="province" nzPlaceHolder="Chọn tỉnh"
+                (ngModelChange)="onProvinceChange($event)">
+                <nz-option *ngFor="let province of provinces" [nzLabel]="province.province_name"
+                  [nzValue]="province.province_id"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="pdt-15" nzGutter="6">
+            <nz-form-label class="width-200" nzFor="district" [nzSm]="4" nzRequired>Huyện</nz-form-label>
+            <nz-form-control [nzSm]="13" nzErrorTip="Vui lòng chọn huyện!">
+              <nz-select formControlName="district" nzPlaceHolder="Chọn huyện"
+                [nzDisabled]="!createBillForm.get('province')?.value" (ngModelChange)="onDistrictChange($event)">
+                <nz-option *ngFor="let district of districts" [nzLabel]="district.district_name"
+                  [nzValue]="district.district_id"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item class="pdt-15" nzGutter="6">
+            <nz-form-label class="width-200" nzFor="commune" [nzSm]="4" nzRequired>Xã</nz-form-label>
+            <nz-form-control [nzSm]="13" nzErrorTip="Vui lòng chọn xã!">
+              <nz-select formControlName="commune" nzPlaceHolder="Chọn xã"
+                [nzDisabled]="!createBillForm.get('district')?.value" (ngModelChange)="onCommuneChange($event)">
+                <nz-option *ngFor="let commune of communes" [nzLabel]="commune.ward_name"
+                  [nzValue]="commune.ward_id"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item class="pdt-15" nzGutter="6">
+            <nz-form-label class="width-200" nzFor="address" [nzSm]="4" nzRequired>Địa chỉ</nz-form-label>
+            <nz-form-control [nzSm]="8" nzErrorTip="Giá trị bắt buộc!">
+              <input nz-input class="input-w-300" formControlName="address" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="pdt-15" nzGutter="6" style="margin-bottom: 100px;">
+            <nz-form-label class="width-200" nzFor="notes" [nzSm]="4">Ghi chú</nz-form-label>
+            <nz-form-control [nzSm]="8">
+              <input nz-input class="input-w-300" formControlName="notes" />
+            </nz-form-control>
+          </nz-form-item>
         </div>
         <div *ngIf="userName">
-          <nz-radio-group formControlName="address">
-            <label >Xin mời bạn chọn địa chỉ giao hàng</label> <br>
+          <nz-radio-group *ngIf="address.length > 0" formControlName="address">
+            <label>Xin mời bạn chọn địa chỉ giao hàng</label> <br>
             <label *ngFor="let address of address" nz-radio [nzValue]="address.addressName">
-              <span style="margin-top: 30px;" >{{ address.addressName }}</span>
+              <span style="margin-top: 30px;">{{ address.addressName }}</span>
             </label>
           </nz-radio-group>
+          
+          <div *ngIf="address.length === 0">
+            <label>Không có địa chỉ giao hàng nào để hiển thị, hãy click <a style="color:red;" [routerLink]="'/thong-tin-ca-nhan'">vào đây</a> để thêm địa chỉ nhận hàng</label>
+          </div>
         </div>
       </div>
       <div class="col-md-7 col-sm-7">
@@ -143,7 +179,8 @@
           </nz-form-control>
         </nz-form-item>
 
-        <button style=" margin-top: 20px; " nz-button nzType="primary" (click)="createBill()">Gửi đơn hàng</button>
+        <button style=" margin-top: 20px; margin-bottom: 100px;" nz-button nzType="primary" (click)="createBill()">Gửi
+          đơn hàng</button>
 
       </div>
     </form>

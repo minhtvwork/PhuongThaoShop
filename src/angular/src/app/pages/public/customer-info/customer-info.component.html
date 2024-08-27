@@ -1,0 +1,137 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-sm-6">
+      <nz-card nzTitle="Thông tin cá nhân" [nzBordered]="true" style="width: 500px;">
+        <p><b>Tên tài khoản:</b> {{ customer.userName }}</p>
+        <p><b>Họ và tên:</b> {{ customer.fullName }}</p>
+        <p><b>Số điện thoại:</b> {{ customer.phoneNumber}}</p>
+        <p><b>Địa chỉ Email:</b> {{ customer.email }}</p>
+       <a (click)="editUser(customer)" title="Sửa thông tin cá nhân" style="margin-right: 10px;">
+                <span class="kt-font-success">
+                  <i nz-icon nzType="edit" nzTheme="outline"></i>
+                </span>
+              </a>
+      </nz-card>
+    </div>
+    <div class="col-md-6 col-sm-6">
+      <div nz-col [nzSpan]="6" style="margin-top: 20px; margin-bottom: 20px;">
+        <button nz-button nzType="primary" (click)="create()">
+          <i class="fa fa-plus"></i> Thêm mới
+        </button>
+      </div>
+      <nz-table #basicTable [nzData]="address" nzBordered nzSize="middle">
+        <thead>
+          <tr>
+            <th nzWidth="5%">STT</th>
+            <th nzWidth="80%">Địa chỉ</th>
+            <th nzWidth="5%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of basicTable.data; index as i">
+            <td>{{ i+1}}</td>
+            <td>{{ item.addressName}}</td>
+            <td>
+              <!-- <a (click)="edit(item)" title="Sửa địa chỉ" style="margin-right: 10px;">
+                <span class="kt-font-success">
+                  <i nz-icon nzType="edit" nzTheme="outline"></i>
+                </span>
+              </a> -->
+              <a title="Xóa địa chỉ" nz-popconfirm nzPopconfirmTitle="Bạn có muốn xóa địa chỉ này không?"
+                nzPopconfirmPlacement="bottom" (nzOnConfirm)="delete(item.addressId)" (nzOnCancel)="cancel()">
+                <span class="kt-font-danger">
+                  <i nz-icon nzType="delete" nzTheme="outline"></i>
+                </span>
+              </a>
+
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <nz-modal [(nzVisible)]="isVisible" nzTitle="{{ modalTitle }}" (nzOnCancel)="close()" (click)="save()"
+        [nzWidth]="'50%'">
+        <nz-layout *nzModalContent>
+          <form nz-form [formGroup]="fbForm" style="background-color:white;">
+            <input nz-input formControlName="id" style="display: none;" />
+            <nz-form-item class="pdt-15" nzGutter="6">
+              <nz-form-label class="width-200" nzFor="province" [nzSm]="4" nzRequired>Tỉnh</nz-form-label>
+              <nz-form-control [nzSm]="13" nzErrorTip="Vui lòng chọn tỉnh!">
+                <nz-select  formControlName="province" nzPlaceHolder="Chọn tỉnh"(ngModelChange)="onProvinceChange($event)">
+                  <nz-option *ngFor="let province of provinces" [nzLabel]="province.province_name"
+                    [nzValue]="province.province_id"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item class="pdt-15" nzGutter="6">
+              <nz-form-label class="width-200" nzFor="district" [nzSm]="4" nzRequired>Huyện</nz-form-label>
+              <nz-form-control [nzSm]="13" nzErrorTip="Vui lòng chọn huyện!">
+                <nz-select formControlName="district" nzPlaceHolder="Chọn huyện"
+                  [nzDisabled]="!fbForm.get('province')?.value"
+                  (ngModelChange)="onDistrictChange($event)">
+                  <nz-option *ngFor="let district of districts" [nzLabel]="district.district_name"
+                    [nzValue]="district.district_id"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+            
+            <nz-form-item class="pdt-15" nzGutter="6">
+              <nz-form-label class="width-200" nzFor="commune" [nzSm]="4" nzRequired>Xã</nz-form-label>
+              <nz-form-control [nzSm]="13" nzErrorTip="Vui lòng chọn xã!">
+                <nz-select formControlName="commune" nzPlaceHolder="Chọn xã"
+                  [nzDisabled]="!fbForm.get('district')?.value"
+                  (ngModelChange)="onCommuneChange($event)">
+                  <nz-option *ngFor="let commune of communes" [nzLabel]="commune.ward_name"
+                    [nzValue]="commune.ward_id"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+            
+            <nz-form-item class="pdt-15" nzGutter="6">
+              <nz-form-label class="width-200" nzFor="addressName" [nzSm]="4" nzRequired>Địa chỉ</nz-form-label>
+              <nz-form-control [nzSm]="13" nzErrorTip="Giá trị bắt buộc!">
+                <input nz-input class="input-w-300" formControlName="addressName" />
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </nz-layout>
+        <div *nzModalFooter>
+          <button type="button" nz-button nzType="default" (click)="close()">Đóng</button>
+          <button type="button" nz-button nzType="primary" (click)="save()"><i nz-icon nzType="save"></i>Lưu
+          </button>
+        </div>
+      </nz-modal>
+      <nz-modal [(nzVisible)]="isVisible2" nzTitle="Sửa thông tin cá nhân" (nzOnCancel)="closeUser()" (click)="saveUser()"
+      [nzWidth]="'50%'">
+      <nz-layout *nzModalContent>
+        <form nz-form [formGroup]="userForm" style="background-color:white;">
+          <input nz-input formControlName="id" style="display: none;" />
+        
+          <nz-form-item class="pdt-15" nzGutter="6">
+            <nz-form-label class="width-200" nzFor="" [nzSm]="4" nzRequired>Họ và tên</nz-form-label>
+            <nz-form-control [nzSm]="13" nzErrorTip="Giá trị bắt buộc!">
+              <input nz-input class="input-w-300" formControlName="fullName" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="pdt-15" nzGutter="6">
+            <nz-form-label class="width-200" nzFor="" [nzSm]="4" nzRequired>Số điện thoại</nz-form-label>
+            <nz-form-control [nzSm]="13" nzErrorTip="Giá trị bắt buộc!">
+              <input nz-input class="input-w-300" formControlName="phoneNumber" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="pdt-15" nzGutter="6">
+            <nz-form-label class="width-200" nzFor="" [nzSm]="4" nzRequired>Địa chỉ Email</nz-form-label>
+            <nz-form-control [nzSm]="13" nzErrorTip="Giá trị bắt buộc!">
+              <input nz-input class="input-w-300" formControlName="email" />
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </nz-layout>
+      <div *nzModalFooter>
+        <button type="button" nz-button nzType="default" (click)="closeUser()">Đóng</button>
+        <button type="button" nz-button nzType="primary" (click)="saveUser()"><i nz-icon nzType="save"></i>Lưu
+        </button>
+      </div>
+    </nz-modal>
+    </div>
+  </div>
+</div>

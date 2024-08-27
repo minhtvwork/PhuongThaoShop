@@ -1,0 +1,73 @@
+<div nz-row [nzGutter]="24" style="margin-bottom: 15px;">
+    <div nz-col [nzSpan]="12">
+        <input nz-input placeholder="Tìm kiếm theo từ khóa" [(ngModel)]="searchKeyword" (ngModelChange)="search()" />
+    </div>
+    <div nz-col [nzSpan]="6">
+        <button nz-button nzType="primary" (click)="create()">
+            <i class="fa fa-plus"></i> Thêm mới
+        </button>
+    </div>
+</div>
+<nz-table #basicTable [nzData]="listData" nzBordered nzSize="middle">
+    <thead>
+        <tr>
+            <th nzWidth="1%">STT</th>
+            <th nzWidth="10%">Mã</th>
+            <th nzWidth="10%">Kích cỡ</th>
+            <th nzWidth="10%">Tần số</th>
+            <th nzWidth="10%">Chất liệu</th>
+            <th nzWidth="13%">Ngày tạo</th>
+            <th nzWidth="5%">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of basicTable.data">
+            <td>{{ item.stt}}</td>
+            <td>{{ item.ma}}</td>
+            <td>{{ item.kichCo}}</td>
+            <td>{{ item.tanSo}}</td>
+            <td>{{ item.chatLieu}}</td>
+            <td>{{ item.crDateTime | date:
+                'dd/MM/yyyy, HH:mm' }}</td>
+            <td>
+                <a (click)="edit(item)" title="Sửa" style="margin-right: 10px;">
+                    <span class="kt-font-success">
+                        <i nz-icon nzType="edit" nzTheme="outline"></i>
+                    </span>
+                </a>
+                <a title="Xóa" nz-popconfirm nzPopconfirmTitle="Bạn có muốn xóa không?" nzPopconfirmPlacement="bottom"
+                    (nzOnConfirm)="delete(item.id)" (nzOnCancel)="cancel()">
+                    <span class="kt-font-danger">
+                        <i nz-icon nzType="delete" nzTheme="outline"></i>
+                    </span>
+                </a>
+
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="{{ modalTitle }}" (nzOnCancel)="close()" (click)="save()"
+    [nzWidth]="'50%'">
+    <nz-layout *nzModalContent>
+        <form nz-form [formGroup]="fbForm" style="background-color:white;">
+            <input nz-input formControlName="id" style="display: none;" />
+            <nz-form-item>
+                <nz-form-label nzFor="ma" [nzSm]="6" nzRequired>Mã</nz-form-label>
+                <nz-form-control [nzSm]="18" nzErrorTip="Giá trị bắt buộc!">
+                    <input nz-input formControlName="ma" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzFor="ten" [nzSm]="6" nzRequired>Tên</nz-form-label>
+                <nz-form-control [nzSm]="18" nzErrorTip="Giá trị bắt buộc!">
+                    <input nz-input formControlName="ten" />
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-layout>
+    <div *nzModalFooter>
+        <button type="button" nz-button nzType="default" (click)="close()">Đóng</button>
+        <button type="button" nz-button nzType="primary" (click)="save()"><i nz-icon nzType="save"></i>Lưu
+        </button>
+    </div>
+</nz-modal>

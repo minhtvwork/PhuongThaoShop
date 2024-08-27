@@ -17,9 +17,10 @@ export interface LoginRequestDto {
 }
 export interface ProductDetailDto {
   id: string;
-  code?: string;
+  code: string;
   oldPrice: number;
   price: number;
+  newPrice: number;
   availableQuantity: number;
   status: number;
   upgrade?: string;
@@ -43,17 +44,19 @@ export interface ProductDetailDto {
   tenCardVGA?: string;
   thongSoCardVGA?: string;
   imageMain?: string;
-  otherImages?: string[];
+  listImage: string[];
   phanTramGiamGia: number;
 }
 export interface ProductDetailGetPageDto {
   stt: number;
   id: number;
-  code?: string;
+  code: string;
   oldPrice: number;
   price: number;
+  discount: number;
   availableQuantity: number;
   status: number;
+  strStatus?: string;
   upgrade?: string;
   description?: string;
   maRam?: string;
@@ -91,7 +94,7 @@ export interface CartItemDto {
   idProductDetails: number;
   quantity: number;
   maProductDetail?: string;
-  price: number;
+  newPrice: number;
   description?: string;
   maRam?: string;
   thongSoRam?: string;
@@ -115,7 +118,8 @@ export interface CartItemDto {
 }
 export interface VoucherDto {
   id: number;
-  CrDateTime: Date | null;
+  stt: number;
+  crDateTime: Date | null;
   status: number | null;
   maVoucher: string | null;
   tenVoucher: string | null;
@@ -133,10 +137,68 @@ export interface VoucherCreateDto {
   giaTri: number;
   soLuong: number;
 }
-export interface RamDto {
+// export interface RamDto {
+//   id: number;
+//   ma: string;
+//   thongSo?: string;
+// }
+// export interface CpuDto {
+//   id: number;
+//   ma: string;
+//   ten?: string;
+// }
+export interface CardVGADto {
   id: number;
-  ma?: string;
+  stt: number
+  ten: string;
+  ma: string;
   thongSo?: string;
+  crUserId?: number;
+  crDateTime?: Date;
+  status: number;
+}
+export interface HardDriveDto {
+  id: number;
+  ma: string;
+  thongSo?: string;
+  crUserId?: number;
+  crDateTime?: Date;
+  status: number;
+  stt: number;
+}
+export interface ScreenDto {
+  id: number;
+  ma: string;
+  kichCo?: string;
+  tanSo?: string;
+  chatLieu?: string;
+  crUserId?: number;
+  crDateTime?: Date;
+  status: number;
+  stt: number;
+}
+export interface ColorDto {
+  id: number;
+  ma: string;
+  name?: string;
+  crUserId?: number;
+  crDateTime?: Date;
+  status: number;
+  stt: number;
+}
+export interface ProductDto {
+  id: number;
+  name: string;
+  crUserId?: number;
+  crDateTime?: Date;
+  status: number;
+  stt: number;
+}
+export interface DiscountDto {
+  id: number;
+  code: string;
+  Percentage: number;
+  stt: number;
 }
 export interface BillDto {
   id: number;
@@ -159,7 +221,8 @@ export interface BillGetPageDto {
   id: number;
   stt: number;
   invoiceCode: string;
-  createDate?: Date;
+  crDateTime?: Date;
+  updDateTime?: Date;
   phoneNumber?: string;
   fullName?: string;
   address?: string;
@@ -174,15 +237,19 @@ export interface BillGetPageDto {
   status: number;
   billDetail?: any;
   count: number;
+  crUserName: string;
+  updUserName: string;
 }
 export interface BillDetail {
   id: number;
   code: string;
-  codeProductDetail?: string;
+  codeProductDetail: string;
   quantity: number;
   price: number;
   billEntityId: number;
   crUserId?: number;
+  status: number;
+  listSerial: string[];
 }
 export interface RoleDto {
   id: number;
@@ -192,12 +259,34 @@ export interface RoleDto {
 export interface PBillCreateCommand {
   phoneNumber?: string;
   fullName?: string;
-  address?: string;
+  address: string;
+  address2: string;
   userName?: string;
   codeVoucher?: string;
+  notes?: string;
   payment: number;
+  province? : string;
+  district? : string;
+  commune? : string;
+  provinceText? : string;
+  districtText? : string;
+  communeText? : string;
   cartItem?: CartItemDto[];
 }
+export interface SerialDto {
+  id: number;
+  serialNumber: string;
+  codeProductDetail: string;
+  codeBillDetail: string;
+  crUserId?: number | null;
+  crDateTime?: Date | null;
+  updUserId?: number | null;
+  updDateTime?: Date | null;
+  status: number;
+  productDetailEntityId?: number | null;
+  billDetailEntityId?: number | null;
+}
+
 // Example: api-result.model.ts
 
 export interface ApiResult<T> {
@@ -237,3 +326,85 @@ export interface AddressDto {
   status: number;
   userEntityId?: number;
 }
+export interface SerialDto {
+  id: number;
+  stt: null;
+  serialNumber: string;
+  crUserId?: number | null;
+  crDateTime?: Date | null;
+  updUserId?: number | null;
+  updDateTime?: Date | null;
+  status: number;
+  productDetailEntityId?: number | null;
+  billDetailEntityId?: number | null;
+}
+export interface ProductDto {
+  id: number;
+  name: string;
+  manufacturerName : string;
+  productTypeName : string;
+  crUserId?: number;
+  crDateTime?: Date;
+  status: number;
+  manufacturerEntityId?: number;
+  productTypeEntityId?: number;
+  stt: number;
+}
+export interface CpuDto {
+  id: number;
+  ma: string;
+  ten?: string;
+  crUserId?: number;
+  crDateTime?: Date;
+  status: number;
+  stt: number;
+}
+export interface RamDto {
+  id: number;
+  ma: string;
+  thongSo?: string;
+  crUserId?: number;
+  crDateTime?: Date;
+  status: number;
+  stt: number;
+}
+export interface ProductImageDto {
+  id: number;
+  productDetailId: number;
+  codeProductDetail: string;
+  imageName: string;
+  imageUrl: string;
+  isIndex: boolean;
+  status: number;
+  imageId: number;
+  stt: number;
+}
+export interface ProductTypeDto {
+  id: number;
+  name: string;
+  crUserId?: number;
+  crDateTime?: Date;
+  status: number;
+  stt: number;
+}
+export interface ManufacturerDto {
+  id: number;
+  name: string;
+  crUserId?: number;
+  crDateTime?: Date;
+  status: number;
+  stt: number;
+}
+export interface UserDto {
+  id: number;
+  userName: string;
+  email: string;
+  phoneNumber: string;
+  fullName: string;
+}
+
+
+
+
+
+

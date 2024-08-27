@@ -1,0 +1,88 @@
+<div nz-row [nzGutter]="24" style="margin-bottom: 15px;">
+    <div nz-col [nzSpan]="12">
+        <input nz-input placeholder="Tìm kiếm theo từ khóa" [(ngModel)]="searchKeyword" (ngModelChange)="search()" />
+    </div>
+    <div nz-col [nzSpan]="6">
+        <button nz-button nzType="primary" (click)="create()">
+            <i class="fa fa-plus"></i> Thêm mới
+        </button>
+    </div>
+</div>
+<nz-table #basicTable [nzData]="listData" nzBordered nzSize="middle">
+    <thead>
+        <tr>
+            <th nzWidth="1%">STT</th>
+            <th nzWidth="10%">Mã sản phẩm</th>
+            <th nzWidth="10%">Hình ảnh</th>
+            <th nzWidth="10%">Tên hình ảnh</th>
+            <th nzWidth="13%">Đánh dấu hiển thị</th>
+            <th nzWidth="5%">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of basicTable.data">
+            <td>{{ item.stt}}</td>
+            <td>{{ item.codeProductDetail}}</td>
+            <td>  <img style="width: 80%; height: 80%;" nz-image nzSrc="https://localhost:44302{{ item.imageUrl }}" alt=""></td>
+            <td>{{ item.imageName}}</td>
+            <!-- <td> https://localhost:44302{{ item.imageUrl}}</td> -->
+            <td>{{ item.isIndex}}</td>
+            <td>
+                <a (click)="edit(item)" title="Sửa" style="margin-right: 10px;">
+                    <span class="kt-font-success">
+                        <i nz-icon nzType="edit" nzTheme="outline"></i>
+                    </span>
+                </a>
+                <a title="Xóa" nz-popconfirm nzPopconfirmTitle="Bạn có muốn xóa không?" nzPopconfirmPlacement="bottom"
+                    (nzOnConfirm)="delete(item.id)" (nzOnCancel)="cancel()">
+                    <span class="kt-font-danger">
+                        <i nz-icon nzType="delete" nzTheme="outline"></i>
+                    </span>
+                </a>
+
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="{{ modalTitle }}" (nzOnCancel)="close()" (click)="save()"
+    [nzWidth]="'50%'">
+    <nz-layout *nzModalContent>
+        <form nz-form [formGroup]="fbForm" style="background-color:white;">
+            <input nz-input formControlName="id" style="display: none;" />
+          
+            <nz-form-item>  <nz-form-label nzFor="productDetailId" nzRequired>Mã sản phẩm chi tiết</nz-form-label>
+                <nz-form-control>
+                    <nz-select class="width-200" nzShowSearch nzAllowClear nzPlaceHolder="Chọn mã chi tiết sản phẩm"
+                        formControlName="productDetailId">
+                        <nz-option *ngFor="let item of productDetails" [nzLabel]="item.code" [nzValue]="item.id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+         
+            <nz-form-item>   <nz-form-label nzFor="imageId" style="padding-right: 60px;" nzRequired>Hình ảnh:    </nz-form-label>
+                <nz-form-control>
+                    <nz-select class="width-200" nzShowSearch nzAllowClear nzPlaceHolder="Chọn tên hình ảnh"
+                        formControlName="imageId">
+                        <nz-option *ngFor="let item of images" [nzLabel]="item.name" [nzValue]="item.id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzFor="isIndex"style="padding-right: 60px;" nzRequired>Hiện trang chủ</nz-form-label>
+                <nz-form-control>
+                    <nz-radio-group formControlName="isIndex">
+                        <label nz-radio-button [nzValue]="true">Có</label>   <!-- Giá trị boolean true -->
+                        <label nz-radio-button [nzValue]="false">Không</label> <!-- Giá trị boolean false -->
+                      </nz-radio-group>
+                </nz-form-control>
+              </nz-form-item>
+        </form>
+    </nz-layout>
+    <div *nzModalFooter>
+        <button type="button" nz-button nzType="default" (click)="close()">Đóng</button>
+        <button type="button" nz-button nzType="primary" (click)="save()"><i nz-icon nzType="save"></i>Lưu
+        </button>
+    </div>
+</nz-modal>

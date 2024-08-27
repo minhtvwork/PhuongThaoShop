@@ -1,0 +1,7 @@
+<div *ngIf="billCodes.length > 0; else noBills">
+    <app-find-bill *ngFor="let billCode of billCodes" [billCode]="billCode"></app-find-bill>
+  </div>
+  <ng-template #noBills>
+    <p>Không có dữ liệu hóa đơn.</p>
+  </ng-template>
+  

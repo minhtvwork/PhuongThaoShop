@@ -4,6 +4,7 @@ import { CartItemDto, PBillCreateCommand, ResponseDto, VoucherDto, } from '../..
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { AccountService } from 'src/app/shared/services/account.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -14,7 +15,10 @@ export class NavbarComponent {
   isOkLoading = false;
   userName: string | null = null;
   totalCartItem !: number ;
-  constructor( private publicService: PublicService,private accountService: AccountService,private fb: NonNullableFormBuilder, private nzMessageService: NzMessageService) {
+  keyword: string = '';
+  constructor( private publicService: PublicService,private accountService: AccountService,private fb: NonNullableFormBuilder, private nzMessageService: NzMessageService,
+    private router: Router
+  ) {
     const currentUserString = localStorage.getItem('currentUser');
     if (currentUserString) {
       const currentUser = JSON.parse(currentUserString);
@@ -97,5 +101,13 @@ export class NavbarComponent {
         this.totalCartItem = JSON.parse(cartItemsString).length;
       }
     }
+  }
+  navigateToRegister(): void {
+    this.isVisible = false; // Đóng modal
+    this.router.navigate(['/register']); // Điều hướng sang trang đăng ký
+  }
+  findProduct(keywords: string): void {
+    console.log(keywords);
+    this.router.navigate(['/laptop-moi.html'], { queryParams: { keywords } });
   }
 }

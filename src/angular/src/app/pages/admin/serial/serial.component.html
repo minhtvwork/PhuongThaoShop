@@ -1,8 +1,104 @@
-<nz-upload
-  [nzAction]="'https://localhost:44302/api/serial/upload'"
-  nzAccept=".xlsx"
-  (nzChange)="handleChange($event)">
-  <button nz-button>
-    <i nz-icon nzType="upload"></i> Tải lên tệp Excel
-  </button>
-</nz-upload>
+<div nz-row [nzGutter]="24" style="margin-bottom: 15px;">
+  <div nz-col [nzSpan]="12">
+    <input nz-input placeholder="Tìm kiếm theo từ khóa" [(ngModel)]="searchKeyword" (ngModelChange)="search()" />
+  </div>
+  <div nz-col [nzSpan]="6">
+    <nz-upload [nzAction]="'https://localhost:44302/api/serial/upload'" nzAccept=".xlsx"
+      (nzChange)="handleChange($event)">
+      <button nz-button>
+        <i nz-icon nzType="upload"></i> Tải lên tệp Excel
+      </button>
+    </nz-upload>
+  </div>
+  <!-- <div nz-col [nzSpan]="6">
+    <button nz-button nzType="primary" (click)="create()">
+      <i class="fa fa-plus"></i> Thêm mới
+    </button>
+  </div> -->
+</div>
+<nz-table #basicTable [nzData]="listData" nzBordered nzSize="middle">
+  <thead>
+    <tr>
+      <th nzWidth="1%">STT</th>
+      <th nzWidth="10%">Số serial</th>
+      <th nzWidth="10%">Mã sản phẩm chi tiết</th>
+      <th nzWidth="10%">Mã hóa đơn chi tiết</th>
+      <th nzWidth="13%">Ngày tạo</th>
+      <th nzWidth="10%">Trạng thái</th>
+      <th nzWidth="5%">Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of basicTable.data">
+      <td>{{ item.stt}}</td>
+      <td>{{ item.serialNumber}}</td>
+      <td>{{ item.codeProductDetail}}</td>
+      <td>{{ item.codeBillDetail }}</td>
+      <td>{{ item.crDateTime | date:
+        'dd/MM/yyyy, HH:mm' }}</td>
+      <td>
+        <ng-container *ngIf="item.status === 1">
+          Hoạt động
+        </ng-container>
+        <ng-container *ngIf="item.status === 0">
+          <span>Ẩn</span>
+        </ng-container>
+      </td>
+      <td>
+        <a *ngIf="!item.billDetailEntityId || item.billDetailEntityId <= 0" (click)="edit(item)" title="Sửa"
+          style="margin-right: 10px;">
+          <span class="kt-font-success">
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
+          </span>
+        </a>
+        <!-- <a title="Xóa" nz-popconfirm nzPopconfirmTitle="Bạn có muốn xóa không?"
+          nzPopconfirmPlacement="bottom" (nzOnConfirm)="delete(item.id)" (nzOnCancel)="cancel()">
+          <span class="kt-font-danger">
+            <i nz-icon nzType="delete" nzTheme="outline"></i>
+          </span>
+        </a> -->
+
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="{{ modalTitle }}" (nzOnCancel)="close()" (click)="save()"
+  [nzWidth]="'50%'">
+  <nz-layout *nzModalContent>
+    <form nz-form [formGroup]="fbForm" style="background-color:white;">
+      <input nz-input formControlName="id" style="display: none;" />
+
+      <nz-form-item> <nz-form-label nzFor="serialNumber" [nzSm]="6" nzRequired>Số Serial</nz-form-label>
+        <nz-form-control [nzSm]="18" nzErrorTip="Giá trị bắt buộc!">
+          <input nz-input formControlName="serialNumber" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item> <nz-form-label [nzSm]="6" nzFor="productDetail" nzRequired>Mã sản phẩm</nz-form-label>
+        <nz-form-control [nzSm]="18">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn mã chi tiết sản phẩm"
+            formControlName="productDetailEntityId">
+            <nz-option *ngFor="let item of productDetails" [nzLabel]="item.code" [nzValue]="item.id">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzFor="status" [nzSm]="6" nzRequired>Trạng thái</nz-form-label>
+        <nz-form-control [nzSm]="18" nzErrorTip="Giá trị bắt buộc!">
+          <nz-select formControlName="status" nzPlaceHolder="Chọn trạng thái">
+            <nz-option [nzValue]="1" nzLabel="Hoạt động"></nz-option>
+            <nz-option [nzValue]="0" nzLabel="Chờ xác nhận"></nz-option>
+
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </nz-layout>
+  <div *nzModalFooter>
+    <button type="button" nz-button nzType="default" (click)="close()">Đóng</button>
+    <button type="button" nz-button nzType="primary" (click)="save()"><i nz-icon nzType="save"></i>Lưu
+    </button>
+  </div>
+</nz-modal>

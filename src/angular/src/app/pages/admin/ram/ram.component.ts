@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AdminService } from '../../../shared/services/admin.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RamDto, PagedRequest } from 'src/app/shared/models/model';
+import { RamDto } from 'src/app/shared/models/model';
 import { NzMessageService } from 'ng-zorro-antd/message';
-
 @Component({
   selector: 'app-ram',
   templateUrl: './ram.component.html',
@@ -13,28 +13,29 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class RamComponent implements OnInit {
   isVisible = false;
   isSave = false;
-  modalTitle = 'Thêm Ram';
+  modalTitle = 'Thêm';
   listData: RamDto[] = [];
   fbForm!: FormGroup;
-  request: PagedRequest = { skipCount: 0, maxResultCount: 10 };
-  listOfCurrentPageData: readonly RamDto[] = [];
-  constructor(private adminService: AdminService, private modal: NzModalService, private nzMessageService: NzMessageService, private fb: FormBuilder) { }
-
+  searchKeyword = '';
+  constructor(private adminService: AdminService, private router: Router, private modal: NzModalService, private nzMessageService: NzMessageService, private fb: FormBuilder) { }
   ngOnInit(): void {
     this.fbForm = this.fb.group({
-      id: '0',
+      id: 0,
       ma: ['', [Validators.required]],
-      thongSo: ['', [Validators.required]]
+      thongSo: ['', [Validators.required]],
     });
     this.loadData();
   }
-
   loadData(): void {
-    this.adminService.getPagedRam(this.request).subscribe(response => {
-      this.listData = response.items;
+    this.adminService.getPageRam(1, 99999, this.searchKeyword).subscribe(response => {
+      this.listData = response.data;
     });
   }
+  search(): void {
+    this.loadData();
+  }
   create(): void {
+    this.modalTitle = 'Thêm ';
     this.fbForm.reset({
       id: '0'
     });
@@ -44,16 +45,16 @@ export class RamComponent implements OnInit {
     if (this.fbForm.valid) {
       const obj = this.fbForm.value;
       this.isSave = true;
-      this.adminService.createOrUpdateRam(obj).subscribe(
+      this.adminService.createOrUpdateRam(obj.id, obj.ma, obj.thongSo).subscribe(
         (response: any) => {
-          if (response.isSuccessed) {
-            this.nzMessageService.success('Thành công');
+          if (response.succeeded) {
+            this.nzMessageService.success(response.messages);
             this.isSave = false;
             this.isVisible = false;
             this.loadData();
             this.fbForm.reset({ id: '0' });
           } else {
-            this.nzMessageService.error('Thất bại');
+            this.nzMessageService.error(response.messages);
             this.isSave = false;
           }
         },
@@ -64,13 +65,19 @@ export class RamComponent implements OnInit {
         }
       );
     }
+    else {
+      this.nzMessageService.error('Hãy nhập đầy đủ giá trị');
+    }
   }
 
   close(): void {
     this.isVisible = false;
   }
+  cancel(): void {
+    this.nzMessageService.info('Bạn đã hủy thao tác');
+  }
   edit(item: RamDto): void {
-    this.modalTitle = 'Sửa Ram';
+    this.modalTitle = 'Sửa ';
     this.fbForm.patchValue(item);
     this.isVisible = true;
   }
@@ -78,7 +85,8 @@ export class RamComponent implements OnInit {
   delete(id: number): void {
     this.adminService.deleteRam(id).subscribe(
       (response: any) => {
-        if (response.isSuccessed) {
+        console.log(response)
+        if (response.succeeded) {
           this.nzMessageService.success('Thành công');
           this.loadData();
         } else {

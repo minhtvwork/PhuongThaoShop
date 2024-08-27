@@ -13,10 +13,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsProviderModule } from './shared/icons-provider.module';
 import { AdminModule } from './pages/admin/admin.module';
 import { PublicModule } from './pages/public/public.module';
-import { JwtInterceptor } from './jwt.interceptor';
-
+// import { JwtInterceptor } from './jwt.interceptor';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import localeVi from '@angular/common/locales/vi';
 registerLocaleData(en);
-
+registerLocaleData(localeVi, 'vi-VN');
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,15 +32,13 @@ registerLocaleData(en);
     BrowserAnimationsModule,
     IconsProviderModule,
     RouterModule,
-    // NzLayoutModule,
-    // NzMenuModule,
-    // NzFormModule,
     ReactiveFormsModule,
+    ZXingScannerModule,
    
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    // { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

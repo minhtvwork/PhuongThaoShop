@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -10,22 +10,28 @@ import { PublicService } from '../../../shared/services/public.service';
 })
 export class FindBillComponent implements OnInit {
   billData: any;
-   billCode !: string;
+  @Input() billCode !: string;
   constructor(private route: ActivatedRoute, private publicService: PublicService) { }
 
   ngOnInit(): void {
     this.loadData();
-   
+
   }
   loadData(): void {
-    this.route.queryParams.subscribe(params => 
-      this.billCode = params['codeBill']
-    );
+    this.route.queryParams.subscribe(params => {
+      const codeBill = params['codeBill'];
+      if (codeBill) {
+        this.billCode = codeBill;
+        this.loadData();
+      } else {
+      }
+    });
+
     this.publicService.getBillByInvoiceCode(this.billCode).subscribe(
       (billResponse: any) => {
         if (billResponse.isSuccessed) {
-                this.billData = billResponse.resultObj;
-                console.log(this.billData)
+          this.billData = billResponse.resultObj;
+          console.log(this.billData)
         }
       });
   }
