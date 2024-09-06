@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
 using PTS.Application.Interfaces.Repositories;
-using PTS.Application.Dto;
 using PTS.Domain.Entities;
 using PTS.Data;
-using Abp.Application.Services.Dto;
-using PTS.Shared.Dto;
-
 namespace PTS.Persistence.Repositories
 {
     public class SerialRepository : ISerialRepository
@@ -15,26 +10,6 @@ namespace PTS.Persistence.Repositories
         public SerialRepository(ApplicationDbContext context)
         {
             _context = context;
-        }
-        public async Task<PagedResultDto<SerialDto>> GetPagedAsync(PagedRequestDto request)
-        {
-            var query = _context.SerialEntity;
-
-            var totalCount = await query.CountAsync();
-
-            var obj = await query.Skip(request.SkipCount)
-                                    .Take(request.MaxResultCount)
-                                    .ToListAsync();
-
-            var objDto = obj.Select(serial => new SerialDto
-            {
-                Id = serial.Id,
-                SerialNumber = serial.SerialNumber,
-                ProductDetailEntityId = serial.ProductDetailEntityId,
-                BillDetailEntityId = serial.BillDetailEntityId,
-                Status = serial.Status,
-            }).ToList();
-            return new PagedResultDto<SerialDto>(totalCount, objDto);
         }
         public async Task<bool> Create(SerialEntity obj)
         {

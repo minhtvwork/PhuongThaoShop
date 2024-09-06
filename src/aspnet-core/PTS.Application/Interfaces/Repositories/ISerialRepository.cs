@@ -1,7 +1,4 @@
-﻿using Abp.Application.Services.Dto;
-using PTS.Shared.Dto;
-using PTS.Application.Dto;
-using PTS.Domain.Entities;
+﻿using PTS.Domain.Entities;
 
 namespace PTS.Application.Interfaces.Repositories
 {
@@ -11,7 +8,6 @@ namespace PTS.Application.Interfaces.Repositories
         Task<bool> CreateMany(List<SerialEntity> listObj);
         Task<bool> Update(SerialEntity obj);
         Task<bool> Delete(int id);
-        Task<PagedResultDto<SerialDto>> GetPagedAsync(PagedRequestDto request);
         Task<IEnumerable<SerialEntity>> GetList();
         Task<SerialEntity> GetById(int id);
         Task<SerialEntity> FindBySerialNumberAsync(string serialNumber);

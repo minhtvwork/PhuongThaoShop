@@ -5,18 +5,10 @@ using PTS.Application.Common.Mappings;
 using PTS.Application.Interfaces.Repositories;
 using PTS.Domain.Entities;
 using PTS.Shared;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using Abp.Domain.Entities;
 using PTS.Core.Enums;
 using PTS.Shared.Utilities;
 using Microsoft.AspNetCore.Identity;
 using PTS.Application.Features.BillDetail.Queries;
-using PTS.Application.Features.Bill.DTOs;
-using PTS.Domain.Model.Base;
-using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace PTS.Application.Features.Bill.Commands

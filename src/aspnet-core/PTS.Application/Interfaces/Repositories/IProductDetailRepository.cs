@@ -1,6 +1,4 @@
-﻿using Abp.Application.Services.Dto;
-using PTS.Shared.Dto;
-using PTS.Application.Dto;
+﻿using PTS.Application.Dto;
 using PTS.Domain.Entities;
 namespace PTS.Application.Interfaces.Repositories
 {
@@ -15,7 +13,6 @@ namespace PTS.Application.Interfaces.Repositories
         Task<IEnumerable<ProductDetailDto>> PGetProductDetail(int? getNumber, string? codeProductDetail, int? status, string? search, decimal? from, decimal? to, string? sortBy, int? page,
             string? productType, string? namufacturer, string? ram, string? CPU, string? cardVGA);
         Task<IEnumerable<ProductDetailDto>> PublicGetList(GetProductDetailRequest request);
-        Task<PagedResultDto<ProductDetailDto>> GetPagedAsync(PagedRequestDto request);
         Task<bool> UpdateSoLuong(int id, int soLuong);
         Task<ProductDetailDto> GetById(int id);
     }

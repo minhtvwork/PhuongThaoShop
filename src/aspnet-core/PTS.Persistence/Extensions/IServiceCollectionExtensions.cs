@@ -42,22 +42,10 @@ namespace PTS.Persistence.Extensions
 	.AddEntityFrameworkStores<ApplicationDbContext>()
 	.AddDefaultTokenProviders();
 		//	services.AddIdentityApiEndpoints<UserEntity>().AddEntityFrameworkStores<ApplicationDbContext>();
-		
-			services.AddTransient<IRamRepository, RamRepository>();
-			services.AddTransient<ICpuRepository, CpuRepository>();
 			services.AddTransient<IVoucherRepository, VoucherRepository>();
-			services.AddTransient<IColorRepository, ColorRepository>();
 			services.AddTransient<IVoucherRepository, VoucherRepository>();
-			services.AddTransient<IContactRepository, ContactRepository>();
-			services.AddTransient<IHardDriveRepository, HardDriveRepository>();
-			services.AddTransient<IManagePostRepository, ManagePostRepository>();
 			services.AddTransient<IProductDetailRepository, ProductDetailRepository>();
-			services.AddTransient<IProductRepository, ProductRepository>();
-			services.AddTransient<IProductTypeRepository, ProductTypeRepository>();
-			services.AddTransient<IManufacturerRepository, ManufacturerRepository>();
-			services.AddTransient<IScreenRepository, ScreenRepository>();
 			services.AddTransient<ISerialRepository, SerialRepository>();
-			services.AddTransient<IRoleRepository, RoleRepository>();
 			services.AddTransient<IUserRepository, UserRepository>();
 			services.AddTransient<ICartRepository, CartRepository>();
 			services.AddTransient<ICartDetailRepository, CartDetailRepository>();

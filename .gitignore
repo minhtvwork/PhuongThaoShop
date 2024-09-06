@@ -52,3 +52,4 @@
 /src/aspnet-core/PTS.Shared/obj/Debug/net8.0/PTS.Shared.assets.cache
 /src/aspnet-core/PTS.Shared/obj/PTS.Shared.csproj.nuget.g.props
 /src/aspnet-core/PTS.Shared/obj/project.assets.json
+/src/aspnet-core/PTS.Shared/obj/PTS.Shared.csproj.nuget.g.targets

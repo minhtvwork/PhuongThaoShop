@@ -2,13 +2,7 @@
 using PTS.Application.Interfaces.Repositories;
 using PTS.Application.Dto;
 using PTS.Domain.Entities;
-using System.Net.NetworkInformation;
 using PTS.Data;
-using System.Globalization;
-using System.Runtime.Intrinsics.Arm;
-using System.Security.Cryptography;
-using Abp.Application.Services.Dto;
-using PTS.Shared.Dto;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using Dapper;
@@ -25,24 +19,6 @@ namespace PTS.Persistence.Repositories
         public async Task<IEnumerable<ProductDetailEntity>> GetListAsync()
         {
             return await _context.ProductDetailEntity.ToListAsync();
-        }
-        public async Task<PagedResultDto<ProductDetailDto>> GetPagedAsync(PagedRequestDto request)
-        {
-            var query = _context.ProductDetailEntity;
-
-            var totalCount = await query.CountAsync();
-
-            var obj = await query.Skip(request.SkipCount)
-                                    .Take(request.MaxResultCount)
-                                    .ToListAsync();
-
-            var objDto = obj.Select(p => new ProductDetailDto
-            {
-                Id = p.Id,
-                Code = p.Code,
-            }).ToList();
-
-            return new PagedResultDto<ProductDetailDto>(totalCount, objDto);
         }
         public async Task<IEnumerable<ProductDetailDto>> PublicGetList(GetProductDetailRequest request)
         {

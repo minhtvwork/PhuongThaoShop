@@ -5,14 +5,7 @@ using PTS.Application.Common.Mappings;
 using PTS.Application.Interfaces.Repositories;
 using PTS.Domain.Entities;
 using PTS.Shared;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using Abp.Domain.Entities;
-using PTS.Core.Enums;
 using PTS.Shared.Utilities;
-using PTS.Domain.Common.Interfaces;
 
 namespace PTS.Application.Features.BillDetail.Commands
 {
