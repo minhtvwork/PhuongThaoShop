@@ -35,8 +35,6 @@ builder.Services.AddAuthorization(options =>
         policy.RequireClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "Admin");
     });
 });
-
-//IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddApplicationLayer(builder.Configuration);
 builder.Services.AddPersistenceLayer(builder.Configuration);
 //builder.Services.AddSingleton(mapper);

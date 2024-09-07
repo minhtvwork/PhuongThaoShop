@@ -126,13 +126,5 @@ namespace PTS.WebAPI.Controllers
                 return StatusCode(500, new { status = "error", message = "Đã xảy ra lỗi trong quá trình xử lý tệp: " + ex.Message });
             }
         }
-
-
-        [HttpPost("CreateMany")]
-        public async Task<IActionResult> CreateMany(List<SerialDto> listObjDto)
-        {
-            var listObj = _mapper.Map<List<SerialEntity>>(listObjDto);
-            return Ok(await _unitOfWork._serialRepository.CreateMany(listObj));
-        }
     }
 }
