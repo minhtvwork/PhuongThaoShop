@@ -14,14 +14,13 @@ namespace PTS.Application.Interfaces.Repositories
         IProductDetailRepository _productDetailRepository { get; }
         ISerialRepository _serialRepository { get; }
         IVoucherRepository _voucherRepository { get; }
-        IRoleRepository _roleRepository { get; }
-		//	IGenericRepository<T> Repository<T>() where T : BaseAuditableEntity;
-		IGenericRepository<T> Repository<T>() where T : BaseAuditableEntity;
-		Task<int> Save(CancellationToken cancellationToken);
+        //	IGenericRepository<T> Repository<T>() where T : BaseAuditableEntity;
+        IGenericRepository<T> Repository<T>() where T : BaseAuditableEntity;
+        Task<int> Save(CancellationToken cancellationToken);
 
-		Task<int> SaveAndRemoveCache(CancellationToken cancellationToken, params string[] cacheKeys);
+        Task<int> SaveAndRemoveCache(CancellationToken cancellationToken, params string[] cacheKeys);
 
-		Task Rollback();
-		Task ChangeTrackerClear();
-	}
+        Task Rollback();
+        Task ChangeTrackerClear();
+    }
 }
